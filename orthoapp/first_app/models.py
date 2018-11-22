@@ -1,24 +1,69 @@
 from django.db import models
+from django.core.validators import MaxValueValidator, MinValueValidator
+
 
 # Create your models here.
-class Topic(models.Model):
-    top_name = models.CharField(max_length = 264, unique=True)
+class Person(models.Model):
+    firstName    = models.CharField(max_length=100)
+    lastName     = models.CharField(max_length=100)
+    email        = models.EmailField(max_length=100)
 
-    def __str__(self):
-        return self.top_name
+    class Meta:
+        abstract = True
 
-class Webpage(models.Model):
-    topic = models.ForeignKey(Topic, on_delete=models.CASCADE)
-    name  = models.CharField(max_length =264, unique=True)
-    url   = models.URLField(unique=True)
+class Surgeon(Person):
+    hospital_name = models.CharField(max_length = 264)
+
+class Patient(Person):
+    KNEE = 'K'
+    HIP  = 'H'
+    OPERATION_TYPE_CHOICES =(
+    (KNEE, 'Knee'),
+    (HIP, 'Hip'),
+    )
+
+    LEFT   = 'L'
+    RIGHT  = 'R'
+    BOTH   = 'B'
+    OPERATION_SIDE_CHOICES =(
+    (LEFT, 'Left'),
+    (RIGHT, 'Right'),
+    (BOTH, 'Both'),
+    )
+
+    PRIMARY = 'P'
+    REVISION  = 'R'
+    SURGERY_TYPE_CHOICES =(
+    (PRIMARY, 'Primary'),
+    (REVISION, 'Revision'),
+    )
 
 
-    def __str__(self):
-        return self.name;
+    surgeon = models.ForeignKey(Surgeon, on_delete=models.CASCADE, related_name="patients")
+    operationType = models.CharField(max_length = 1)
+    operationSide = models.CharField(max_length = 1)
+    surgeryType   = models.CharField(max_length = 1)
+    surgeryDate = models.DateField()
+    dateOfBirth = models.DateField()
 
-class AccessRecord(models.Model):
-    name = models.ForeignKey(Webpage, on_delete=models.CASCADE)
-    date = models.DateField()
 
-    def __str__(self):
-        return str(self.date);
+
+
+class DataPoint(models.Model):
+    patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
+    created = models.DateTimeField(auto_now_add=True)
+    class Meta:
+        abstract = True
+class StepCounter(DataPoint):
+    steps = models.IntegerField(default=0)
+
+class KneeMotionRange(DataPoint):
+    bend = models.FloatField(default=90)
+    stretch = models.FloatField(default=90)
+class PainLevel(DataPoint):
+    painLevel = models.IntegerField(
+    default=0,
+    validators=[MaxValueValidator(10), MinValueValidator(0)])
+
+    isExerciseDone = models.BooleanField()
+    isMedicineTaken = models.BooleanField()
