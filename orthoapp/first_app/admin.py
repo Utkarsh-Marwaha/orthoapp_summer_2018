@@ -1,5 +1,5 @@
 from django.contrib import admin
-from first_app.models import Person, Surgeon, Patient, DataPoint, StepCounter, KneeMotionRange, PainLevel
+from first_app.models import Person, Surgeon, Patient, DataPoint, StepCounter, KneeMotionRange, PainLevel, Operation
 # Register your models here.
 # admin.site.register(Person)
 admin.site.register(Surgeon)
@@ -8,3 +8,4 @@ admin.site.register(Patient)
 admin.site.register(StepCounter)
 admin.site.register(KneeMotionRange)
 admin.site.register(PainLevel)
+admin.site.register(Operation)

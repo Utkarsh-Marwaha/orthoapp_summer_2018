@@ -1,10 +1,10 @@
 from django.db import models
 from django.core.validators import MaxValueValidator, MinValueValidator
 
-
-
-
 # Create your models here.
+
+#this is an abstract class named Person, It features
+
 class Person(models.Model):
     firstName    = models.CharField(max_length=100)
     lastName     = models.CharField(max_length=100)
@@ -16,11 +16,14 @@ class Person(models.Model):
     def __str__(self):
         return self.firstName+" "+self.lastName
 
+class Patient(Person):
+    dateOfBirth = models.DateField()
+
 class Surgeon(Person):
     hospital_name = models.CharField(max_length = 264)
+    patients = models.ManyToManyField(Patient, through='Operation')
 
-class Patient(Person):
-
+class Operation(models.Model):
     KNEE = 'K'
     HIP  = 'H'
     OPERATION_TYPE_CHOICES =(
@@ -44,19 +47,24 @@ class Patient(Person):
     (REVISION, 'Revision'),
     )
 
+    patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
+    surgeon = models.ForeignKey(Surgeon, on_delete=models.CASCADE)
 
-    surgeon = models.ForeignKey(Surgeon, on_delete=models.CASCADE, related_name="patients")
+    # operationType = models.CharField(max_length = 1, choices = OPERATION_TYPE_CHOICES, default=KNEE)
+    # operationSide = models.CharField(max_length = 1, choices = OPERATION_SIDE_CHOICES, default=LEFT)
+    # surgeryType   = models.CharField(max_length = 1, choices = SURGERY_TYPE_CHOICES, default=PRIMARY)
+
     operationType = models.CharField(max_length = 1, choices = OPERATION_TYPE_CHOICES)
     operationSide = models.CharField(max_length = 1, choices = OPERATION_SIDE_CHOICES)
     surgeryType   = models.CharField(max_length = 1, choices = SURGERY_TYPE_CHOICES)
+
     surgeryDate = models.DateField()
-    dateOfBirth = models.DateField()
 
-
-
+    def __str__(self):
+        return str(self.surgeryDate)+" "+self.surgeryType+" "+self.operationSide +" "+self.operationType
 
 class DataPoint(models.Model):
-    patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
+    operation = models.ForeignKey(Operation, on_delete=models.CASCADE)
     created = models.DateTimeField(auto_now_add=True)
     class Meta:
         abstract = True
