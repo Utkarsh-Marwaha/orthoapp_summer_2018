@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Welcome</title>
+    <link rel="stylesheet" href="{% static "css/myStyle.css" %}"/>
+  </head>
+  <body>
+    <h1>Welcome To Ortho App</h1>
+    {% if introduction %}
+      {% for intro in introduction %}
+        <h4>Introduction</h4>
+        <p> {{intro.introduction}}</p>
+        <h4>acknowledgements</h4>
+        <p> {{intro.acknowledgements}}</p>
+        <h4>disclaimer</h4>
+        <p>{{intro.disclaimer}}</p>
+        <h4>copyright</h4>
+        <p>{{intro.copyright}}</p>
+      {% endfor%}
+    {% else %}
+      <p>"NO RECORDS"</p>
+    {% endif %}
+  </body>
+</html>

@@ -101,4 +101,9 @@ class Appointment(models.Model):
     def __str__(self):
         return self.task_id + " " +self.title
 
-############################################################################################
+#############################          STATIC SECTION        ###############################################################
+class Welcome_To_Orthoapp(models.Model):
+    introduction = models.TextField(blank=True)
+    acknowledgements = models.TextField(blank=True)
+    disclaimer = models.TextField(blank=True)
+    copyright = models.TextField(blank=True)
