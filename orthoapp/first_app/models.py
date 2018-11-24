@@ -1,6 +1,6 @@
 from django.db import models
 from django.core.validators import MaxValueValidator, MinValueValidator
-
+from timezone_field import TimeZoneField
 # Create your models here.
 
 #this is an abstract class named Person, It features
@@ -87,3 +87,18 @@ class PainLevel(DataPoint):
 
     isExerciseDone = models.BooleanField()
     isMedicineTaken = models.BooleanField()
+
+class Appointment(models.Model):
+    patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
+    title = models.CharField(max_length=100)
+    description = models.CharField(max_length=512)
+    time = models.DateTimeField()
+    time_zone = TimeZoneField(default='Australia/Sydney')
+    # Additional fields not visible to users
+    # The task_id field will help us keep track of the corresponding reminder task for this appointment
+    task_id = models.CharField(max_length=50, blank=True, editable=False)
+    created = models.DateTimeField(auto_now_add=True)
+    def __str__(self):
+        return self.task_id + " " +self.title
+
+############################################################################################
