@@ -8,19 +8,27 @@
   </head>
   <body>
     <h1>Welcome To Ortho App</h1>
-    {% if introduction %}
-      {% for intro in introduction %}
+
+    {% if welcome_to_ortho_page %}
+      {% for txt in welcome_to_ortho_page %}
+
         <h4>Introduction</h4>
-        <p> {% load md2 %}{{intro.introduction | markdown}}</p>
+        <p> {% load md2 %}{{txt.introduction | markdown}}</p>
+
         <h4>Acknowledgements</h4>
-        <p> {% load md2 %}{{intro.acknowledgements | markdown}}</p>
+        <p> {% load md2 %}{{txt.acknowledgements | markdown}}</p>
+
         <h4>Disclaimer</h4>
-        <p>{{intro.disclaimer}}</p>
+        <p>{{txt.disclaimer}}</p>
+
         <h4>Copyright</h4>
-        <p>{{intro.copyright}}</p>
+        <p>{{txt.copyright}}</p>
+
       {% endfor%}
     {% else %}
+
       <p>"NO RECORDS"</p>
+
     {% endif %}
   </body>
 </html>

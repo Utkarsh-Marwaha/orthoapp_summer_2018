@@ -8,5 +8,5 @@ def index(request):
 
 def welcome_to_orthoapp(request):
     lis = Welcome_To_Orthoapp.objects.all()
-    introduction = {'introduction': lis}
-    return render(request, 'first_app/welcome_to_orthoapp.html', context = introduction)
+    welcome_to_ortho_page = {'welcome_to_ortho_page': lis}
+    return render(request, 'first_app/welcome_to_orthoapp.html', context = welcome_to_ortho_page)
