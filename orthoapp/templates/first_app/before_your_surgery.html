@@ -4,25 +4,37 @@
   <head>
     <meta charset="utf-8">
     <title>Before Your Surgery</title>
-    <link rel="stylesheet" href="{% static "css/myStyle.css" %}"/>
+    <link rel="stylesheet" href="{% static "css/before_your_surgery.css" %}"/>
   </head>
   <body>
     <h1>Before Your Surgery</h1>
 
-    {% if welcome_to_ortho_page %}
-      {% for txt in welcome_to_ortho_page %}
+    {% if before_your_surgery_page %}
+      {% for txt in before_your_surgery_page %}
 
-        <h4>Introduction</h4>
-        <p> {% load md2 %}{{txt.introduction | markdown}}</p>
+        <h4>Pre Admission Process</h4>
+        <div class="popup" onclick="myFunction()">Here's a Tip
+          <span class="popuptext" id="myPopup">
+            <p>• <strong>Patient Checklist:</strong> <em>Be prepared for your surgery using the Checklist</em></p>
+            <p>• <strong>Chest X-ray (CXR):</strong> <em>Make sure that you have your CXR on the surgery day</em> </p>
+          </span>
+        </div>
+        <p> {% load md2 %}{{txt.pre_admission_process | markdown}}</p>
 
-        <h4>Acknowledgements</h4>
-        <p> {% load md2 %}{{txt.acknowledgements | markdown}}</p>
+        <h4>Medical Tests</h4>
+        <p> {% load md2 %}{{txt.medical_tests | markdown}}</p>
 
-        <h4>Disclaimer</h4>
-        <p>{{txt.disclaimer}}</p>
-
-        <h4>Copyright</h4>
-        <p>{{txt.copyright}}</p>
+        <h4>Perparing</h4>
+        <div class="popup" onclick="myFunction()">Here's a Tip
+          <span class="popuptext" id="myPopup2">
+            <p>• <strong>The Independent Living Centre:</strong> located at Weston, has a wide variety of equipment
+            on display and is an excellent source of information. They can be contacted on <strong>6205 1900</strong> to arrange an appointment
+            if you would like personal advice about products and resources which can be used in your home.</p>
+            <p>• Places like <strong>“ACT Foam”</strong> and <strong>“Clark Rubber”</strong> can be
+            contacted if foam wedges are needed for cars and other places.</p>
+            <p>• Ensure that you have someone with you</p>
+          </span>
+        </div>
 
       {% endfor%}
     {% else %}
@@ -30,5 +42,16 @@
       <p>"NO RECORDS"</p>
 
     {% endif %}
+
+
+
+    <script>
+    // When the user clicks on div, open the popup
+    function myFunction() {
+        var popup = document.getElementById("myPopup2");
+        popup.classList.toggle("show");
+    }
+    </script>
+
   </body>
 </html>
