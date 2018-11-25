@@ -11,12 +11,12 @@
     {% if introduction %}
       {% for intro in introduction %}
         <h4>Introduction</h4>
-        <p> {{intro.introduction}}</p>
-        <h4>acknowledgements</h4>
-        <p> {{intro.acknowledgements}}</p>
-        <h4>disclaimer</h4>
+        <p> {% load md2 %}{{intro.introduction | markdown}}</p>
+        <h4>Acknowledgements</h4>
+        <p> {% load md2 %}{{intro.acknowledgements | markdown}}</p>
+        <h4>Disclaimer</h4>
         <p>{{intro.disclaimer}}</p>
-        <h4>copyright</h4>
+        <h4>Copyright</h4>
         <p>{{intro.copyright}}</p>
       {% endfor%}
     {% else %}
