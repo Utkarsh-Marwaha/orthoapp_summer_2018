@@ -13,7 +13,7 @@
       {% for txt in before_your_surgery_page %}
 
         <h4>Pre Admission Process</h4>
-        <div class="popup" onclick="myFunction()">Here's a Tip
+        <div class="popup" id="1" onclick="myFunction(this.id)">Here's a Tip
           <span class="popuptext" id="myPopup">
             <p>• <strong>Patient Checklist:</strong> <em>Be prepared for your surgery using the Checklist</em></p>
             <p>• <strong>Chest X-ray (CXR):</strong> <em>Make sure that you have your CXR on the surgery day</em> </p>
@@ -25,7 +25,7 @@
         <p> {% load md2 %}{{txt.medical_tests | markdown}}</p>
 
         <h4>Perparing</h4>
-        <div class="popup" onclick="myFunction()">Here's a Tip
+        <div class="popup" id = "2" onclick="myFunction(this.id)">Here's a Tip
           <span class="popuptext" id="myPopup2">
             <p>• <strong>The Independent Living Centre:</strong> located at Weston, has a wide variety of equipment
             on display and is an excellent source of information. They can be contacted on <strong>6205 1900</strong> to arrange an appointment
@@ -47,9 +47,14 @@
 
     <script>
     // When the user clicks on div, open the popup
-    function myFunction() {
-        var popup = document.getElementById("myPopup2");
-        popup.classList.toggle("show");
+    function myFunction(clicked_id) {
+      var popup;
+        if (clicked_id == "1") {
+           popup = document.getElementById("myPopup");
+          } else if (clicked_id == "2"){
+           popup = document.getElementById("myPopup2");
+        }
+      popup.classList.toggle("show");
     }
     </script>
 
