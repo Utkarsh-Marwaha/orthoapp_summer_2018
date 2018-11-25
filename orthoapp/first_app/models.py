@@ -102,8 +102,28 @@ class Appointment(models.Model):
         return self.task_id + " " +self.title
 
 #############################          STATIC SECTION        ###############################################################
-class Welcome_To_Orthoapp(models.Model):
+class static_page(models.Model):
+    name = models.CharField(max_length=25)
+    class Meta:
+        abstract = True
+
+    def __str__(self):
+        return self.name
+
+
+class Welcome_To_Orthoapp(static_page):
+    name = "Welcome To Orthoapp Page"
     introduction = models.TextField(blank=True)
     acknowledgements = models.TextField(blank=True)
     disclaimer = models.TextField(blank=True)
     copyright = models.TextField(blank=True)
+
+
+class Before_Your_Surgery(static_page):
+    name = "Before Surgery Information Page"
+    pre_admission_process  = models.TextField(blank=True)
+    medical_tests  = models.TextField(blank=True)
+    preparing  = models.TextField(blank=True)
+    arranging_support  = models.TextField(blank=True)
+    minimising_risk_of_cancellation  = models.TextField(blank=True)
+    hospital_admission  = models.TextField(blank=True)
