@@ -4,6 +4,19 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 from timezone_field import TimeZoneField
 # Create your models here.
 
+class UserProfileInfo(models.Model):
+
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+
+    # additional characteristics
+    profile_pic = models.ImageField(upload_to = 'profile_pics', blank=True)
+
+    def __str__(self):
+        return self.user.username
+
+
+
+
 #this is an abstract class named Person, It features
 #might have to change the name of Person class to User
 class Person(models.Model):

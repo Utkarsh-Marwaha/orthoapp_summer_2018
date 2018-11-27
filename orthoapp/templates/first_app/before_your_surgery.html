@@ -24,7 +24,7 @@
         <h4>Medical Tests</h4>
         <p> {% load md2 %}{{txt.medical_tests | markdown}}</p>
 
-        <h4>Perparing</h4>
+        <h4>Preparing</h4>
         <div class="popup" id = "2" onclick="myFunction(this.id)">Here's a Tip
           <span class="popuptext" id="myPopup2">
             <p>• <strong>The Independent Living Centre:</strong> located at Weston, has a wide variety of equipment
@@ -35,6 +35,7 @@
             <p>• Ensure that you have someone with you</p>
           </span>
         </div>
+        <p> {% load md2 %}{{txt.preparing | markdown}}</p>
 
       {% endfor%}
     {% else %}
