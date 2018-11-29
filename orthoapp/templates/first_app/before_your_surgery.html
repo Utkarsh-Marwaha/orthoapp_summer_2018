@@ -37,6 +37,19 @@
         </div>
         <p> {% load md2 %}{{txt.preparing | markdown}}</p>
 
+        <h4>Arranging Support</h4>
+        <p> {% load md2 %}{{txt.arranging_support | markdown}}</p>
+
+        <h4>Minimising Risk of Cancellation</h4>
+        <p> {% load md2 %}{{txt.minimising_risk_of_cancellation | markdown}}</p>
+
+        <h4>Hospital Admission</h4>
+        <p> {% load md2 %}{{txt.hospital_admission | markdown}}</p>
+
+        <h1>Good Luck For Your Surgery!</h1>
+
+
+
       {% endfor%}
     {% else %}
 
@@ -45,17 +58,34 @@
     {% endif %}
 
 
-
     <script>
     // When the user clicks on div, open the popup
     function myFunction(clicked_id) {
       var popup;
         if (clicked_id == "1") {
-           popup = document.getElementById("myPopup");
-          } else if (clicked_id == "2"){
-           popup = document.getElementById("myPopup2");
+          popup = document.getElementById("myPopup");
         }
-      popup.classList.toggle("show");
+        else if (clicked_id == "2") {
+          popup = document.getElementById("myPopup2");
+        }
+        else if (clicked_id == "3") {
+          popup = document.getElementById("myPopup3");
+        }
+        else if (clicked_id == "4"){
+          popup = document.getElementById("myPopup4");
+        }
+        else if (clicked_id == "5"){
+          popup = document.getElementById("myPopup5");
+        }
+        else if (clicked_id == "6"){
+          popup = document.getElementById("myPopup6");
+        }
+
+        else if (clicked_id == "7"){
+          popup = document.getElementById("myPopup7");
+        }
+
+        popup.classList.toggle("show");
     }
     </script>
 

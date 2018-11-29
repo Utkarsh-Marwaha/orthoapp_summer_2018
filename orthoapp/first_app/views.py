@@ -37,6 +37,7 @@ def user_logout(request):
     logout(request)
     return HttpResponseRedirect(reverse('index'))
 
+@login_required
 def register(request):
 
     registered = False
