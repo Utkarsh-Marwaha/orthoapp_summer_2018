@@ -9,6 +9,4 @@ urlpatterns = [
     path('before_your_surgery/', views.before_your_surgery, name='before_your_surgery'),
     path('register/', views.register, name = 'register'),
     path('user_login/', views.user_login, name = 'user_login'),
-
-
 ]

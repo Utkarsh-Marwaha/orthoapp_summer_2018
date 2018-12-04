@@ -1,41 +1,52 @@
 from django.db import models
-from django.contrib.auth.models import User
+# from django.contrib.auth.models import User
 from django.core.validators import MaxValueValidator, MinValueValidator
 from timezone_field import TimeZoneField
+from django.contrib.auth.models import AbstractUser
+
+from django.conf import settings
 # Create your models here.
 
-class UserProfileInfo(models.Model):
+class MyUser(AbstractUser):
+    is_patient = models.BooleanField('patient status', default=False)
+    is_surgeon = models.BooleanField('surgeon status', default=False)
 
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+class UserProfileInfo(models.Model):
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True)
+    # firstName = user.first_name
+    # lastName = user.last_name
+    # email = user.email
 
     # additional characteristics
     profile_pic = models.ImageField(upload_to = 'profile_pics', blank=True)
+    def __str__(self):
+        return self.user.username
+# #this is an abstract class named Person, It features
+# #might have to change the name of Person class to User
+# class Person(models.Model):
+#     firstName    = models.CharField(max_length=100)
+#     lastName     = models.CharField(max_length=100)
+#     email        = models.EmailField(max_length=100)
+#
+#     class Meta:
+#         abstract = True
+#
+#     def __str__(self):
+#         return self.firstName+" "+self.lastName
+# User.profile = property(lambda u: UserProfileInfo.objects.get_or_create(user=u)[0])
 
+class Patient(models.Model):
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True)
+    dateOfBirth = models.DateField()
     def __str__(self):
         return self.user.username
 
-
-
-
-#this is an abstract class named Person, It features
-#might have to change the name of Person class to User
-class Person(models.Model):
-    firstName    = models.CharField(max_length=100)
-    lastName     = models.CharField(max_length=100)
-    email        = models.EmailField(max_length=100)
-
-    class Meta:
-        abstract = True
-
-    def __str__(self):
-        return self.firstName+" "+self.lastName
-
-class Patient(Person):
-    dateOfBirth = models.DateField()
-
-class Surgeon(Person):
+class Surgeon(models.Model):
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True)
     hospital_name = models.CharField(max_length = 264)
     patients = models.ManyToManyField(Patient, through='Operation')
+    def __str__(self):
+        return self.user.username
 
 class Operation(models.Model):
     KNEE = 'K'

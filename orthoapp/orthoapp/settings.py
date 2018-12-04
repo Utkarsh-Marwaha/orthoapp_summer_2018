@@ -41,7 +41,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'timezone_field',
     'django_markdown2',
-    'first_app'
+    'first_app',
+    'crispy_forms',
 ]
 
 MIDDLEWARE = [
@@ -144,3 +145,8 @@ MEDIA_ROOT = MEDIA_DIR
 MEDIA_URL = '/media/'
 
 LOGIN_URL = '/first_app/user_login'
+
+
+
+#added because i have a model extends "AbstractUser"
+AUTH_USER_MODEL = "first_app.MyUser"
