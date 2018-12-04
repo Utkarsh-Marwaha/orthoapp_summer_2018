@@ -10,6 +10,7 @@ from django.conf import settings
 class MyUser(AbstractUser):
     is_patient = models.BooleanField('patient status', default=False)
     is_surgeon = models.BooleanField('surgeon status', default=False)
+    is_practice = models.BooleanField('surgeon status', default=True)
 
 class UserProfileInfo(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True)

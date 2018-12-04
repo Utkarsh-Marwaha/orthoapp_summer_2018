@@ -1,7 +1,7 @@
 {% extends "first_app/base.html" %}
 {% load staticfiles %}
 
-{% block body_block %}
+{% block content %}
   <div class="container">
     <div class="jumbotron">
       {% if registered %}
@@ -16,7 +16,6 @@
           {{ profile_form.as_p }}
           <input type="submit" name="" value="Register">
         </form>
-
       {% endif %}
 
     </div>
