@@ -4,7 +4,7 @@ from first_app import views
 app_name = 'first_app'
 
 urlpatterns = [
-    # path('', views.index, name='index'),
+    path('', views.index, name='index'),
     path('welcome_to_orthoapp/', views.welcome_to_orthoapp, name='welcome_to_orthoapp'),
     path('before_your_surgery/', views.before_your_surgery, name='before_your_surgery'),
     # path('register/', views.register, name = 'register'),
@@ -12,5 +12,7 @@ urlpatterns = [
     path('signup/', views.SignUpView.as_view(), name = 'signup'),
     path('signup/surgeon', views.register_surgeon, name = 'signup_surgeon'),
     path('signup/patient', views.register_patient, name = 'signup_patient'),
+    # path('signup/surgeon/surgeon_page', views.surgeon_login, name = 'surgeon_login'),
+    # path('signup/patient/patient_page', views.patient_login, name = 'patient_login'),
 
 ]

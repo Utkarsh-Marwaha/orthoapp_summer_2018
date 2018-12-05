@@ -1,5 +1,5 @@
 from first_app.models import Welcome_To_Orthoapp, Before_Your_Surgery
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from first_app.forms import SurgeonProfileInfoForm, PatientProfileInfoForm, UserForm
 
 from django.contrib.auth import authenticate, login, logout
@@ -9,11 +9,13 @@ from django.contrib.auth.decorators import login_required # login decorator that
 from first_app.decorators import patient_required, surgeon_required, practice_required
 # Create your views here.
 def index(request):
-    my_dict = {'insert_me': "I am from views.py"}
-    return render(request, 'first_app/index.html', context= my_dict)
+    if request.user.is_authenticated:
+        if request.user.is_surgeon:
+            return render(request, 'first_app/surgeon.html')
+        else:
+            return render(request, 'first_app/patient.html')
+    return render(request, 'first_app/index.html', {})
 
-@login_required
-@surgeon_required
 def welcome_to_orthoapp(request):
     lis = Welcome_To_Orthoapp.objects.all()
     welcome_to_ortho_page = {'welcome_to_ortho_page': lis}
@@ -176,10 +178,10 @@ def user_login(request):
             print(user.is_patient)
             print("HEHEHEHEHEHEHEHE")
             # if user.is_active and user.is_patient:
-            if user.is_active and user.is_surgeon:
+            if user.is_active and (user.is_surgeon or user.is_patient):
                 login(request, user)
                 # return HttpResponseRedirect(reverse('index')) #if its everything ok with the login and password, you will log in and be redirected to the index page
-                return render(request,'first_app/welcome_to_orthoapp.html',{})
+                return redirect('first_app:index')
             else:
                 return HttpResponse("ACCESS DENIED!")
         else:
@@ -188,6 +190,56 @@ def user_login(request):
             return HttpResponse("Invalid login details supplied!")
     else:
         return render(request,'first_app/login.html',{})
+
+# @login_required
+# @patient_required
+# def patient_login(request):
+#     if request.method == 'POST':
+#         username = request.POST.get('username') #this get will grab it from the HTML
+#         password = request.POST.get('password')
+#
+#         user = authenticate(username=username, password=password) #user is a boolean that tells us if it is authenticated or not
+#         if user:
+#             print("HAHAHHAHAHAHA")
+#             print(user.is_patient)
+#             print("HEHEHEHEHEHEHEHE")
+#             # if user.is_active and user.is_patient:
+#             if user.is_active and user.is_patient:
+#                 login(request, user)
+#                 # return HttpResponseRedirect(reverse('index')) #if its everything ok with the login and password, you will log in and be redirected to the index page
+#                 return render(request,'first_app/patient.html',{})
+#             else:
+#                 return HttpResponse("ACCESS DENIED!")
+#         else:
+#             print("LOGIN FAILED!")
+#             print("Username: {} and password {}".format(username, password))
+#             return HttpResponse("Invalid login details supplied!")
+#     else:
+#         return render(request,'first_app/login.html',{})
+#
+# def surgeon_login(request):
+#     if request.method == 'POST':
+#         username = request.POST.get('username') #this get will grab it from the HTML
+#         password = request.POST.get('password')
+#
+#         user = authenticate(username=username, password=password) #user is a boolean that tells us if it is authenticated or not
+#         if user:
+#             print("HAHAHHAHAHAHA")
+#             print(user.is_surgeon)
+#             print("HEHEHEHEHEHEHEHE")
+#             # if user.is_active and user.is_patient:
+#             if user.is_active and user.is_surgeon:
+#                 login(request, user)
+#                 # return HttpResponseRedirect(reverse('index')) #if its everything ok with the login and password, you will log in and be redirected to the index page
+#                 return render(request,'first_app/surgeon.html',{})
+#             else:
+#                 return HttpResponse("ACCESS DENIED!")
+#         else:
+#             print("LOGIN FAILED!")
+#             print("Username: {} and password {}".format(username, password))
+#             return HttpResponse("Invalid login details supplied!")
+#     else:
+#         return render(request,'first_app/login.html',{})
 
 
 def practice_login(request):

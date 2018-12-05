@@ -56,8 +56,8 @@
           <div class="row">
             <div class="col-6">
               <h1 class="logo">
-                <a href="{% url 'admin:index' %}">
-                  OrthoApp
+                <a href="{% url 'first_app:index' %}">
+                  Home
                   {% if user.is_authenticated %}
                     {% if user.is_surgeon %}
                       <span class="icon-feather" data-toggle="tooltip" data-placement="right" title="surgeon profile"></span>
@@ -79,14 +79,6 @@
           </div>
           <div class="card mb-3">
             <div class="card-body">
-              {% for message in messages %}
-                <div class="alert {{ message.tags }} alert-dismissible fade show" role="alert">
-                  {{ message }}
-                  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-                </div>
-              {% endfor %}
               {% block content %}
               {% endblock %}
             </div>
