@@ -1,6 +1,111 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block content %}
-<h1>About</h1>
+<section id="showcase-inner" class="py-5 text-white">
+        <div class="container">
+          <div class="row text-center">
+            <div class="col-md-12">
+              <h1 class="display-4">About Ortho App</h1>
+              <p class="lead">A product aimed at improving the experience of patients undergoing a knee or a hip surgery
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+    
+      <!-- Breadcrumb -->
+      <section id="bc" class="mt-3">
+        <div class="container">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item">
+                <a href="{% url 'index' %}">
+                  <i class="fas fa-home"></i> Home</a>
+              </li>
+              <li class="breadcrumb-item active"> About</li>
+            </ol>
+          </nav>
+        </div>
+      </section>
+    
+      <section id="about" class="py-4">
+        <div class="container">
+          <div class="row">
+            <div class="col-md-8">
+              <h2>Your recovery, now under your control</h2>
+              <p class="lead">What is the orthoapp all about ?</p>
+              <img src="{% static 'img/about.jpg' %}" alt="">
+              <p class="mt-4">This tool is designed to enable you to understand and manage your health
+                  before and after a hip or knee arthoplastly. The data you submit through orthoapp will
+                  provide a record of your preparation for and recovery from the surgery, which will be
+                  immensely useful for you, your surgeon and physiotherapists.
+              </p>
+            </div>
+            <div class="col-md-4">
+              <div class="card">
+                <img class="card-img-top" src="assets/img/realtors/kyle.jpg" alt="Your Surgeon">
+                <div class="card-body">
+                  <h5 class="card-title">Your Surgeon</h5>
+                  <h6 class="text-secondary">Paul Smith</h6>
+                  <p class="card-text">Professor Paul Smith graduated in medicine from The Flinders University of South Australia 1986, and completed orthopaedic surgical training in 1995.
+                    
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    
+      <!-- Work -->
+      <section id="work" class="bg-dark text-white text-center">
+        <h2 class="display-4">We Work For You</h2>
+        <h4>Empowering the patient to communicate and promoting healthy outcomes </h4>
+        <hr>
+        <a href="listings.html" class="btn btn-secondary text-white btn-lg">View the featured information</a>
+      </section>
+    
+      <!-- Team -->
+      <section id="team" class="py-5">
+        <div class="container">
+          <h2 class="text-center">Our Team</h2>
+          <div class="row text-center">
+            <div class="col-md-4">
+              <img src="assets/img/realtors/kyle.jpg" alt="" class="rounded-circle mb-3">
+              <h4>Prof Paul Smith</h4>
+              <p class="text-success">
+                <i class="fas fa-award text-success mb-3"></i> Surgeon</p>
+              <hr>
+              <p>
+                <i class="fas fa-phone"></i> (02) 6221 9327 </p>
+              <p>
+                <i class="fas fa-envelope-open"></i> psmith.admin@orthoact.com.au</p>
+            </div>
+    
+            <div class="col-md-4">
+              <img src="assets/img/realtors/mark.jpg" alt="" class="rounded-circle mb-3">
+              <h4>Dr Chris Roberts</h4>
+              <p class="text-success">Surgeon</p>
+              <hr>
+              <p>
+                <i class="fas fa-phone"></i> (02) 6221 9322 </p>
+              <p>
+                <i class="fas fa-envelope-open"></i> croberts.admin@orthoact.com.au</p>
+            </div>
+    
+            <div class="col-md-4">
+              <img src="assets/img/realtors/jenny.jpg" alt="" class="rounded-circle mb-3">
+              <h4>Dr Alexander Burns</h4>
+              <p class="text-success">Surgeon</p>
+              <hr>
+              <p>
+                <i class="fas fa-phone"></i>(02) 6221 9323</p>
+              <p>
+                <i class="fas fa-envelope-open"></i> aburns.admin@orthoact.com.au</p>
+            </div>
+          </div>
+        </div>
+      </section>
 
 {% endblock %}
