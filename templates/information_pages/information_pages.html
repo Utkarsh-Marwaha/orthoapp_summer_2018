@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 
+{% load humanize %}
+
 {% block content %}
 
 <section id="showcase-inner" class="py-5 text-white">
@@ -33,154 +35,71 @@
       <section id="listings" class="py-4">
         <div class="container">
           <div class="row">
-    
-            <!-- Listing 1 -->
-            <div class="col-md-6 col-lg-4 mb-4">
-              <div class="card listing-preview">
-                <img class="card-img-top" src="assets/img/homes/home-1.jpg" alt="">
-                <div class="card-img-overlay">
-                  <h2>
-                    <span class="badge badge-secondary text-white">Pre Surgery</span>
-                  </h2>
-                </div>
-                <div class="card-body">
-                  <div class="listing-heading text-center">
-                    <h4 class="text-primary">some section</h4>
-                    <p>
-                      <i class="fas fa-map-marker text-secondary"></i> short description</p>
+
+            {% if info_pages %}
+              {%for info_page in info_pages %} 
+
+              <div class="col-md-6 col-lg-4 mb-4">
+                  <div class="card listing-preview">
+                    <img class="card-img-top" src="{{ info_page.photo_main.url }}" alt="">
+                    <div class="card-img-overlay">
+                      <h2>
+                        <span class="badge badge-secondary text-white">{{ info_page.surgery_stage }}</span>
+                      </h2>
+                    </div>
+                    <div class="card-body">
+                      <div class="listing-heading text-center">
+                        <h4 class="text-primary">{{ info_page.title }}</h4>
+                        <p>
+                          <i class="fas fa-map-marker text-secondary"></i>{{ info_page.description }}</p>
+                      </div>
+                      <hr>
+                      <a href="{% url 'information_page' info_page.id %}" class="btn btn-primary btn-block">More Info</a>
+                    </div>
                   </div>
-                  <hr>
-                  <a href="listing.html" class="btn btn-primary btn-block">More Info</a>
                 </div>
-              </div>
-            </div>
-    
-            <!-- Listing 2 -->
-            <div class="col-md-6 col-lg-4 mb-4">
-              <div class="card listing-preview">
-                <img class="card-img-top" src="assets/img/homes/home-2.jpg" alt="">
-                <div class="card-img-overlay">
-                  <h2>
-                    <span class="badge badge-secondary text-white">Pre Surgery</span>
-                  </h2>
-                </div>
-                <div class="card-body">
-                  <div class="listing-heading text-center">
-                    <h4 class="text-primary">some section</h4>
-                    <p>
-                      <i class="fas fa-map-marker text-secondary"></i> short description</p>
-                  </div>
-                  <hr>
-                  <a href="listing.html" class="btn btn-primary btn-block">More Info</a>
-                </div>
-              </div>
-            </div>
-    
-            <!-- Listing 3 -->
-            <div class="col-md-6 col-lg-4 mb-4">
-              <div class="card listing-preview">
-                <img class="card-img-top" src="assets/img/homes/home-3.jpg" alt="">
-                <div class="card-img-overlay">
-                  <h2>
-                    <span class="badge badge-secondary text-white">Pre Surgery</span>
-                  </h2>
-                </div>
-                <div class="card-body">
-                  <div class="listing-heading text-center">
-                    <h4 class="text-primary">some section</h4>
-                    <p>
-                      <i class="fas fa-map-marker text-secondary"></i> short description</p>
-                  </div>
-                  <hr>
-                  <a href="listing.html" class="btn btn-primary btn-block">More Info</a>
-                </div>
-              </div>
-            </div>
-    
-            <!-- Listing 4 -->
-            <div class="col-md-6 col-lg-4 mb-4">
-              <div class="card listing-preview">
-                <img class="card-img-top" src="assets/img/homes/home-4.jpg" alt="">
-                <div class="card-img-overlay">
-                  <h2>
-                    <span class="badge badge-secondary text-white">Post Surgery</span>
-                  </h2>
-                </div>
-                <div class="card-body">
-                  <div class="listing-heading text-center">
-                    <h4 class="text-primary">some section</h4>
-                    <p>
-                      <i class="fas fa-map-marker text-secondary"></i> short description </p>
-                  </div>
-                  <hr>
-                  <a href="listing.html" class="btn btn-primary btn-block">More Info</a>
-                </div>
-              </div>
-            </div>
-    
-            <!-- Listing 5 -->
-            <div class="col-md-6 col-lg-4 mb-4">
-              <div class="card listing-preview">
-                <img class="card-img-top" src="assets/img/homes/home-5.jpg" alt="">
-                <div class="card-img-overlay">
-                  <h2>
-                    <span class="badge badge-secondary text-white">Post Surgery</span>
-                  </h2>
-                </div>
-                <div class="card-body">
-                  <div class="listing-heading text-center">
-                    <h4 class="text-primary">some section </h4>
-                    <p>
-                      <i class="fas fa-map-marker text-secondary"></i> short description</p>
-                  </div>
-                  <hr>
-                  <a href="listing.html" class="btn btn-primary btn-block">More Info</a>
-                </div>
-              </div>
-            </div>
-    
-            <!-- Listing 6 -->
-            <div class="col-md-6 col-lg-4 mb-4">
-              <div class="card listing-preview">
-                <img class="card-img-top" src="assets/img/homes/home-6.jpg" alt="">
-                <div class="card-img-overlay">
-                  <h2>
-                    <span class="badge badge-secondary text-white">Post Surgery</span>
-                  </h2>
-                </div>
-                <div class="card-body">
-                  <div class="listing-heading text-center">
-                    <h4 class="text-primary">some section</h4>
-                    <p>
-                      <i class="fas fa-map-marker text-secondary"></i> short description</p>
-                  </div>
-                  <hr>
-                  <a href="listing.html" class="btn btn-primary btn-block">More Info</a>
-                </div>
-              </div>
-            </div>
-    
+
+
+              {%endfor%}
+            
           </div>
     
           <div class="row">
             <div class="col-md-12">
-              <ul class="pagination">
-                <li class="page-item disabled">
-                  <a class="page-link" href="#">&laquo;</a>
-                </li>
-                <li class="page-item active">
-                  <a class="page-link" href="#">1</a>
-                </li>
-                <li class="page-item">
-                  <a class="page-link" href="#">2</a>
-                </li>
-                <li class="page-item">
-                  <a class="page-link" href="#">3</a>
-                </li>
-                <li class="page-item">
-                  <a class="page-link" href="#">&raquo;</a>
-                </li>
-              </ul>
+              {% if info_pages.has_other_pages %}
+                <ul class="pagination">
+                  {% if info_pages.has_previous %}
+                    <li class="page-item">
+                      <a href="?page={{info_pages.previous_page_number}}" class="page-link">&laquo;</a>
+                    </li>
+                  {%else%}
+                    <li class="page-item disabled">
+                      <a href="" class="page-link">&laquo;</a>
+                    </li>
+                  {% endif %}
+                  {% for i in info_pages.paginator.page_range %}
+                     {%if info_pages.number == i %}
+                      <li class="page-item active">
+                        <a class="page-link">{{i}}</a>
+                      </li>
+                     
+                     {% else %}
+                      <li class="page-item">
+                        <a href="?page={{i}}" class="page-link">{{i}}</a>
+                      </li>
+                      {% endif %}
+                  {% endfor %}
+                  {% if info_pages.has_next %}
+                  <li class="page-item">
+                    <a href="?page={{info_pages.next_page_number}}" class="page-link">&raquo;</a>
+                  </li>
+                {%else%}
+                  <li class="page-item disabled">
+                    <a href="" class="page-link">&raquo;</a>
+                  </li>
+                {% endif %}
+                </ul>
+              {% endif %}
             </div>
           </div>
         </div>

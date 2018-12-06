@@ -43,16 +43,21 @@
               </p>
             </div>
             <div class="col-md-4">
-              <div class="card">
-                <img class="card-img-top" src="assets/img/realtors/kyle.jpg" alt="Your Surgeon">
-                <div class="card-body">
-                  <h5 class="card-title">Your Surgeon</h5>
-                  <h6 class="text-secondary">Paul Smith</h6>
-                  <p class="card-text">Professor Paul Smith graduated in medicine from The Flinders University of South Australia 1986, and completed orthopaedic surgical training in 1995.
-                    
-                  </p>
-                </div>
-              </div>
+              {% if lead_contacts %}
+                {% for team_member in lead_contacts %}
+                  <div class="card">
+                      <img class="card-img-top" src="{{ team_member.photo.url }}" alt="Lead Contact">
+                      <div class="card-body">
+                        <h5 class="card-title">Lead Contact</h5>
+                        <h6 class="text-secondary">{{ team_member.name }}</h6>
+                        <p class="card-text"> {{ team_member.description }} </p>
+                      </div>
+                  </div>
+                {% endfor %}
+
+              {% endif %}
+
+              
             </div>
           </div>
         </div>
@@ -71,39 +76,27 @@
         <div class="container">
           <h2 class="text-center">Our Team</h2>
           <div class="row text-center">
-            <div class="col-md-4">
-              <img src="assets/img/realtors/kyle.jpg" alt="" class="rounded-circle mb-3">
-              <h4>Prof Paul Smith</h4>
-              <p class="text-success">
-                <i class="fas fa-award text-success mb-3"></i> Surgeon</p>
-              <hr>
-              <p>
-                <i class="fas fa-phone"></i> (02) 6221 9327 </p>
-              <p>
-                <i class="fas fa-envelope-open"></i> psmith.admin@orthoact.com.au</p>
-            </div>
-    
-            <div class="col-md-4">
-              <img src="assets/img/realtors/mark.jpg" alt="" class="rounded-circle mb-3">
-              <h4>Dr Chris Roberts</h4>
-              <p class="text-success">Surgeon</p>
-              <hr>
-              <p>
-                <i class="fas fa-phone"></i> (02) 6221 9322 </p>
-              <p>
-                <i class="fas fa-envelope-open"></i> croberts.admin@orthoact.com.au</p>
-            </div>
-    
-            <div class="col-md-4">
-              <img src="assets/img/realtors/jenny.jpg" alt="" class="rounded-circle mb-3">
-              <h4>Dr Alexander Burns</h4>
-              <p class="text-success">Surgeon</p>
-              <hr>
-              <p>
-                <i class="fas fa-phone"></i>(02) 6221 9323</p>
-              <p>
-                <i class="fas fa-envelope-open"></i> aburns.admin@orthoact.com.au</p>
-            </div>
+
+              {% if team_members %}
+                {%for team_member in team_members %}
+                  <div class="col-md-4">
+                      <img src="{{ team_member.photo.url }}" alt="" class="rounded-circle mb-3">
+                      <h4>{{team_member.name}}</h4>
+                      <p class="text-success">
+                        <i class="fas fa-award text-success mb-3"></i>Developer</p>
+                      <hr>
+                      <p>
+                        <i class="fas fa-phone"></i> {{team_member.phone}} </p>
+                      <p>
+                        <i class="fas fa-envelope-open"></i> {{team_member.email}}</p>
+                    </div>
+                {% endfor %}
+              {%else%}
+              <div class="col-md-12">
+                  <p>No team members info available</p>
+                </div>
+              {%endif%}
+
           </div>
         </div>
       </section>

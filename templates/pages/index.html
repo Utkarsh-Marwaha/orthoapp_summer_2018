@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load humanize %}
 
 {% block content %}
   <!-- Showcase -->
@@ -51,69 +52,34 @@
         <div class="container">
           <h3 class="text-center mb-3">Key Links</h3>
           <div class="row">
-            <!-- Listing 1 -->
-            <div class="col-md-6 col-lg-4 mb-4">
-              <div class="card listing-preview">
-                <img class="card-img-top" src="assets/img/homes/home-1.jpg" alt="">
-                <div class="card-img-overlay">
-                  <h2>
-                    <span class="badge badge-secondary text-white">Pre Surgery</span>
-                  </h2>
-                </div>
-                <div class="card-body">
-                  <div class="listing-heading text-center">
-                    <h4 class="text-primary">Medical Tests</h4>
-                    <p>
-                      <i class="fas fa-map-marker text-secondary"></i> necessary medical tests</p>
+
+            {% if info_pages %}
+              {%for info_page in info_pages %}
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <div class="card listing-preview">
+                      <img class="card-img-top" src="{{ info_page.photo_main.url }}" alt="">
+                      <div class="card-img-overlay">
+                        <h2>
+                          <span class="badge badge-secondary text-white">{{ info_page.surgery_stage }}</span>
+                        </h2>
+                      </div>
+                      <div class="card-body">
+                        <div class="listing-heading text-center">
+                          <h4 class="text-primary">{{ info_page.title }}</h4>
+                          <p>
+                            <i class="fas fa-map-marker text-secondary"></i> {{ info_page.description }}</p>
+                        </div>
+                        <hr>
+                        <a href="listing.html" class="btn btn-primary btn-block">More Info</a>
+                      </div>
+                    </div>
                   </div>
-                  <hr>
-                  <a href="listing.html" class="btn btn-primary btn-block">More Info</a>
-                </div>
-              </div>
+              {% endfor %}
+            {% else %}
+            <div class="col-md-12">
+              <p>No key links available</p>
             </div>
-    
-            <!-- Listing 2 -->
-            <div class="col-md-6 col-lg-4 mb-4">
-              <div class="card listing-preview">
-                <img class="card-img-top" src="assets/img/homes/home-2.jpg" alt="">
-                <div class="card-img-overlay">
-                  <h2>
-                    <span class="badge badge-secondary text-white">Pre Surgery</span>
-                  </h2>
-                </div>
-                <div class="card-body">
-                  <div class="listing-heading text-center">
-                    <h4 class="text-primary">Preparing</h4>
-                    <p>
-                      <i class="fas fa-map-marker text-secondary"></i>get prepared</p>
-                  </div>
-                  <hr>
-                 
-                  <a href="listing.html" class="btn btn-primary btn-block">More Info</a>
-                </div>
-              </div>
-            </div>
-    
-            <!-- Listing 3 -->
-            <div class="col-md-6 col-lg-4 mb-4">
-              <div class="card listing-preview">
-                <img class="card-img-top" src="assets/img/homes/home-3.jpg" alt="">
-                <div class="card-img-overlay">
-                  <h2>
-                    <span class="badge badge-secondary text-white">Pre Surgery</span>
-                  </h2>
-                </div>
-                <div class="card-body">
-                  <div class="listing-heading text-center">
-                    <h4 class="text-primary">Equipment</h4>
-                    <p>
-                      <i class="fas fa-map-marker text-secondary"></i>handy Equipment</p>
-                  </div>
-                  <hr>
-                  <a href="listing.html" class="btn btn-primary btn-block">More Info</a>
-                </div>
-              </div>
-            </div>
+            {% endif %}
     
           </div>
         </div>
