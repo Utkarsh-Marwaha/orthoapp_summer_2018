@@ -12,7 +12,7 @@
               </h1>
               <p class="lead">We bring together the skill and expertise of orthopaedic surgeons, along with the ease of tracking your own recovery through technology. Working together, we are committed to improving your experience pre and post surgery in partnership with Researchers, Surgeons and other allied health providers.</p>
               <div class="search">
-                <form action="search.html">
+                <form action="{% url 'search' %}">
                   <!-- Form Row 1 -->
                   <div class="form-row">
                     <div class="col-md-4 mb-3">
@@ -24,19 +24,25 @@
                       <label class="sr-only">Surgery Stage</label>
                       <select name="city" class="form-control">
                           <option selected="true" disabled="disabled">Select surgery stage</option>
-                          <option value="PRE">Pre surgery</option>
-                          <option value="PST">Post surgery</option>
-                        </select>
+                          
+                          {% for key,value in surgery_stage_choices.items %}
+                            <option value="{{ key }}"> {{ value }} </option>
+                          {% endfor %}
+
+
+                      </select>
                     </div>
     
                     <div class="col-md-4 mb-3">
                       <label class="sr-only">Hospital</label>
                       <select name="state" class="form-control">
                         <option selected="true" disabled="disabled">Select Hospital</option>
-                        <option value="OA">Orthopaedics ACT</option>
-                        <option value="CL">Calvary</option>
+                        {% for key,value in hospital_name_choices.items %}
+                            <option value="{{ key }}"> {{ value }} </option>
+                        {% endfor %}
                       </select>
                     </div>
+                    
                   </div>
                   </div>
                   <button class="btn btn-secondary btn-block mt-4" type="submit">Search</button>

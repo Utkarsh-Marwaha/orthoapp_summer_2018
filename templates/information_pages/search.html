@@ -2,6 +2,102 @@
 
 {% block content %}
 
-<h1>Search</h1>
+<section id="showcase-inner" class="showcase-search text-white py-5">
+        <div class="container">
+          <div class="row text-center">
+            <div class="col-md-12">
+              <form action="{% url 'search' %}">
+                <!-- Form Row 1 -->
+                <div class="form-row">
+                        <div class="col-md-4 mb-3">
+                          <label class="sr-only">Keywords</label>
+                          <input type="text" name="keywords" class="form-control" placeholder="Enter your keywords here">
+                        </div>
+    
+                        <div class="col-md-4 mb-3">
+                            <label class="sr-only">Surgery Stage</label>
+                            <select name="city" class="form-control">
+                                <option selected="true" disabled="disabled">Select surgery stage</option>
+                                    
+                                {% for key,value in surgery_stage_choices.items %}
+                                    <option value="{{ key }}"> {{ value }} </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+    
+                        <div class="col-md-4 mb-3">
+                            <label class="sr-only">Hospital</label>
+                            <select name="state" class="form-control">
+                                <option selected="true" disabled="disabled">Select Hospital</option>
+                                {% for key,value in hospital_name_choices.items %}
+                                    <option value="{{ key }}"> {{ value }} </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                </div>
+                <!-- Form Row 2 -->
+                <div class="form-row">
+                  
+                </div>
+                <button class="btn btn-secondary btn-block mt-4" type="submit">Search</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </section>
+    
+      <!-- Breadcrumb -->
+      <section id="bc" class="mt-3">
+        <div class="container">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item">
+                <a href="{% url 'index' %}">
+                  <i class="fas fa-home"></i> Home</a>
+              </li>
+              <li class="breadcrumb-item">
+                <a href="{% url 'information_pages' %}">Browse Information</a>
+              </li>
+              <li class="breadcrumb-item active"> Search Results</li>
+            </ol>
+          </nav>
+        </div>
+      </section>
+    
+      <!-- Listings -->
+      <section id="listings" class="py-4">
+        <div class="container">
+          <div class="row">
+              {% if info_pages %}
+              {% for info_page in info_pages %}
+              <div class="col-md-6 col-lg-4 mb-4">
+                  <div class="card listing-preview">
+                    <img class="card-img-top" src="{{ info_page.photo_main.url }}" alt="">
+                    <div class="card-img-overlay">
+                      <h2>
+                        <span class="badge badge-secondary text-white">{{ info_page.surgery_stage }}</span>
+                      </h2>
+                    </div>
+                    <div class="card-body">
+                      <div class="listing-heading text-center">
+                        <h4 class="text-primary">{{ info_page.title }}</h4>
+                        <p>
+                          <i class="fas fa-map-marker text-secondary"></i> {{ info_page.description }}
+                        </p>
+                      </div>
+                      <hr>
+                      <a href="{% url 'information_page' info_page.id %}" class="btn btn-primary btn-block">More Info</a>
+                    </div>
+                  </div>
+                </div>
+              {% endfor %}
+            {% else %}
+              <div class="col-md-12">
+                <p>No Information Available</p>
+              </div>
+            {% endif %}
+          </div>
+        </div>
+      </section>
 
 {% endblock %}
