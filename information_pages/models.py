@@ -21,6 +21,7 @@ class Information_Page(models.Model):
     practice       = models.ForeignKey(Practice, on_delete = models.DO_NOTHING)
     title          = models.CharField(max_length = 200)
     description    = models.TextField(blank=True)
+    main_text      = models.TextField(blank=True)
     surgery_stage  = models.CharField(max_length = 10, choices = SURGERY_STAGE_CHOICES)
     hospital_name  = models.CharField(max_length = 20, choices = HOSPITAL_CHOICES)
     photo_main     = models.ImageField(upload_to = 'photos/%Y/%m/%d/')
