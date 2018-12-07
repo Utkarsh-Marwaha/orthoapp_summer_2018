@@ -2,108 +2,107 @@
 
 {% load humanize %}
 
+{% block title %} | Browse Information Pages {% endblock %}
+
 {% block content %}
-
 <section id="showcase-inner" class="py-5 text-white">
-        <div class="container">
-          <div class="row text-center">
-            <div class="col-md-12">
-              <h1 class="display-4">Information Hub</h1>
-              <p class="lead">This is a one shop stop for all the
-                   necessary details you need to know about your surgery</p>
-            </div>
-          </div>
+    <div class="container">
+      <div class="row text-center">
+        <div class="col-md-12">
+          <h1 class="display-4">Information Hub</h1>
+          <p class="lead">This is a one shop stop for all the
+              necessary details you need to know about your surgery</p>
         </div>
-      </section>
-    
-      <!-- Breadcrumb -->
-      <section id="bc" class="mt-3">
-        <div class="container">
-          <nav aria-label="breadcrumb">
-            <ol class="breadcrumb">
-              <li class="breadcrumb-item">
-                <a href="{% url 'index' %}">
-                  <i class="fas fa-home"></i> Home</a>
-              </li>
-              <li class="breadcrumb-item active"> Browse Information</li>
-            </ol>
-          </nav>
-        </div>
-      </section>
-    
-      <!-- Listings -->
-      <section id="listings" class="py-4">
-        <div class="container">
-          <div class="row">
+      </div>
+    </div>
+  </section>
 
-            {% if info_pages %}
-              {%for info_page in info_pages %} 
+  <!-- Breadcrumb -->
+  <section id="bc" class="mt-3">
+    <div class="container">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">
+            <a href="{% url 'index' %}">
+              <i class="fas fa-home"></i> Home</a>
+          </li>
+          <li class="breadcrumb-item active"> Browse Information</li>
+        </ol>
+      </nav>
+    </div>
+  </section>
 
-              <div class="col-md-6 col-lg-4 mb-4">
-                  <div class="card listing-preview">
-                    <img class="card-img-top" src="{{ info_page.photo_main.url }}" alt="">
-                    <div class="card-img-overlay">
-                      <h2>
-                        <span class="badge badge-secondary text-white">{{ info_page.surgery_stage }}</span>
-                      </h2>
-                    </div>
-                    <div class="card-body">
-                      <div class="listing-heading text-center">
-                        <h4 class="text-primary">{{ info_page.title }}</h4>
-                        <p>
-                          <i class="fas fa-map-marker text-secondary"></i>{{ info_page.description }}</p>
-                      </div>
-                      <hr>
-                      <a href="{% url 'information_page' info_page.id %}" class="btn btn-primary btn-block">More Info</a>
-                    </div>
-                  </div>
+  <!-- Listings -->
+  <section id="listings" class="py-4">
+    <div class="container">
+      <div class="row">
+        {% if info_pages %}
+          {% for info_page in info_pages %}
+          <div class="col-md-6 col-lg-4 mb-4">
+              <div class="card listing-preview">
+                <img class="card-img-top" src="{{ info_page.photo_main.url }}" alt="">
+                <div class="card-img-overlay">
+                  <h2>
+                    <span class="badge badge-secondary text-white">{{ info_page.surgery_stage }}</span>
+                  </h2>
                 </div>
-
-
-              {%endfor%}
-            
+                <div class="card-body">
+                  <div class="listing-heading text-center">
+                    <h4 class="text-primary">{{ info_page.title }}</h4>
+                    <p>
+                      <i class="fas fa-map-marker text-secondary"></i> {{ info_page.description }}
+                    </p>
+                  </div>
+                  <hr>
+                  <a href="{% url 'information_page' info_page.id %}" class="btn btn-primary btn-block">More Info</a>
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        {% else %}
+          <div class="col-md-12">
+            <p>No Information Available</p>
           </div>
-    
-          <div class="row">
-            <div class="col-md-12">
-              {% if info_pages.has_other_pages %}
-                <ul class="pagination">
-                  {% if info_pages.has_previous %}
-                    <li class="page-item">
-                      <a href="?page={{info_pages.previous_page_number}}" class="page-link">&laquo;</a>
-                    </li>
-                  {%else%}
-                    <li class="page-item disabled">
-                      <a href="" class="page-link">&laquo;</a>
-                    </li>
-                  {% endif %}
-                  {% for i in info_pages.paginator.page_range %}
-                     {%if info_pages.number == i %}
-                      <li class="page-item active">
-                        <a class="page-link">{{i}}</a>
-                      </li>
-                     
-                     {% else %}
-                      <li class="page-item">
-                        <a href="?page={{i}}" class="page-link">{{i}}</a>
-                      </li>
-                      {% endif %}
-                  {% endfor %}
-                  {% if info_pages.has_next %}
-                  <li class="page-item">
-                    <a href="?page={{info_pages.next_page_number}}" class="page-link">&raquo;</a>
+        {% endif %}
+      </div>
+
+      <div class="row">
+        <div class="col-md-12">
+          {% if info_pages.has_other_pages %}
+            <ul class="pagination">
+              {% if info_pages.has_previous %}
+                <li class="page-item">
+                  <a href="?page={{info_pages.previous_page_number}}" class="page-link">&laquo;</a>
+                </li>
+              {% else %}
+                <li class="page-item disabled">
+                  <a class="page-link">&laquo;</a>
+                </li>
+              {% endif %}
+              {% for i in info_pages.paginator.page_range %}
+                {% if info_pages.number == i %}
+                  <li class="page-item active">
+                    <a class="page-link">{{i}}</a>
                   </li>
-                {%else%}
-                  <li class="page-item disabled">
-                    <a href="" class="page-link">&raquo;</a>
+                {% else %}
+                  <li class="page-item">
+                    <a href="?page={{i}}" class="page-link">{{i}}</a>
                   </li>
                 {% endif %}
-                </ul>
+              {% endfor %}
+              {% if info_pages.has_next %}
+                <li class="page-item">
+                  <a href="?page={{info_pages.next_page_number}}" class="page-link">&raquo;</a>
+                </li>
+              {% else %}
+                <li class="page-item disabled">
+                  <a class="page-link">&raquo;</a>
+                </li>
               {% endif %}
-            </div>
-          </div>
+            </ul>
+          {% endif %}
         </div>
-      </section>
-    
-
+      </div>
+    </div>
+  </section>
 {% endblock %}
