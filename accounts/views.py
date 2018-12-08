@@ -13,11 +13,11 @@ def filter_user(request):
     print("YOU HAVE ENTER THE INDEX FILTER")
     if request.user.is_authenticated:
         if request.user.is_surgeon:
-            return render(request, 'accounts/surgeon.html')
+            return redirect('surgeon')
         elif request.user.is_patient:
-            return render(request, 'accounts/patient.html')
+            return redirect('patient')
         else:
-            return render(request, 'accounts/signup.html')
+            return redirect('practice')
     return render(request, 'pages/index.html', {})
 
 
@@ -176,14 +176,7 @@ def user_login(request):
             if user.is_active and (user.is_surgeon or user.is_patient or user.is_practice):
                 login(request, user)
                 # return HttpResponseRedirect(reverse('index')) #if its everything ok with the login and password, you will log in and be redirected to the index page
-                if request.user.is_authenticated:
-                    if request.user.is_surgeon:
-                        return render(request, 'accounts/surgeon.html')
-                    elif request.user.is_patient:
-                        return render(request, 'accounts/patient.html')
-                    else:
-                        return render(request, 'accounts/signup.html')
-                return render(request, 'pages/index.html', {})
+                return redirect('filter_user')
 
             else:
                 return HttpResponse("ACCESS DENIED!")
@@ -192,10 +185,15 @@ def user_login(request):
             print("Username: {} and password {}".format(username, password))
             return HttpResponse("Invalid login details supplied!")
     else:
-        return render(request,'accounts/login.html',{})
+        return render(request, 'accounts/login.html',{})
 
-################## new section here ############################
-from django.views.generic import TemplateView
-from django.contrib.auth.mixins import LoginRequiredMixin
-class SignUpView(LoginRequiredMixin, TemplateView):
-    template_name = 'accounts/signup.html'
+
+def patient(request):
+    return render(request, 'accounts/patient.html')
+
+def surgeon(request):
+    return render(request, 'accounts/surgeon.html')
+
+def practice(request):
+    return render(request, 'accounts/signup.html')
+
