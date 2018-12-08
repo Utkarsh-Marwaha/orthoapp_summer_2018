@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.conf import settings
 
-#testing command
+#test comand 2
 # Create your models here.
 
 class MyUser(AbstractUser):
