@@ -49,6 +49,12 @@ class Surgeon(models.Model):
     def __str__(self):
         return self.user.username
 
+class Practice(models.Model):
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True)
+    hospital_name = models.CharField(max_length = 264)
+    def __str__(self):
+        return self.user.username
+
 class Operation(models.Model):
     KNEE = 'K'
     HIP  = 'H'

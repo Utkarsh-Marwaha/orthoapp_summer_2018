@@ -12,8 +12,10 @@ def index(request):
     if request.user.is_authenticated:
         if request.user.is_surgeon:
             return render(request, 'first_app/surgeon.html')
-        else:
+        elif request.user.is_patient:
             return render(request, 'first_app/patient.html')
+        else:
+            return render(request, 'first_app/signup.html')
     return render(request, 'first_app/index.html', {})
 
 def welcome_to_orthoapp(request):
@@ -60,6 +62,7 @@ def register_patient(request):
             user = user_form.save(commit=False)
             user.is_patient=True
             user.is_practice=False
+            user.is_surgeon=False
 
             # Hash the password
             user.set_password(user.password)
@@ -122,6 +125,7 @@ def register_surgeon(request):
             user = user_form.save(commit=False)
             user.is_surgeon=True
             user.is_practice=False
+            user.is_patient=False
 
             # Hash the password
             user.set_password(user.password)
@@ -178,7 +182,7 @@ def user_login(request):
             print(user.is_patient)
             print("HEHEHEHEHEHEHEHE")
             # if user.is_active and user.is_patient:
-            if user.is_active and (user.is_surgeon or user.is_patient):
+            if user.is_active and (user.is_surgeon or user.is_patient or user.is_practice):
                 login(request, user)
                 # return HttpResponseRedirect(reverse('index')) #if its everything ok with the login and password, you will log in and be redirected to the index page
                 return redirect('first_app:index')
@@ -353,6 +357,6 @@ def practice_login(request):
 
 ################## new section here ############################
 from django.views.generic import TemplateView
-
-class SignUpView(TemplateView):
+from django.contrib.auth.mixins import LoginRequiredMixin
+class SignUpView(LoginRequiredMixin, TemplateView):
     template_name = 'first_app/signup.html'
