@@ -31,8 +31,9 @@ def special(request):
 # the beauty of django is that to do so, you just have to use the decorator login_required. AND THAT IS IT! beautiful.
 @login_required
 def user_logout(request):
-    logout(request)
-    return HttpResponseRedirect(reverse('index'))
+    if request.method == 'POST':
+        logout(request)
+        return HttpResponseRedirect(reverse('index'))
 
 
 def register_patient(request):

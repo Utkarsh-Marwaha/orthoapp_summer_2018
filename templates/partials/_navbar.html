@@ -49,11 +49,23 @@
               {% if user.is_authenticated %}
                 
                 <li 
-                {% if 'user_login' in request.path %}
+                {% if 'patient' in request.path %}
                 class="nav-item mr-3">
                 {% endif %}
                   <a class="nav-link" href="{% url 'patient' %}">
-                    Dashboard</a>
+                    Welcome <strong>{{ user.username }}</strong> (Dashboard)</a>
+                </li>
+
+                <li class="nav-item mr-3">
+                  <a href="javascript:{document.getElementById('user_logout').submit()}" class="nav-link">
+
+                    <i class="fas fa-sign-out-alt">Logout</i>
+                  </a>
+                  <form action="{% url 'user_logout' %}" method="POST" id="user_logout">
+                    {% csrf_token %}
+                    <input type="hidden">
+                  </form>
+
                 </li>
                 
               {% else %}
