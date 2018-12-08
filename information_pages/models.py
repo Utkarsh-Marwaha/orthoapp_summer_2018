@@ -1,5 +1,5 @@
 from django.db import models
-from practice.models import Practice
+from developer.models import Developer
 
 # Create your models here.
 class Information_Page(models.Model):
@@ -18,7 +18,7 @@ class Information_Page(models.Model):
     )
 
 
-    practice       = models.ForeignKey(Practice, on_delete = models.DO_NOTHING)
+    developer       = models.ForeignKey(Developer, on_delete = models.DO_NOTHING)
     title          = models.CharField(max_length = 200)
     description    = models.TextField(blank=True)
     main_text      = models.TextField(blank=True)

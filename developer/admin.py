@@ -1,12 +1,12 @@
 from django.contrib import admin
-from .models import Practice
+from .models import Developer
 
 
-class PracticeAdmin(admin.ModelAdmin):
+class DeveloperAdmin(admin.ModelAdmin):
     list_display = ('id', 'name', 'email')
     list_display_links = ('id', 'name')
     search_fields = ('name', 'email')
     list_per_page = 10
     
 # Register your models here.
-admin.site.register(Practice, PracticeAdmin)
+admin.site.register(Developer, DeveloperAdmin)

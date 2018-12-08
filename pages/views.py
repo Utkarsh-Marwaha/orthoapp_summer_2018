@@ -4,7 +4,7 @@ from information_pages.choices import surgery_stage_choices, hospital_name_choic
 
 
 from information_pages.models import Information_Page
-from practice.models import Practice
+from developer.models import Developer
 
 # Create your views here.
 def index (request):
@@ -20,10 +20,10 @@ def index (request):
 
 def about (request):
     # Get all team-members
-    team_members = Practice.objects.all();
+    team_members = Developer.objects.all();
 
     #Get the team member who will be handling the inquiries about pages
-    lead_contacts = Practice.objects.all().filter(is_lead_contact= True)
+    lead_contacts = Developer.objects.all().filter(is_lead_contact= True)
 
     context = {
         'team_members'  : team_members,
