@@ -4,6 +4,7 @@ from timezone_field import TimeZoneField
 from django.contrib.auth.models import AbstractUser
 from django.conf import settings
 
+#testing command
 # Create your models here.
 
 class MyUser(AbstractUser):
