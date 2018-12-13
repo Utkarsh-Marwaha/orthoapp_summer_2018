@@ -25,7 +25,7 @@ SECRET_KEY = '7+@-^6v5$yb(risnoa)x7xtp5&%jh13nq5*dsxlp64z^_^craq'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['orthoapp.cecs.anu.edu.au']
 
 
 # Application definition
