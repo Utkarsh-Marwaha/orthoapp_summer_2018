@@ -90,10 +90,11 @@ WSGI_APPLICATION = 'orthoapp.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'orthodb',
-        'USER': 'postgres',
-        'PASSWORD': 'Wu123153?',
-        'HOST': 'localhost'
+        'NAME': 'orthoapp',
+        'USER': 'ortho_admin',
+        'PASSWORD': 'wehavegotthis',
+        'HOST': '127.0.0.1',
+        'PORT': '5432',
     }
 }
 
