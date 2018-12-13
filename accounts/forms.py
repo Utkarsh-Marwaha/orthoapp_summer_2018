@@ -21,6 +21,3 @@ class SurgeonProfileInfoForm(forms.ModelForm):
     class Meta():
         model = Surgeon
         fields = ('hospital_name',)
-
-
-################################ second new section here ######################################

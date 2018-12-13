@@ -1,3 +1,50 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from functionality.forms import StepCounterForm, KneeMotionRangeForm, PainLevelForm
+
+from django.contrib.auth import authenticate, login, logout
+from django.http import HttpResponseRedirect, HttpResponse
+from django.urls import reverse
+from django.contrib.auth.decorators import login_required # login decorator that makes it easier
+from accounts.decorators import patient_required, surgeon_required, practice_required
+from accounts.models import Operation
 
 # Create your views here.
+@login_required
+def stepcounter(request):
+    submitted = False
+    
+
+    # operation_list = list()
+    # if request.user.is_authenticated:
+    #     user = request.user.id
+    #     # print(user_id)
+    operation_list = Operation.objects.all()
+    if request.method == 'POST':
+        stepcounter_form = StepCounterForm(data=request.POST)
+    
+        if stepcounter_form.is_valid:
+            step_counter_object = stepcounter_form.save(commit=False)
+        
+            # Want to protect it further? do stuff below
+
+            step_counter_object.save()
+
+            submitted = True
+    
+        else:
+            print(stepcounter_form.errors)
+    else:
+        stepcounter_form = StepCounterForm()
+    
+    return render(request, 'functionality/stepcounter.html', 
+    {
+        'stepcounter_form' : stepcounter_form,
+        'submitted'        : submitted,
+        'operation_list'   : operation_list
+    })
+
+def kneemotion(request):
+    pass
+
+def painlevel(request):
+    pass

@@ -15,7 +15,7 @@ class DataPoint(models.Model):
         return str(self.created)
 
 class StepCounter(DataPoint):
-    steps = models.IntegerField(default=0)
+    steps = models.IntegerField(default=0, validators=[MinValueValidator(0)])
 
 class KneeMotionRange(DataPoint):
     bend = models.FloatField(default=90)
