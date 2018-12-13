@@ -25,7 +25,7 @@ SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'mvojk*f(qwom$lnmr+-%#dbgg3v7x+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['orthoapp.cecs.anu.edu.au']
+ALLOWED_HOSTS = ['127.0.0.1']
 
 
 # Application definition
