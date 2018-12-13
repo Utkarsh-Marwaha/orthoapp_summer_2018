@@ -20,7 +20,7 @@ TEMPLATES_DIR = os.path.join(BASE_DIR, "templates")
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '7+@-^6v5$yb(risnoa)x7xtp5&%jh13nq5*dsxlp64z^_^craq'
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'mvojk*f(qwom$lnmr+-%#dbgg3v7x+j+40&k9^o2%2g8xzhapv')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -92,7 +92,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'orthoapp',
         'USER': 'ortho_admin',
-        'PASSWORD': 'wehavegotthis',
+        'PASSWORD': os.environ.get('ORTHOAPP_PASSWORD',''),
         'HOST': '127.0.0.1',
         'PORT': '5432',
     }
