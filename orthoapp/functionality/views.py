@@ -12,10 +12,7 @@ from accounts.models import Operation
 @login_required
 def stepcounter(request):
     submitted = False
-
-
     login_username = request.user.username
-
     #this list contains all the operation objects
     all_operation_list = Operation.objects.all()
     #this list contains all the operation objects filtered by login_username
@@ -25,12 +22,19 @@ def stepcounter(request):
             operation_list.append(i)
 
     if request.method == 'POST':
+
+        #this variable contains the selected operation on the patient interface
+        selected_operation = request.POST['selected_operation']
+
         stepcounter_form = StepCounterForm(data=request.POST)
 
         if stepcounter_form.is_valid:
             step_counter_object = stepcounter_form.save(commit=False)
 
             # Want to protect it further? do stuff below
+            for j in operation_list:
+                if str(j) == selected_operation:
+                    step_counter_object.operation = j
 
             step_counter_object.save()
 
@@ -51,5 +55,45 @@ def stepcounter(request):
 def kneemotion(request):
     pass
 
+@login_required
 def painlevel(request):
-    pass
+    submitted = False
+    login_username = request.user.username
+    #this list contains all the operation objects
+    all_operation_list = Operation.objects.all()
+    #this list contains all the operation objects filtered by login_username
+    operation_list = list()
+    for i in all_operation_list:
+        if i.patient.user.username == login_username:
+            operation_list.append(i)
+
+    if request.method == 'POST':
+
+        #this variable contains the selected operation on the patient interface
+        selected_operation = request.POST['selected_operation']
+
+        painlevel_form = PainLevelForm(data=request.POST)
+
+        if painlevel_form.is_valid:
+            painlevel_object = painlevel_form.save(commit=False)
+
+            # Want to protect it further? do stuff below
+            for j in operation_list:
+                if str(j) == selected_operation:
+                    painlevel_object.operation = j
+
+            painlevel_object.save()
+
+            submitted = True
+
+        else:
+            print(painlevel_form.errors)
+    else:
+        painlevel_form = PainLevelForm()
+
+    return render(request, 'functionality/painlevel.html',
+    {
+        'painlevel_form' : painlevel_form,
+        'submitted'        : submitted,
+        'operation_list'   : operation_list
+    })

@@ -6,24 +6,25 @@
       {% if submitted %}
         <h1>Your data has been saved!</h1>
       {% else %}
-        <h1>Step Counter</h1>
-        <h3>How many steps did you take today ?</h3>
-
-        {% if operation_list %}
-            <div class="col-md-4 mb-3">
-                    <label class="sr-only">Operations </label>
-                    <select name="state" class="form-control">
-                      <option selected="true" disabled="disabled">Select Operation</option>
-                       {% for operation in operation_list %}
-                                <option> {{operation}} </option>
-                       {% endfor %}
-                    </select>
-                  </div>
-        {% endif %}
+        <h1>PainLevel</h1>
+        <h3>what is your paintlevel</h3>
 
         <form enctype="multipart/form-data" method="POST">
           {% csrf_token %}
-          {{ stepcounter_form.as_p }}
+
+          {% if operation_list %}
+              <div class="col-md-4 mb-3">
+                      <label class="sr-only">Operations </label>
+                      <select name="selected_operation" class="form-control">
+                        <option selected="true" disabled="disabled">Select Operation</option>
+                         {% for operation in operation_list %}
+                          <option> {{operation}} </option>
+                         {% endfor %}
+                      </select>
+                    </div>
+          {% endif %}
+
+          {{ painlevel_form.as_p }}
           <input type="submit" name="" value="Submit">
         </form>
       {% endif %}
