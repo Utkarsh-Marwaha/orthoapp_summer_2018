@@ -19,20 +19,18 @@
                       <label class="sr-only">Keywords</label>
                       <input type="text" name="keywords" class="form-control" placeholder="Enter your keywords here">
                     </div>
-    
+
                     <div class="col-md-4 mb-3">
                       <label class="sr-only">Surgery Stage</label>
                       <select name="city" class="form-control">
                           <option selected="true" disabled="disabled">Select surgery stage</option>
-                          
+
                           {% for key,value in surgery_stage_choices.items %}
                             <option value="{{ key }}"> {{ value }} </option>
                           {% endfor %}
-
-
                       </select>
                     </div>
-    
+
                     <div class="col-md-4 mb-3">
                       <label class="sr-only">Hospital</label>
                       <select name="state" class="form-control">
@@ -42,7 +40,7 @@
                         {% endfor %}
                       </select>
                     </div>
-                    
+
                   </div>
                   </div>
                   <button class="btn btn-secondary btn-block mt-4" type="submit">Search</button>
@@ -52,7 +50,7 @@
           </div>
         </div>
       </section>
-    
+
       <!-- Listings -->
       <section id="listings" class="py-5">
         <div class="container">
@@ -86,11 +84,11 @@
               <p>No key links available</p>
             </div>
             {% endif %}
-    
+
           </div>
         </div>
       </section>
-    
+
       <section id="services" class="py-5 bg-secondary text-white">
         <div class="container">
           <div class="row text-center">
@@ -98,7 +96,7 @@
               <i class="fas fa-comment fa-4x mr-4"></i>
               <hr>
               <h3>Track your Progress</h3>
-              <p>Surgeons would now be able to make more informed health care decisions 
+              <p>Surgeons would now be able to make more informed health care decisions
                   owing to the data visualization of the patient's
                   health data.
               </p>

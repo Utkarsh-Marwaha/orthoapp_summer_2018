@@ -12,31 +12,36 @@ from accounts.models import Operation
 @login_required
 def stepcounter(request):
     submitted = False
-    
 
-    # operation_list = list()
-    # if request.user.is_authenticated:
-    #     user = request.user.id
-    #     # print(user_id)
-    operation_list = Operation.objects.all()
+
+    login_username = request.user.username
+
+    #this list contains all the operation objects
+    all_operation_list = Operation.objects.all()
+    #this list contains all the operation objects filtered by login_username
+    operation_list = list()
+    for i in all_operation_list:
+        if i.patient.user.username == login_username:
+            operation_list.append(i)
+
     if request.method == 'POST':
         stepcounter_form = StepCounterForm(data=request.POST)
-    
+
         if stepcounter_form.is_valid:
             step_counter_object = stepcounter_form.save(commit=False)
-        
+
             # Want to protect it further? do stuff below
 
             step_counter_object.save()
 
             submitted = True
-    
+
         else:
             print(stepcounter_form.errors)
     else:
         stepcounter_form = StepCounterForm()
-    
-    return render(request, 'functionality/stepcounter.html', 
+
+    return render(request, 'functionality/stepcounter.html',
     {
         'stepcounter_form' : stepcounter_form,
         'submitted'        : submitted,
