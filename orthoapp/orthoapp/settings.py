@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     'developer.apps.DeveloperConfig',
     'functionality.apps.FunctionalityConfig',
     'accounts.apps.AccountsConfig',
+    'contacts.apps.ContactsConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -92,7 +93,8 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'orthoapp',
         'USER': 'ortho_admin',
-        'PASSWORD': os.environ.get('ORTHOAPP_PASSWORD',''),
+        # 'PASSWORD': os.environ.get('ORTHOAPP_PASSWORD',''),
+        'PASSWORD': 'wehavegotthis',
         'HOST': '127.0.0.1',
         'PORT': '5432',
     }
