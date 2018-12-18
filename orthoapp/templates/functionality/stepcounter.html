@@ -2,32 +2,65 @@
 {% load static %}
 
 {% block content %}
-  <div class="container">
-      {% if submitted %}
-        <h1>Your data has been saved!</h1>
-      {% else %}
-        <h1>Step Counter</h1>
-        <h3>How many steps did you take today ?</h3>
 
-        <form enctype="multipart/form-data" method="POST">
-          {% csrf_token %}
+<section id="showcase-inner" class="py-5 text-white">
+    <div class="container">
+      <div class="row text-center">
+        <div class="col-md-12">
+          <h1 class="display-4">Step Counter</h1>
+          <p class="lead">How many steps did you take today ?</p>
+        </div>
+      </div>
+    </div>
+  </section>
 
-          {% if operation_list %}
-              <div class="col-md-4 mb-3">
-                      <label class="sr-only">Operations </label>
-                      <select name="selected_operation" class="form-control">
-                        <option selected="true" disabled="disabled">Select Operation</option>
-                         {% for operation in operation_list %}
-                          <option> {{operation}} </option>
-                         {% endfor %}
-                      </select>
-                    </div>
-          {% endif %}
+  <!-- Breadcrumb -->
+  <section id="bc" class="mt-3">
+    <div class="container">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item">
+            <a href="{% url 'index' %}">
+              <i class="fas fa-home"></i> Home</a>
+          </li>
+          <li class="breadcrumb-item active"> Step Counter </li>
+        </ol>
+      </nav>
+    </div>
+  </section>
 
-          {{ stepcounter_form.as_p }}
-          <input type="submit" name="" value="Submit">
-        </form>
-      {% endif %}
-  </div>
+  <section id="dashboard" class="py-4">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <h2>Welcome {{user.username}}</h2>
+          <div class="container">
+              {% if submitted %}
+                <h1>Your data has been saved!</h1>
+              {% else %}
+                <form enctype="multipart/form-data" method="POST">
+                  {% csrf_token %}
+        
+                  {% if operation_list %}
+                      <div class="col-md-4 mb-3">
+                          <label class="sr-only">Operations </label>
+                            <select name="selected_operation" class="form-control">
+                              <option selected="true" disabled="disabled">Select Operation</option>
+                               {% for operation in operation_list %}
+                                <option> {{operation}} </option>
+                               {% endfor %}
+                            </select>
+                      </div>
+                  {% endif %}
+        
+                  {{ stepcounter_form.as_p }}
+                  <input type="submit" name="" value="Submit">
+                </form>
+              {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 
 {% endblock %}
