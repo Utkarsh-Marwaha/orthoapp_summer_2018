@@ -152,3 +152,11 @@ MEDIA_URL  = '/media/'
 
 #added because i have a model extends "AbstractUser"
 AUTH_USER_MODEL = "accounts.MyUser"
+
+# EMAIL configuration settings
+
+# EMAIL_USE_TLS = True
+# EMAIL_HOST = 'smtp.gmail.com'
+# EMAIL_PORT = 587
+# EMAIL_HOST_USER = 'useremail'
+# EMAIL_HOST_PASSWORD = 'password'
