@@ -51,9 +51,38 @@ def stepcounter(request):
         'submitted'        : submitted,
         'operation_list'   : operation_list
     })
+@login_required
+def kneemotionrange(request):
+    submitted = False
+    login_username = request.user.username
+    #this list contains all the operation objects
+    all_operation_list = Operation.objects.all()
+    #this list contains all the operation objects filtered by login_username
+    operation_list = list()
+    for i in all_operation_list:
+        if i.patient.user.username == login_username:
+            operation_list.append(i)
 
-def kneemotion(request):
-    pass
+    if request.method == 'POST':
+        # selected_operation = request.POST.get('selected_operation', False)
+        selected_operation = request.POST['selected_operation']
+        kneemotionrange_form = KneeMotionRangeForm()
+        if kneemotionrange_form.is_valid:
+            kneemotionrange_object = kneemotionrange_form.save(commit=False)
+            for j in operation_list:
+                if str(j) == selected_operation:
+                    kneemotionrange_object.operation = j
+            kneemotionrange_object.bend = float(request.POST['bend'])
+            kneemotionrange_object.stretch = float(request.POST['stretch'])
+            kneemotionrange_object.save()
+            submitted = True
+            
+    return render(request, 'functionality/kneemotionrange.html',
+    {
+        # 'stepcounter_form' : stepcounter_form,
+        'submitted'        : submitted,
+        'operation_list'   : operation_list
+    })
 
 @login_required
 def painlevel(request):

@@ -5,7 +5,7 @@ from . import views
 
 urlpatterns = [
     path('stepcounter/', views.stepcounter, name='stepcounter'),
-    path('kneemotion/', views.kneemotion, name='kneemotion'),
+    path('kneemotionrange/', views.kneemotionrange, name='kneemotionrange'),
     path('painlevel/', views.painlevel, name='painlevel'),
-    
+
 ]
