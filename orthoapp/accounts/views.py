@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from accounts.forms import SurgeonProfileInfoForm, PatientProfileInfoForm, UserForm, OperationInfoForm
+from accounts.forms import SurgeonProfileInfoForm, PatientProfileInfoForm, UserForm, OperationInfoForm, PatientOperationInfoForm
 
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponseRedirect, HttpResponse
@@ -35,7 +35,8 @@ def user_logout(request):
         logout(request)
         return HttpResponseRedirect(reverse('index'))
 
-
+@login_required
+@practice_required
 def register_patient(request):
 
     registered = False
@@ -46,12 +47,14 @@ def register_patient(request):
         # It appears as one form to the user on the .html page
         user_form = UserForm(data=request.POST)
         profile_form = PatientProfileInfoForm(data=request.POST)
+        operation_form = PatientOperationInfoForm(data=request.POST)
 
         # Check to see both forms are valid
-        if user_form.is_valid() and profile_form.is_valid():
+        if user_form.is_valid() and profile_form.is_valid() and operation_form.is_valid():
 
             # Save User Form to Database
             user = user_form.save(commit=False)
+
             user.is_patient=True
             user.is_practice=False
             user.is_surgeon=False
@@ -78,29 +81,39 @@ def register_patient(request):
                 profile.profile_pic = request.FILES['profile_pic']
 
             # Now save model
+            #this profile is a patient instance
             profile.save()
+
+            # operation details of a patient
+            operation = operation_form.save(commit=False)
+
+            operation.patient = profile
+            operation.save()
 
             # Registration Successful!
             registered = True
 
         else:
             # One of the forms was invalid if this else gets called.
-            print(user_form.errors,profile_form.errors)
+            print(user_form.errors,profile_form.errors,operation_form.errors)
 
     else:
         # Was not an HTTP post so we just render the forms as blank.
         user_form = UserForm()
         profile_form = PatientProfileInfoForm()
+        operation_form = PatientOperationInfoForm()
 
     # This is the render and context dictionary to feed
     # back to the registration.html file page.
     return render(request,'accounts/registration.html',
                           {'user_form':user_form,
                            'profile_form':profile_form,
+                           'operation_form': operation_form,
                            'registered':registered})
 
 
-
+@login_required
+@practice_required
 def register_surgeon(request):
     registered = False
     if request.method == 'POST':

@@ -27,3 +27,9 @@ class OperationInfoForm(forms.ModelForm):
     class Meta():
         model = Operation
         fields = '__all__'
+
+class PatientOperationInfoForm(forms.ModelForm):
+
+    class Meta():
+        model = Operation
+        exclude = ('patient',)

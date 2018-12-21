@@ -13,6 +13,7 @@
           {% csrf_token %}
           {{ user_form.as_p }}
           {{ profile_form.as_p }}
+          {{ operation_form.as_p}}
           <input type="submit" name="" value="Register">
         </form>
       {% endif %}
