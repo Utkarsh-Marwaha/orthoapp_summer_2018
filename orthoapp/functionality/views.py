@@ -10,6 +10,7 @@ from accounts.models import Operation
 
 # Create your views here.
 @login_required
+@patient_required
 def stepcounter(request):
     submitted = False
     login_username = request.user.username
@@ -52,6 +53,7 @@ def stepcounter(request):
         'operation_list'   : operation_list
     })
 @login_required
+@patient_required
 def kneemotionrange(request):
     submitted = False
     login_username = request.user.username
@@ -76,7 +78,7 @@ def kneemotionrange(request):
             kneemotionrange_object.stretch = float(request.POST['stretch'])
             kneemotionrange_object.save()
             submitted = True
-            
+
     return render(request, 'functionality/kneemotionrange.html',
     {
         # 'stepcounter_form' : stepcounter_form,
@@ -85,6 +87,7 @@ def kneemotionrange(request):
     })
 
 @login_required
+@patient_required
 def painlevel(request):
     submitted = False
     login_username = request.user.username
