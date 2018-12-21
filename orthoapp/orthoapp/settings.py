@@ -93,8 +93,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'orthoapp',
         'USER': 'ortho_admin',
-        # 'PASSWORD': os.environ.get('ORTHOAPP_PASSWORD',''),
-        'PASSWORD': 'wehavegotthis',
+        'PASSWORD': os.environ.get('ORTHOAPP_PASSWORD',''),
         'HOST': '127.0.0.1',
         'PORT': '5432',
     }
