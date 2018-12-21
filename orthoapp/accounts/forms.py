@@ -4,11 +4,11 @@ from accounts.models import MyUser, Patient, Surgeon, Operation
 
 class UserForm(forms.ModelForm):
 
-    password = forms.CharField(widget = forms.PasswordInput())
+    # password = forms.CharField(widget = forms.PasswordInput())
 
     class Meta():
         model = MyUser
-        fields = ('username', 'email', 'password', 'first_name', 'last_name')
+        fields = ('username', 'email', 'first_name', 'last_name')
 
 class PatientProfileInfoForm(forms.ModelForm):
 

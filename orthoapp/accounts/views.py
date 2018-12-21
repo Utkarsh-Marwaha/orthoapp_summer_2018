@@ -6,6 +6,8 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required # login decorator that makes it easier
 from accounts.decorators import patient_required, surgeon_required, practice_required
+from accounts.models import MyUser
+from django.core.mail import send_mail
 
 
 # Create your views here.
@@ -40,7 +42,6 @@ def user_logout(request):
 def register_patient(request):
 
     registered = False
-
     if request.method == 'POST':
 
         # Get info from "both" forms
@@ -59,8 +60,9 @@ def register_patient(request):
             user.is_practice=False
             user.is_surgeon=False
 
+            password = MyUser.objects.make_random_password()
             # Hash the password
-            user.set_password(user.password)
+            user.set_password(password)
 
             # Update with Hashed password
             user.save()
@@ -92,6 +94,14 @@ def register_patient(request):
 
             # Registration Successful!
             registered = True
+
+            send_mail(
+                'Welcome to orthoapp',
+                'Dear user please find your credentials for logging on orthoapp \n' + profile.user.username + '\n' + password,
+                from_email='orthoapp.feedback@gmail.com',
+                recipient_list=[profile.user.email],
+                fail_silently=False
+            )
 
         else:
             # One of the forms was invalid if this else gets called.
@@ -132,8 +142,9 @@ def register_surgeon(request):
             user.is_practice=False
             user.is_patient=False
 
+            password = MyUser.objects.make_random_password()
             # Hash the password
-            user.set_password(user.password)
+            user.set_password(password)
 
             # Update with Hashed password
             user.save()
@@ -158,6 +169,14 @@ def register_surgeon(request):
 
             # Registration Successful!
             registered = True
+
+            send_mail(
+                'Welcome to orthoapp',
+                'Dear user please find your credentials for logging on orthoapp \n' + profile.user.username + '\n' + password,
+                from_email='orthoapp.feedback@gmail.com',
+                recipient_list=[profile.user.email],
+                fail_silently=False
+            )
 
         else:
             # One of the forms was invalid if this else gets called.
