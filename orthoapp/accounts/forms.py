@@ -1,6 +1,6 @@
 ############################## New section here    ######################################
 from django import forms
-from accounts.models import MyUser, Patient, Surgeon
+from accounts.models import MyUser, Patient, Surgeon, Operation
 
 class UserForm(forms.ModelForm):
 
@@ -21,3 +21,9 @@ class SurgeonProfileInfoForm(forms.ModelForm):
     class Meta():
         model = Surgeon
         fields = ('hospital_name',)
+
+class OperationInfoForm(forms.ModelForm):
+
+    class Meta():
+        model = Operation
+        fields = '__all__'

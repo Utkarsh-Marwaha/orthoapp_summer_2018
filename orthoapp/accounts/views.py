@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from accounts.forms import SurgeonProfileInfoForm, PatientProfileInfoForm, UserForm
+from accounts.forms import SurgeonProfileInfoForm, PatientProfileInfoForm, UserForm, OperationInfoForm
 
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponseRedirect, HttpResponse
@@ -161,7 +161,40 @@ def register_surgeon(request):
                           {'user_form':user_form,
                            'profile_form':profile_form,
                            'registered':registered})
+@login_required
+@practice_required
+def register_operation(request):
+    registered = False
+    if request.method == 'POST':
 
+        # Get info from "both" forms
+        # It appears as one form to the user on the .html page
+        operation_form = OperationInfoForm(data=request.POST)
+
+        # Check to see both forms are valid
+        if operation_form.is_valid():
+            # Save User Form to Database
+            operation = operation_form.save(commit=False)
+
+            # Update with Hashed password
+            operation.save()
+
+            # Registration Successful!
+            registered = True
+
+        else:
+            # One of the forms was invalid if this else gets called.
+            print(operation_form.errors)
+
+    else:
+        # Was not an HTTP post so we just render the forms as blank.
+        operation_form = OperationInfoForm()
+
+    # This is the render and context dictionary to feed
+    # back to the registration.html file page.
+    return render(request,'accounts/operation.html',
+                          {'operation_form':operation_form,
+                           'registered':registered})
 
 def user_login(request):
     if request.method == 'POST':
@@ -188,13 +221,17 @@ def user_login(request):
     else:
         return render(request, 'accounts/login.html',{})
 
-
+@login_required
+@patient_required
 def patient(request):
     return render(request, 'accounts/patient.html')
 
+@login_required
+@surgeon_required
 def surgeon(request):
     return render(request, 'accounts/surgeon.html')
 
+@login_required
+@practice_required
 def practice(request):
     return render(request, 'accounts/signup.html')
-
