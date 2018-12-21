@@ -8,6 +8,7 @@ from django.contrib.auth.decorators import login_required # login decorator that
 from accounts.decorators import patient_required, surgeon_required, practice_required
 from accounts.models import MyUser
 from django.core.mail import send_mail
+from accounts.models import Operation
 
 
 # Create your views here.
@@ -261,7 +262,31 @@ def patient(request):
 @login_required
 @surgeon_required
 def surgeon(request):
-    return render(request, 'accounts/surgeon.html')
+    login_username = request.user.username
+    #this list contains all the operation objects
+    all_operation_list = Operation.objects.all()
+    #this list contains all the operation objects filtered by login_username
+    operation_list = list()
+    for i in all_operation_list:
+        if i.surgeon.user.username == login_username:
+            operation_list.append(i)
+
+    index=1
+    patient_set = set()
+    patient_list = list()
+    for j in operation_list:
+        patient_set.add(j.patient)
+
+    for k in patient_set:
+        patient_list.append((k, index))
+        index=index+1
+
+
+
+    return render(request, 'accounts/surgeon.html',
+                            {'operation_list':operation_list,
+                             'patient_set':patient_list,
+                            })
 
 @login_required
 @practice_required
