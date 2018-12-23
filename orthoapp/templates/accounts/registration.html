@@ -6,16 +6,30 @@
       {% if registered %}
         <h1>Thank you for registering!</h1>
       {% else %}
-        <h1>Register Here</h1>
-        <h3>Just fill out the form.</h3>
-
-        <form enctype="multipart/form-data" method="POST">
-          {% csrf_token %}
-          {{ user_form.as_p }}
-          {{ profile_form.as_p }}
-          {{ operation_form.as_p}}
-          <input type="submit" name="" value="Register">
-        </form>
+      <section id="register" class="bg-light py-5">
+          <div class="container">
+            <div class="row">
+              <div class="col-md-6 mx-auto">
+                <div class="card">
+                  <div class="card-header bg-primary text-white">
+                    <h4> <i class="fas fa-user-plus"></i> Register</h4>
+                  </div>
+                  <div class="card-body">
+                      <form enctype="multipart/form-data" method="POST">
+                        {% csrf_token %}
+                        <div class="form-group">
+                        {{ user_form.as_p }}
+                        {{ profile_form.as_p }}
+                        {{ operation_form.as_p}}
+                        </div>
+                        <input type="submit" value="Register" class="btn btn-secondary btn-block">
+                      </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
       {% endif %}
   </div>
 
