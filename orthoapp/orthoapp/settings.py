@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.humanize',
     'timezone_field',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
@@ -87,7 +88,6 @@ DATABASES = {
         'NAME': 'orthoapp',
         'USER': 'ortho_admin',
         'PASSWORD': os.environ.get('ORTHOAPP_PASSWORD',''),
-        # 'PASSWORD': 'wehavegotthis',
         'HOST': '127.0.0.1',
         'PORT': '5432',
     }

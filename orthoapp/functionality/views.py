@@ -129,3 +129,45 @@ def painlevel(request):
         'submitted'        : submitted,
         'operation_list'   : operation_list
     })
+
+######################## new section here #########################
+
+from rest_framework.authentication import SessionAuthentication, BasicAuthentication
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from accounts.models import MyUser
+from django.views.generic import View
+from functionality.models import StepCounter, KneeMotionRange, PainLevel
+
+class Record(View):
+    def get(self, request, *args, **kwargs):
+        return render(request, 'functionality/charts.html')
+
+class RecordData(APIView):
+    authentication_classes = [SessionAuthentication, BasicAuthentication]
+    permission_classes = [IsAuthenticated,]
+
+    def get(self, request, format=None):
+        login_username = request.user.username
+        all_sc_object = StepCounter.objects.all()
+
+        filtered_sc_object = list()
+        for i in all_sc_object:
+            print(i.operation.patient.user.username)
+            if i.operation.patient.user.username == login_username:
+                filtered_sc_object.append(i)
+        print(filtered_sc_object)
+
+        labels = list()
+        default_items = list()
+        for j in filtered_sc_object:
+            labels.append(j.created)
+            print(j.created)
+            default_items.append(j.steps)
+
+        data = {
+                "labels": labels,
+                "default": default_items,
+        }
+        return Response(data)
