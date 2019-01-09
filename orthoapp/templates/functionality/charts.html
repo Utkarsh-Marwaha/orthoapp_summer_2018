@@ -5,7 +5,9 @@
 {% block jquery %}
 
 var endpoint = '/functionality/record/data'
-var defaultData = []
+// This list will hold all the data points to be displayed on the y-axis
+var defaultData = [];
+// This list will hold all the data points to be displayed on the x-axis
 var labels = [];
 $.ajax({
     method: "GET",
@@ -20,20 +22,19 @@ $.ajax({
         console.log(error_data)
     }
 })
+
 function setChart(){
     var ctx = document.getElementById("myChart");
     var myChart = new Chart(ctx, {
-    type: 'bar',
+    type: 'bar', // This creates a bar chart
     data: {
-        labels: labels,
+        labels: labels, // These are the values on the x-axis
         datasets: [{
-            label: '# of Steps',
-            data: defaultData,
-            backgroundColor: [
-            ],
-            borderColor: [
-            ],
-            borderWidth: 1
+            label: '# of Steps', // This is the name of the y-axis
+            data: defaultData,   // This is the data to be displayed on the bar chart
+            backgroundColor: [],
+            borderColor: [],
+            borderWidth: 2
         }]
       },
       options: {
@@ -47,7 +48,6 @@ function setChart(){
       }
   });
 }
-// var ctx = document.getElementById("myChart");
 
 
 {% endblock %}

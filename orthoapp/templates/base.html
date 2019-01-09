@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    
     <!-- Font Awesome -->
     <link rel="stylesheet" href="{% static 'css/all.css' %}">
     <!-- Bootstrap -->
@@ -14,14 +15,17 @@
     <!-- Lightbox -->
     <link rel="stylesheet" href="{% static 'css/lightbox.min.css' %}">
 
+    <!-- Latest compiled and minified jQuery library -->
+    <script src="{% static 'js/jquery-3.3.1.min.js' %} "></script>
+    <!-- Latest compiled and minified Bootstrap library -->
+    <script src="{% static 'js/bootstrap.bundle.min.js' %} "></script>
+    <!-- Latest compiled and minified lightbox.js library -->
+    <script src="{% static 'js/lightbox.min.js' %} "></script>
+    <!-- Latest compiled and minified Javascript library -->    
+    <script src="{% static 'js/main.js' %} "></script>
+    <!-- Latest compiled and minified Chart.js library -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.min.js"></script>
 
-
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-
-    <!-- Latest compiled and minified JavaScript -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
     <title>Ortho App</title>
 </head>
 <body>
@@ -33,7 +37,7 @@
   {% include 'partials/_navbar.html' %}
 
   <!-- Body Content: Different for every page -->
-  {% block content  %} {% endblock %}
+  {% block content %} {% endblock %}
 
   <!-- jquery block needed to produce charts for the 3 functionalities-->
   <script>
@@ -45,9 +49,5 @@
   <!-- Footer -->
   {% include 'partials/_footer.html' %}
 
-  <script src="{% static 'js/jquery-3.3.1.min.js' %} "></script>
-  <script src="{% static 'js/bootstrap.bundle.min.js' %} "></script>
-  <script src="{% static 'js/lightbox.min.js' %} "></script>
-  <script src="{% static 'js/main.js' %} "></script>
-
+</body>
 </html>
