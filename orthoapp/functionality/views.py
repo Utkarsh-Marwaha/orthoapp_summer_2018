@@ -140,34 +140,55 @@ from accounts.models import MyUser
 from django.views.generic import View
 from functionality.models import StepCounter, KneeMotionRange, PainLevel
 
+# view for reference https://www.django-rest-framework.org/api-guide/views/
+
 class Record(View):
     def get(self, request, *args, **kwargs):
         return render(request, 'functionality/charts.html')
 
 class RecordData(APIView):
+    """
+    * Requires token authentication.
+    * Only authorised users are able to access this view.
+    """
     authentication_classes = [SessionAuthentication, BasicAuthentication]
     permission_classes = [IsAuthenticated,]
 
     def get(self, request, format=None):
+        # get the user name of the user who is currently logged in to the website
         login_username = request.user.username
+
+        # get all the step counter instances availables in the backend
         all_sc_object = StepCounter.objects.all()
 
+        # This list will hold only those step counter instances which pertain to the logged in user
         filtered_sc_object = list()
+
+        # cycle through all the step counter instances
         for i in all_sc_object:
             print(i.operation.patient.user.username)
+            # if the logged in user is the same as the patient username who created the record
             if i.operation.patient.user.username == login_username:
+                # then append the record to the list
                 filtered_sc_object.append(i)
         print(filtered_sc_object)
 
+        # This list will hold all the data points to be displayed on the x-axis
         labels = list()
+        # This list will hold all the data points to be displayed on the y-axis
         default_items = list()
-        for j in filtered_sc_object:
-            labels.append(j.created)
-            print(j.created)
-            default_items.append(j.steps)
 
+        # cycle through all the filtered step counter instances
+        for j in filtered_sc_object:
+
+            # collect the timestamps
+            labels.append(j.created)
+            # collect the step data
+            default_items.append(j.steps)
+        
+        # pass the filtered data as the context to the Response
         data = {
-                "labels": labels,
-                "default": default_items,
+            "labels": labels,
+            "default": default_items,
         }
         return Response(data)
