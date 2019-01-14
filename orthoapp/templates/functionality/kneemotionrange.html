@@ -2,174 +2,174 @@
 {% load static %}
 
 {% block content %}
-<div class="container">
+<div class="container py-5">
     {% if submitted %}
     <h1>Your data has been saved!</h1>
     {% else %}
     <h1>Knee Motion</h1>
-    <section id="login" class=" py-5">
+    <section id="login" class="py-5">
         <div class="container">
             <div class="row">
                 <div class="col-md-6 mx-auto">
                     <div class="card">
                         <div class="card-header bg-primary text-white">
-                            <h4><i class="fas"></i> Knee Motion Range</h4>
-                            </div>
-                            <div class="card-body">
-                                <form enctype="multipart/form-data" method="POST">
-                                    {% csrf_token %}
-                                    {% if operation_list %}
-                                    <div class="col-md-6 mb-3">
-                                        <label class="sr-only">Operations </label>
-                                        <select name="selected_operation" class="form-control">
-                                            <option selected="true" disabled="disabled">Select Operation</option>
-                                            {% for operation in operation_list %}
-                                            <option> {{operation}} </option>
-                                            {% endfor %}
-                                        </select>
-                                    </div>
-                                    {% endif %}
-                                      
-                                    <div class="form-group">
-                                        <h3>How far can you strech your knee?</h3>
-                                        <img src="{% static 'img/functional_img/120d.png' %}" alt="" id="imageOne" onclick = "Stretching()"/>
-                                        <input type="hidden" name=stretch id=stretch value="120" class="form-control">
-                                        <p id="stretch_degree_display">120</p>
-                                    </div>
+                            <h4><i class="fas"></i>Knee Motion Range</h4>
+                        </div>
+                        <div class="card-body">
+                            <form enctype="multipart/form-data" method="POST">
+                                {% csrf_token %}
+                                {% if operation_list %}
+                                <div class="col-md-6 mb-3">
+                                    <label class="sr-only">Operations </label>
+                                    <select name="selected_operation" class="form-control">
+                                        <option selected="true" disabled="disabled">Select Operation</option>
+                                        {% for operation in operation_list %}
+                                        <option> {{operation}} </option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                {% endif %}
+                                
+                                <div class="form-group">
+                                    <h3>How far can you stretch your knee?</h3>
+                                    <img src="{% static 'img/functional_img/120d.png' %}" alt="" id="imageOne" onclick = "Stretching()"/>
+                                    <input type="hidden" name=stretch id=stretch value="120" class="form-control">
+                                    <p id="stretch_degree_display">120</p>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <h3>How far can you bend your knee?</h3>
+                                    <img src="{% static 'img/functional_img/0d.png' %}" alt="" id="imageTwo" onclick = "Bending()"/>
+                                    <input type="hidden" name=bend id=bend value="0">
                                     
-                                    <div class="form-group">
-                                        <h3>How far can you bend your knee?</h3>
-                                        <img src="{% static 'img/functional_img/0d.png' %}" alt="" id="imageTwo" onclick = "Bending()"/>
-                                        <input type="hidden" name=bend id=bend value="0">
-                                        
-                                        <p id="bend_degree_display">0</p>
-                                    </div>    
-                                    
-                                    <input type="submit" class="btn btn-secondary btn-block" name="" value="Submit">
-                                </form>
-                            </div>
+                                    <p id="bend_degree_display">0</p>
+                                </div>    
+                                
+                                <input type="submit" class="btn btn-secondary btn-block" name="" value="Submit">
+                            </form>
                         </div>
                     </div>
                 </div>
             </div>
-        </section>
-        
-        {% endif %}
-    </div>
+        </div>
+    </section>
     
-    <script>
-        var image =  document.getElementById("imageOne");
-        var image2=  document.getElementById("imageTwo");
-        var maxDegree = 120
-        function Stretching() {
-            if (image.getAttribute('src') == "{% static 'img/functional_img/120d.png' %}") {
-                image.src = "{% static 'img/functional_img/105d.png' %}";
-                document.getElementById('stretch').value = 105;
-                document.getElementById('stretch_degree_display').innerHTML = 105;
-                
-            }
-            else if (image.getAttribute('src') == "{% static 'img/functional_img/105d.png' %}") {
-                image.src = "{% static 'img/functional_img/90d.png' %}";
-                document.getElementById('stretch').value = 90;
-                document.getElementById('stretch_degree_display').innerHTML = 90;
-            }
+    {% endif %}
+</div>
+
+<script>
+    var image =  document.getElementById("imageOne");
+    var image2=  document.getElementById("imageTwo");
+    var maxDegree = 120
+    function Stretching() {
+        if (image.getAttribute('src') == "{% static 'img/functional_img/120d.png' %}") {
+            image.src = "{% static 'img/functional_img/105d.png' %}";
+            document.getElementById('stretch').value = 105;
+            document.getElementById('stretch_degree_display').innerHTML = 105;
             
-            else if (image.getAttribute('src') == "{% static 'img/functional_img/90d.png' %}") {
-                image.src = "{% static 'img/functional_img/75d.png' %}";
-                document.getElementById('stretch').value = 75;
-                document.getElementById('stretch_degree_display').innerHTML = 75;
-            }
-            
-            else if (image.getAttribute('src') == "{% static 'img/functional_img/75d.png' %}") {
-                image.src = "{% static 'img/functional_img/60d.png' %}";
-                document.getElementById('stretch').value = 60;
-                document.getElementById('stretch_degree_display').innerHTML = 60;
-            }
-            
-            else if (image.getAttribute('src') == "{% static 'img/functional_img/60d.png' %}") {
-                image.src = "{% static 'img/functional_img/45d.png' %}";
-                document.getElementById('stretch').value = 45;
-                document.getElementById('stretch_degree_display').innerHTML = 45;
-            }
-            
-            else if (image.getAttribute('src') == "{% static 'img/functional_img/45d.png' %}") {
-                image.src = "{% static 'img/functional_img/30d.png' %}";
-                document.getElementById('stretch').value = 30;
-                document.getElementById('stretch_degree_display').innerHTML = 30;
-            }
-            
-            else if (image.getAttribute('src') == "{% static 'img/functional_img/30d.png' %}") {
-                image.src = "{% static 'img/functional_img/15d.png' %}";
-                document.getElementById('stretch').value = 15;
-                document.getElementById('stretch_degree_display').innerHTML = 15;
-            }
-            
-            else if (image.getAttribute('src') == "{% static 'img/functional_img/15d.png' %}") {
-                image.src = "{% static 'img/functional_img/0d.png' %}";
-                document.getElementById('stretch').value = 0;
-                document.getElementById('stretch_degree_display').innerHTML = 0;
-            }
-            else {
-                image.src = "{% static 'img/functional_img/120d.png' %}";
-                document.getElementById('stretch').value = 120;
-                document.getElementById('stretch_degree_display').innerHTML = 120;
-            }
+        }
+        else if (image.getAttribute('src') == "{% static 'img/functional_img/105d.png' %}") {
+            image.src = "{% static 'img/functional_img/90d.png' %}";
+            document.getElementById('stretch').value = 90;
+            document.getElementById('stretch_degree_display').innerHTML = 90;
         }
         
-        
-        function Bending() {
-            if (image2.getAttribute('src') == "{% static 'img/functional_img/0d.png' %}") {
-                image2.src = "{% static 'img/functional_img/15d.png' %}";
-                document.getElementById('bend').value = 15;
-                document.getElementById('bend_degree_display').innerHTML = 15;
-            }
-            else if (image2.getAttribute('src') == "{% static 'img/functional_img/15d.png' %}") {
-                image2.src = "{% static 'img/functional_img/30d.png' %}";
-                document.getElementById('bend').value = 30;
-                document.getElementById('bend_degree_display').innerHTML = 30;
-            }
-            
-            else if (image2.getAttribute('src') == "{% static 'img/functional_img/30d.png' %}") {
-                image2.src = "{% static 'img/functional_img/45d.png' %}";
-                document.getElementById('bend').value = 45;
-                document.getElementById('bend_degree_display').innerHTML = 45;
-            }
-            
-            else if (image2.getAttribute('src') == "{% static 'img/functional_img/45d.png' %}") {
-                image2.src = "{% static 'img/functional_img/60d.png' %}";
-                document.getElementById('bend').value = 60;
-                document.getElementById('bend_degree_display').innerHTML = 60;
-            }
-            
-            else if (image2.getAttribute('src') == "{% static 'img/functional_img/60d.png' %}") {
-                image2.src = "{% static 'img/functional_img/75d.png' %}";
-                document.getElementById('bend').value = 75;
-                document.getElementById('bend_degree_display').innerHTML = 75;
-            }
-            
-            else if (image2.getAttribute('src') == "{% static 'img/functional_img/75d.png' %}") {
-                image2.src = "{% static 'img/functional_img/90d.png' %}";
-                document.getElementById('bend').value = 90;
-                document.getElementById('bend_degree_display').innerHTML = 90;
-            }
-            
-            else if (image2.getAttribute('src') == "{% static 'img/functional_img/90d.png' %}") {
-                image2.src = "{% static 'img/functional_img/105d.png' %}";
-                document.getElementById('bend').value = 105;
-                document.getElementById('bend_degree_display').innerHTML = 105;
-            }
-            
-            else if (image2.getAttribute('src') == "{% static 'img/functional_img/105d.png' %}") {
-                image2.src = "{% static 'img/functional_img/120d.png' %}";
-                document.getElementById('bend').value = 120;
-                document.getElementById('bend_degree_display').innerHTML = 120;
-            }
-            else {
-                image2.src = "{% static 'img/functional_img/0d.png' %}";
-                document.getElementById('bend').value = 0;
-                document.getElementById('bend_degree_display').innerHTML = 0;
-            }
+        else if (image.getAttribute('src') == "{% static 'img/functional_img/90d.png' %}") {
+            image.src = "{% static 'img/functional_img/75d.png' %}";
+            document.getElementById('stretch').value = 75;
+            document.getElementById('stretch_degree_display').innerHTML = 75;
         }
-    </script>
+        
+        else if (image.getAttribute('src') == "{% static 'img/functional_img/75d.png' %}") {
+            image.src = "{% static 'img/functional_img/60d.png' %}";
+            document.getElementById('stretch').value = 60;
+            document.getElementById('stretch_degree_display').innerHTML = 60;
+        }
+        
+        else if (image.getAttribute('src') == "{% static 'img/functional_img/60d.png' %}") {
+            image.src = "{% static 'img/functional_img/45d.png' %}";
+            document.getElementById('stretch').value = 45;
+            document.getElementById('stretch_degree_display').innerHTML = 45;
+        }
+        
+        else if (image.getAttribute('src') == "{% static 'img/functional_img/45d.png' %}") {
+            image.src = "{% static 'img/functional_img/30d.png' %}";
+            document.getElementById('stretch').value = 30;
+            document.getElementById('stretch_degree_display').innerHTML = 30;
+        }
+        
+        else if (image.getAttribute('src') == "{% static 'img/functional_img/30d.png' %}") {
+            image.src = "{% static 'img/functional_img/15d.png' %}";
+            document.getElementById('stretch').value = 15;
+            document.getElementById('stretch_degree_display').innerHTML = 15;
+        }
+        
+        else if (image.getAttribute('src') == "{% static 'img/functional_img/15d.png' %}") {
+            image.src = "{% static 'img/functional_img/0d.png' %}";
+            document.getElementById('stretch').value = 0;
+            document.getElementById('stretch_degree_display').innerHTML = 0;
+        }
+        else {
+            image.src = "{% static 'img/functional_img/120d.png' %}";
+            document.getElementById('stretch').value = 120;
+            document.getElementById('stretch_degree_display').innerHTML = 120;
+        }
+    }
     
-    {% endblock %}
+    
+    function Bending() {
+        if (image2.getAttribute('src') == "{% static 'img/functional_img/0d.png' %}") {
+            image2.src = "{% static 'img/functional_img/15d.png' %}";
+            document.getElementById('bend').value = 15;
+            document.getElementById('bend_degree_display').innerHTML = 15;
+        }
+        else if (image2.getAttribute('src') == "{% static 'img/functional_img/15d.png' %}") {
+            image2.src = "{% static 'img/functional_img/30d.png' %}";
+            document.getElementById('bend').value = 30;
+            document.getElementById('bend_degree_display').innerHTML = 30;
+        }
+        
+        else if (image2.getAttribute('src') == "{% static 'img/functional_img/30d.png' %}") {
+            image2.src = "{% static 'img/functional_img/45d.png' %}";
+            document.getElementById('bend').value = 45;
+            document.getElementById('bend_degree_display').innerHTML = 45;
+        }
+        
+        else if (image2.getAttribute('src') == "{% static 'img/functional_img/45d.png' %}") {
+            image2.src = "{% static 'img/functional_img/60d.png' %}";
+            document.getElementById('bend').value = 60;
+            document.getElementById('bend_degree_display').innerHTML = 60;
+        }
+        
+        else if (image2.getAttribute('src') == "{% static 'img/functional_img/60d.png' %}") {
+            image2.src = "{% static 'img/functional_img/75d.png' %}";
+            document.getElementById('bend').value = 75;
+            document.getElementById('bend_degree_display').innerHTML = 75;
+        }
+        
+        else if (image2.getAttribute('src') == "{% static 'img/functional_img/75d.png' %}") {
+            image2.src = "{% static 'img/functional_img/90d.png' %}";
+            document.getElementById('bend').value = 90;
+            document.getElementById('bend_degree_display').innerHTML = 90;
+        }
+        
+        else if (image2.getAttribute('src') == "{% static 'img/functional_img/90d.png' %}") {
+            image2.src = "{% static 'img/functional_img/105d.png' %}";
+            document.getElementById('bend').value = 105;
+            document.getElementById('bend_degree_display').innerHTML = 105;
+        }
+        
+        else if (image2.getAttribute('src') == "{% static 'img/functional_img/105d.png' %}") {
+            image2.src = "{% static 'img/functional_img/120d.png' %}";
+            document.getElementById('bend').value = 120;
+            document.getElementById('bend_degree_display').innerHTML = 120;
+        }
+        else{
+            image2.src = "{% static 'img/functional_img/0d.png' %}";
+            document.getElementById('bend').value = 0;
+            document.getElementById('bend_degree_display').innerHTML = 0;
+        }
+    }
+</script>
+
+{% endblock %}
