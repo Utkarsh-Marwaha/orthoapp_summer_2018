@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
+{% load crispy_forms_tags %}
 
 {% block content %}
 
@@ -37,26 +38,42 @@
           <div class="container">
               {% if submitted %}
                 <h1>Your data has been saved!</h1>
-              {% else %}
-                <form enctype="multipart/form-data" method="POST">
-                  {% csrf_token %}
-        
-                  {% if operation_list %}
-                      <div class="col-md-4 mb-3">
-                          <label class="sr-only">Operations </label>
-                            <select name="selected_operation" class="form-control">
-                              <option selected="true" disabled="disabled">Select Operation</option>
-                               {% for operation in operation_list %}
-                                <option> {{operation}} </option>
-                               {% endfor %}
-                            </select>
-                      </div>
-                  {% endif %}
-        
-                  {{ stepcounter_form.as_p }}
-                  <input type="submit" name="" value="Submit">
-                </form>
-              {% endif %}
+                {% else %}
+                <section id="login" class="py-5">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-6 mx-auto">
+                                <div class="card">
+                                    <div class="card-header bg-primary text-white">
+                                        <h4><i class="fas"></i>Step Counter</h4>
+                                    </div>
+                                    <div class="card-body">
+                                        <form enctype="multipart/form-data" method="POST">
+                                            {% csrf_token %}
+                                            {% if operation_list %}
+                                            <div class="col-md-6 mb-3">
+                                                <label class="sr-only">Operations </label>
+                                                <select name="selected_operation" class="form-control">
+                                                    <option selected="true" disabled="disabled">Select Operation</option>
+                                                    {% for operation in operation_list %}
+                                                    <option> {{operation}} </option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                            {% endif %}
+                                                                                        
+                                            {{ stepcounter_form|crispy }}
+
+                                            <input type="submit" class="btn btn-secondary btn-block" name="" value="Submit">
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+                {% endif %}
           </div>
         </div>
       </div>
