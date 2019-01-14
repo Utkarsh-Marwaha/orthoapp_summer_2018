@@ -29,68 +29,68 @@
         </div>
 </section>
     
-<section id="dashboard" class="py-4">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <h2>Welcome {{user.username}}</h2>
-                <div class="container">
-                    {% if submitted %}
-                    <h1>Your data has been saved!</h1>
-                    {% else %}
-                    <section id="login" class="py-5">
-                        <div class="container">
-                            <div class="row">
-                                <div class="col-md-6 mx-auto">
-                                    <div class="card">
-                                        <div class="card-header bg-primary text-white">
-                                            <h4><i class="fas"></i>Knee Motion Range</h4>
-                                        </div>
-                                        <div class="card-body">
-                                            <form enctype="multipart/form-data" method="POST">
-                                                {% csrf_token %}
-                                                {% if operation_list %}
-                                                <div class="col-md-6 mb-3">
-                                                    <label class="sr-only">Operations </label>
-                                                    <select name="selected_operation" class="form-control">
-                                                        <option selected="true" disabled="disabled">Select Operation</option>
-                                                        {% for operation in operation_list %}
-                                                        <option> {{operation}} </option>
-                                                        {% endfor %}
-                                                    </select>
-                                                </div>
-                                                {% endif %}
-                                                
-                                                <div class="form-group">
-                                                    <h3>How far can you stretch your knee?</h3>
-                                                    <img src="{% static 'img/functional_img/120d.png' %}" alt="" id="imageOne" onclick = "Stretching()"/>
-                                                    <input type="hidden" name=stretch id=stretch value="120" class="form-control">
-                                                    <p id="stretch_degree_display">120</p>
-                                                </div>
-                                                
-                                                <div class="form-group">
-                                                    <h3>How far can you bend your knee?</h3>
-                                                    <img src="{% static 'img/functional_img/0d.png' %}" alt="" id="imageTwo" onclick = "Bending()"/>
-                                                    <input type="hidden" name=bend id=bend value="0">
+    <section id="dashboard" class="py-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <h2>Welcome {{user.username}}</h2>
+                    <div class="container">
+                        {% if submitted %}
+                        <h1>Your data has been saved!</h1>
+                        {% else %}
+                        <section id="login" class="py-5">
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-md-6 mx-auto">
+                                        <div class="card">
+                                            <div class="card-header bg-primary text-white">
+                                                <h4><i class="fas"></i>Knee Motion Range</h4>
+                                            </div>
+                                            <div class="card-body">
+                                                <form enctype="multipart/form-data" method="POST">
+                                                    {% csrf_token %}
+                                                    {% if operation_list %}
+                                                    <div class="col-md-6 mb-3">
+                                                        <label class="sr-only">Operations </label>
+                                                        <select name="selected_operation" class="form-control">
+                                                            <option selected="true" disabled="disabled">Select Operation</option>
+                                                            {% for operation in operation_list %}
+                                                            <option> {{operation}} </option>
+                                                            {% endfor %}
+                                                        </select>
+                                                    </div>
+                                                    {% endif %}
                                                     
-                                                    <p id="bend_degree_display">0</p>
-                                                </div>    
-                                                
-                                                <input type="submit" class="btn btn-secondary btn-block" name="" value="Submit">
-                                            </form>
+                                                    <div class="form-group">
+                                                        <h3>How far can you stretch your knee?</h3>
+                                                        <img src="{% static 'img/functional_img/120d.png' %}" alt="" id="imageOne" onclick = "Stretching()"/>
+                                                        <input type="hidden" name=stretch id=stretch value="120" class="form-control">
+                                                        <p id="stretch_degree_display">120</p>
+                                                    </div>
+                                                    
+                                                    <div class="form-group">
+                                                        <h3>How far can you bend your knee?</h3>
+                                                        <img src="{% static 'img/functional_img/0d.png' %}" alt="" id="imageTwo" onclick = "Bending()"/>
+                                                        <input type="hidden" name=bend id=bend value="0">
+                                                        
+                                                        <p id="bend_degree_display">0</p>
+                                                    </div>    
+                                                    
+                                                    <input type="submit" class="btn btn-secondary btn-block" name="" value="Submit">
+                                                </form>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </section>
-                    
-                    {% endif %}
+                        </section>
+                        
+                        {% endif %}
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-</section>
+    </section>
     
     <script>
         var image =  document.getElementById("imageOne");
