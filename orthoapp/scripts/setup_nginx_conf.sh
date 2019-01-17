@@ -4,4 +4,4 @@ if [ -z "$ORTHOAPP_HOME" ] || [ ! -d "$ORTHOAPP_HOME" ]; then
     exit 1
 fi
 
-sudo ln -f -s $TECHBROKER_HOME/conf/nginx.conf /etc/nginx/sites-enabled/techbroker
+sudo ln -f -s $ORTHOAPP_HOME/conf/nginx.conf /etc/nginx/sites-enabled/orthoapp
