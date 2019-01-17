@@ -47,9 +47,11 @@ INSTALLED_APPS = [
     'timezone_field',
     'rest_framework',
     'crispy_forms',
+    'bootstrap_datepicker_plus',
 ]
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -90,8 +92,8 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'orthoapp',
         'USER': 'ortho_admin',
-        'PASSWORD': os.environ.get('ORTHOAPP_PASSWORD',''),
-        # 'PASSWORD': 'wehavegotthis',
+        # 'PASSWORD': os.environ.get('ORTHOAPP_PASSWORD',''),
+        'PASSWORD': 'wehavegotthis',
         'HOST': '127.0.0.1',
         'PORT': '5432',
     }

@@ -21,6 +21,7 @@
                         {% csrf_token %}
                         
                         {{ operation_form|crispy }}
+                        {{operation_form.media}}
                         
                         <input type="submit" value="Create" class="btn btn-secondary btn-block">
                       </form>
