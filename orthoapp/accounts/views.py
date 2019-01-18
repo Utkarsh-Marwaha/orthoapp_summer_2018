@@ -231,6 +231,7 @@ def register_operation(request):
 
 def user_login(request):
     if request.method == 'POST':
+        print("WHY YOU COME TO USER LOGIN FUNCTION")
         username = request.POST.get('username') #this get will grab it from the HTML
         password = request.POST.get('password')
 
@@ -292,3 +293,27 @@ def surgeon(request):
 @practice_required
 def practice(request):
     return render(request, 'accounts/signup.html')
+
+
+
+from django.contrib import messages
+from django.contrib.auth import update_session_auth_hash
+from django.contrib.auth.forms import PasswordChangeForm
+def change_password(request):
+    if request.method == 'POST':
+        print("HAHHAHAHAHAHAH")
+        form = PasswordChangeForm(request.user, request.POST)
+        if form.is_valid():
+            print("INSIDE IF ")
+            user = form.save()
+            update_session_auth_hash(request, user)  # Important!
+            messages.success(request, 'Your password was successfully updated!')
+            return redirect('change_password')
+        else:
+            messages.error(request, 'Please correct the error below.')
+    else:
+        print("NO POST YET")
+        form = PasswordChangeForm(request.user)
+    return render(request, 'accounts/change_password.html', {
+        'form': form
+    })
