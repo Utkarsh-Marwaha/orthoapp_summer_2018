@@ -146,6 +146,7 @@ class Record(View):
     def get(self, request, *args, **kwargs):
         return render(request, 'functionality/charts.html')
 
+
 class RecordData(APIView):
     """
     * Requires token authentication.
@@ -153,7 +154,6 @@ class RecordData(APIView):
     """
     authentication_classes = [SessionAuthentication, BasicAuthentication]
     permission_classes = [IsAuthenticated,]
-
     def get(self, request, format=None):
         # get the user name of the user who is currently logged in to the website
         login_username = request.user.username
@@ -185,7 +185,7 @@ class RecordData(APIView):
             labels.append(j.created)
             # collect the step data
             default_items.append(j.steps)
-        
+
         # pass the filtered data as the context to the Response
         data = {
             "labels": labels,

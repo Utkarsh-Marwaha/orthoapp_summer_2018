@@ -36,8 +36,19 @@
   <!-- Navbar -->
   {% include 'partials/_navbar.html' %}
 
+  <!-- Make the UI better for the message framework -->
+  {% if messages %}
+  <ul class="messages">
+    {% for message in messages %}
+      <li{% if forloop.last %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+  </ul>
+  {% endif %}
+
   <!-- Body Content: Different for every page -->
-  {% block content %} {% endblock %}
+  {% block content %}
+
+  {% endblock %}
 
   <!-- jquery block needed to produce charts for the 3 functionalities-->
   <script>
