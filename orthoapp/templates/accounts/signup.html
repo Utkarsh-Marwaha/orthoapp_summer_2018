@@ -11,7 +11,7 @@
         </div>
       </div>
     </section>
-  
+
     <!-- Breadcrumb -->
     <section id="bc" class="mt-3">
       <div class="container">
@@ -22,11 +22,17 @@
                 <i class="fas fa-home"></i> Home</a>
             </li>
             <li class="breadcrumb-item active"> Dashboard</li>
+            <li class=" ml-auto">
+              <a href="{% url 'change_password' %}">
+                <!-- <i class="fas fa-user-cog"></i> -->
+                <i class="fas fa-cog"></i>
+              </a>
+            </li>
           </ol>
         </nav>
       </div>
     </section>
-  
+
     <section id="dashboard" class="py-4">
       <div class="container">
         <div class="row">
@@ -38,6 +44,7 @@
                 <tr>
                   <th scope="col">#</th>
                   <th scope="col">Option</th>
+                  <th></th>
                 </tr>
               </thead>
               <tbody>
@@ -45,21 +52,21 @@
                   <td>1</td>
                   <td>Add New Surgeon</td>
                   <td>
-                      <a class="btn btn-light" href="{% url 'signup_surgeon' %}">Click</a>
+                    <a class="btn btn-light" href="{% url 'signup_surgeon' %}">Create</a>
                   </td>
                 </tr>
                 <tr>
                   <td>2</td>
                   <td>Add New Patient</td>
                   <td>
-                    <a class="btn btn-light" href="{% url 'signup_patient' %}">Click</a>
+                    <a class="btn btn-light" href="{% url 'signup_patient' %}">Create</a>
                   </td>
                 </tr>
                 <tr>
                   <td>3</td>
                   <td>Assign Operation</td>
                   <td>
-                    <a class="btn btn-light" href="{% url 'register_operation' %}">Click</a>
+                    <a class="btn btn-light" href="{% url 'register_operation' %}">Create</a>
                   </td>
                 </tr>
               </tbody>
