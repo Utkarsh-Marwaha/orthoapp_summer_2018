@@ -5,8 +5,8 @@
         <div class="container">
           <div class="row text-center">
             <div class="col-md-12">
-              <h1 class="display-4">User Dashboard</h1>
-              <p class="lead">Manage your Patient Account</p>
+              <h1 class="display-4">User Settings</h1>
+              <p class="lead">Manage Your Account Settings</p>
             </div>
           </div>
         </div>
@@ -22,13 +22,7 @@
                 <a href="{% url 'index' %}">
                   <i class="fas fa-home"></i> Home</a>
               </li>
-              <li class="breadcrumb-item active"> Dashboard</li>
-              <li class=" ml-auto">
-                <a href="{% url 'user_settings' %}">
-                  <!-- <i class="fas fa-user-cog"></i> -->
-                  <i class="fas fa-cog"></i>
-                </a>
-              </li>
+              <li class="breadcrumb-item active"> Settings</li>
 
             </ol>
 
@@ -41,35 +35,21 @@
           <div class="row">
             <div class="col-md-12">
               <h2>Welcome {{user.username}}</h2>
-              <p>Here are the data points that you have submitted till now</p>
+              <p>Here are the settings you can edit</p>
               <table class="table">
                 <thead>
                   <tr>
                     <th scope="col">#</th>
-                    <th scope="col">Medical Record</th>
+                    <th scope="col">Option</th>
                     <th></th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr>
                     <td>1</td>
-                    <td>Step-Counter</td>
+                    <td>Edit Password</td>
                     <td>
-                      <a class="btn btn-light" href="{% url 'stepcounter' %}">View Record</a>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>2</td>
-                    <td>Knee Motion Range</td>
-                    <td>
-                      <a class="btn btn-light" href="{% url 'kneemotionrange' %}">View Record</a>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>3</td>
-                    <td>Pain Level Scores</td>
-                    <td>
-                      <a class="btn btn-light" href="{% url 'painlevel' %}">View Record</a>
+                      <a class="btn btn-light" href="{% url 'change_password' %}">Edit</a>
                     </td>
                   </tr>
                 </tbody>

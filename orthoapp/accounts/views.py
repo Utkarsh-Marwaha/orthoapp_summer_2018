@@ -299,6 +299,7 @@ def practice(request):
 from django.contrib import messages
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
+@login_required
 def change_password(request):
     if request.method == 'POST':
         print("HAHHAHAHAHAHAH")
@@ -317,3 +318,7 @@ def change_password(request):
     return render(request, 'accounts/change_password.html', {
         'form': form
     })
+
+@login_required
+def user_settings(request):
+    return render(request, 'accounts/user_settings.html')

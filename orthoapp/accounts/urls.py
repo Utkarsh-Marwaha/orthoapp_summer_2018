@@ -11,6 +11,7 @@ urlpatterns = [
     path('user_login/practice', views.practice, name='practice'),
     path('user_login/filter_user', views.filter_user, name='filter_user'),
     path('user_login/change_password', views.change_password, name='change_password'),
+    path('user_login/user_settings', views.user_settings, name='user_settings'),
 
     # the above url does not get displayed ever
     # it is just present so that we can use the filter_user function from the views.py of the accounts app
