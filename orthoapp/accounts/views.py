@@ -292,7 +292,9 @@ def surgeon(request):
 @login_required
 @practice_required
 def practice(request):
-    return render(request, 'accounts/signup.html')
+
+    test_variable = "practice"
+    return render(request, 'accounts/signup.html', {'test_variable':test_variable},)
 
 
 
