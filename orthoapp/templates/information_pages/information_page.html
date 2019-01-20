@@ -1,19 +1,19 @@
 {% extends 'base.html' %}
-
+{% load md2 %}
 {% block content %}
 
 <section id="showcase-inner" class="py-5 text-white">
         <div class="container">
           <div class="row text-center">
             <div class="col-md-12">
-              <h1 class="display-4">{{ information_page.title  }}</h1>
+              <h1 class="display-4">{{ information_page.title }}</h1>
               <p class="lead">
-                <i class="fas fa-map-marker"></i> {{ information_page.description  }}</p>
+                <i class="fas fa-map-marker"></i> {{ information_page.description }}</p>
             </div>
           </div>
         </div>
       </section>
-    
+
       <!-- Breadcrumb -->
       <section id="bc" class="mt-3">
         <div class="container">
@@ -30,7 +30,7 @@
           </nav>
         </div>
       </section>
-    
+
       <!-- Listing -->
       <section id="listing" class="py-4">
         <div class="container">
@@ -59,7 +59,7 @@
                     <img src="{{ information_page.photo_2.url  }}" alt="" class="img-fluid">
                   </a>
                 </div>
-                
+
                 {% endif %}
 
                 {% if information_page.photo_3 %}
@@ -97,15 +97,15 @@
                     <li class="list-group-item text-secondary">
                       <i class="fas fa-square"></i> Hospital:
                       <span class="float-right">{{ information_page.hospital_name  }}</span>
-                    </li>    
+                    </li>
                   </ul>
                 </div>
               </div>
-    
+
               <!-- Description -->
               <div class="row mb-5">
                 <div class="col-md-12">
-                 {{ information_page.main_text }}
+                 {{ information_page.main_text | markdown }}
                 </div>
               </div>
             </div>
@@ -122,7 +122,7 @@
           </div>
         </div>
       </section>
-    
+
       <!-- Inquiry Modal -->
       <div class="modal fade" id="inquiryModal" role="dialog">
         <div class="modal-dialog">
@@ -149,12 +149,12 @@
                 </div>
                 <div class="form-group">
                   <label for="name" class="col-form-label">Name:</label>
-                  <input type="text" name="name" class="form-control" {% if user.is_authenticated %} 
+                  <input type="text" name="name" class="form-control" {% if user.is_authenticated %}
                   value="{{user.first_name}} {{user.last_name}}" {% endif %} required>
                 </div>
                 <div class="form-group">
                   <label for="email" class="col-form-label">Email:</label>
-                  <input type="email" name="email" class="form-control" {% if user.is_authenticated %} 
+                  <input type="email" name="email" class="form-control" {% if user.is_authenticated %}
                   value="{{user.email}}" {% endif %}required>
                 </div>
                 <div class="form-group">

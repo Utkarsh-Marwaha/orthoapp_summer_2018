@@ -183,6 +183,7 @@ def chart(request):
 
     stepcounter_filtered_data = StepCounter.objects.filter(pk__in = stepcounter_wanted_items)
     kneemotionrange_filtered_data = KneeMotionRange.objects.filter(pk__in = kneemotionrange_wanted_items)
+    print(kneemotionrange_filtered_data)
     painlevel_filtered_data = PainLevel.objects.filter(pk__in = painlevel_wanted_items)
 
     stepcounter_data = \

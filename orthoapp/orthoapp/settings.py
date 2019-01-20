@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'crispy_forms',
     'bootstrap_datepicker_plus',
     'chartit',
+    'django_markdown2',
 ]
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
