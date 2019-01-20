@@ -45,9 +45,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.humanize',
     'timezone_field',
-    'rest_framework',
     'crispy_forms',
     'bootstrap_datepicker_plus',
+    'chartit',
 ]
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'

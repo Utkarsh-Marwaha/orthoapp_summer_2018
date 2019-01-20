@@ -132,63 +132,147 @@ def painlevel(request):
 
 ######################## new section here #########################
 
-from rest_framework.authentication import SessionAuthentication, BasicAuthentication
-from rest_framework.permissions import IsAuthenticated
-from rest_framework.views import APIView
-from rest_framework.response import Response
+
 from accounts.models import MyUser
 from django.views.generic import View
 from functionality.models import StepCounter, KneeMotionRange, PainLevel
 
-# view for reference https://www.django-rest-framework.org/api-guide/views/
-
-class Record(View):
-    def get(self, request, *args, **kwargs):
-        return render(request, 'functionality/charts.html')
 
 
-class RecordData(APIView):
-    """
-    * Requires token authentication.
-    * Only authorised users are able to access this view.
-    """
-    authentication_classes = [SessionAuthentication, BasicAuthentication]
-    permission_classes = [IsAuthenticated,]
-    def get(self, request, format=None):
-        # get the user name of the user who is currently logged in to the website
-        login_username = request.user.username
+############################## ANOTHER SECTION USING CHARTIT ###########################################
+from chartit import DataPool, Chart
+@login_required
+@patient_required
+def chart(request):
+    #Step 1: Create a DataPool with the data we want to retrieve.
+    print(type(StepCounter.objects.all()))
+    # get the user name of the user who is currently logged in to the website
+    login_username = request.user.username
 
-        # get all the step counter instances availables in the backend
-        all_sc_object = StepCounter.objects.all()
 
-        # This list will hold only those step counter instances which pertain to the logged in user
-        filtered_sc_object = list()
+    stepcounter_wanted_items = set()
+    kneemotionrange_wanted_items = set()
+    painlevel_wanted_items = set()
 
-        # cycle through all the step counter instances
-        for i in all_sc_object:
-            print(i.operation.patient.user.username)
-            # if the logged in user is the same as the patient username who created the record
-            if i.operation.patient.user.username == login_username:
-                # then append the record to the list
-                filtered_sc_object.append(i)
-        print(filtered_sc_object)
+    # cycle through all the step counter instances
+    for item in StepCounter.objects.all():
+        print(item.operation.patient.user.username)
+        # if the logged in user is the same as the patient username who created the record
+        if item.operation.patient.user.username == login_username:
+            # then append the record to the list
+            stepcounter_wanted_items.add(item.pk)
+    print(stepcounter_wanted_items)
 
-        # This list will hold all the data points to be displayed on the x-axis
-        labels = list()
-        # This list will hold all the data points to be displayed on the y-axis
-        default_items = list()
+    # cycle through all the KneeMotionRange instances
+    for item in KneeMotionRange.objects.all():
+        print(item.operation.patient.user.username)
+        # if the logged in user is the same as the patient username who created the record
+        if item.operation.patient.user.username == login_username:
+            # then append the record to the list
+            kneemotionrange_wanted_items.add(item.pk)
+    print(kneemotionrange_wanted_items)
 
-        # cycle through all the filtered step counter instances
-        for j in filtered_sc_object:
+    # cycle through all the KneeMotionRange instances
+    for item in PainLevel.objects.all():
+        print(item.operation.patient.user.username)
+        # if the logged in user is the same as the patient username who created the record
+        if item.operation.patient.user.username == login_username:
+            # then append the record to the list
+            painlevel_wanted_items.add(item.pk)
+    print(painlevel_wanted_items)
 
-            # collect the timestamps
-            labels.append(j.created)
-            # collect the step data
-            default_items.append(j.steps)
+    stepcounter_filtered_data = StepCounter.objects.filter(pk__in = stepcounter_wanted_items)
+    kneemotionrange_filtered_data = KneeMotionRange.objects.filter(pk__in = kneemotionrange_wanted_items)
+    painlevel_filtered_data = PainLevel.objects.filter(pk__in = painlevel_wanted_items)
 
-        # pass the filtered data as the context to the Response
-        data = {
-            "labels": labels,
-            "default": default_items,
-        }
-        return Response(data)
+    stepcounter_data = \
+        DataPool(
+           series=
+            [{'options': {
+               'source': stepcounter_filtered_data},
+              'terms': [
+                'created',
+                'steps']}
+             ])
+
+    #Step 2: Create the Chart object
+    stepcounter_chart = Chart(
+            datasource = stepcounter_data,
+            series_options =
+              [{'options':{
+                  'type': 'line',
+                  'stacking': False},
+                'terms':{
+                  'created': [
+                    'steps']
+                  }}],
+            chart_options =
+              {'title': {
+                   'text': 'Step Counter Data of the Patient'},
+               'xAxis': {
+                    'title': {
+                       'text': 'Date'}}})
+
+
+
+
+    kneemotionrange_data = \
+        DataPool(
+           series=
+            [{'options': {
+               'source': kneemotionrange_filtered_data},
+              'terms': [
+                'created',
+                'bend', 'stretch']}
+             ])
+
+    #Step 2: Create the Chart object
+    kneemotionrange_chart = Chart(
+            datasource = kneemotionrange_data,
+            series_options =
+              [{'options':{
+                  'type': 'bar',
+                  'stacking': False},
+                'terms':{
+                  'created': [
+                    'bend', 'stretch']
+                  }}],
+            chart_options =
+              {'title': {
+                   'text': 'Knee Motion Range Data of the Patient'},
+               'xAxis': {
+                    'title': {
+                       'text': 'Date'}}})
+
+    painlevel_data = \
+        DataPool(
+           series=
+            [{'options': {
+               'source': painlevel_filtered_data},
+              'terms': [
+                'created',
+                'painLevel']}
+             ])
+
+    #Step 2: Create the Chart object
+    painlevel_chart = Chart(
+            datasource = painlevel_data,
+            series_options =
+              [{'options':{
+                  'type': 'line',
+                  'stacking': False},
+                'terms':{
+                  'created': [
+                    'painLevel']
+                  }}],
+            chart_options =
+              {'title': {
+                   'text': 'Pain Level Data of the Patient'},
+               'xAxis': {
+                    'title': {
+                       'text': 'Date'}}})
+
+
+
+    #Step 3: Send the chart object to the template.
+    return render(request, 'functionality/records.html', {'chart_list': [stepcounter_chart, kneemotionrange_chart, painlevel_chart]})

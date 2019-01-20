@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% load static %}
+{% load chartit %}
+
+
+{% block content %}
+
+{{ chart_list|load_charts:"stepcounter_chart, kneemotionrange_chart, painlevel_chart" }}
+<div id='stepcounter_chart'></div>
+<div id='kneemotionrange_chart'></div>
+<div id='painlevel_chart'></div>
+
+{% endblock %}
