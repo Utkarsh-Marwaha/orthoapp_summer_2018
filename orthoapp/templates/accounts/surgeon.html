@@ -53,8 +53,16 @@
                       <tr>
                         <td>{{index}}</td>
                         <td>{{patient}}</td>
-                        <td>
-                          <a class="btn btn-light" href="#">View Details</a>
+                        <td> 
+
+                          <form action="{% url 'chart' %}" method="POST">
+                            {% csrf_token %}
+                            <input type="hidden" name="patient_user" id="patient_user" value={{patient}} class="form-control">
+                            <input type="submit" name="" id="" class="btn btn-light" value="View Details">
+                          
+                          </form>
+                          
+                          <!-- <a class="btn btn-light" href="{% url 'chart' %}">View Details</a> -->
                         </td>
                       </tr>
                     {% endfor %}

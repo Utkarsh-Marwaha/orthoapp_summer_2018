@@ -144,13 +144,24 @@ from chartit import DataPool, Chart
 
 
 @login_required
-@patient_required
 def chart(request):
-    #Step 1: Create a DataPool with the data we want to retrieve.
-    print(type(StepCounter.objects.all()))
-    # get the user name of the user who is currently logged in to the website
-    login_username = request.user.username
 
+    login_username = ""
+  
+    if request.user.is_practice:
+        return render(request, 'pages/index.html', {})
+
+    elif request.user.is_surgeon:
+        if request.method == 'POST':
+            login_username = request.POST["patient_user"]
+        else:
+             return render(request, 'pages/index.html', {})
+            
+    else:
+        # get the user name of the user who is currently logged in to the website
+        login_username = request.user.username
+
+    #Step 1: Create a DataPool with the data we want to retrieve.
 
     stepcounter_wanted_items = set()
     kneemotionrange_wanted_items = set()
