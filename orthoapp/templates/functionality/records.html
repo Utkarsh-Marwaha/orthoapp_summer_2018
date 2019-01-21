@@ -2,16 +2,28 @@
 {% load static %}
 {% load chartit %}
 
-
 {% block content %}
 
-{{ chart_list|load_charts:"stepcounter_chart, kneemotionrange_chart, painlevel_chart" }}
-{% if 'chart_list' %}
-  <div id='stepcounter_chart'></div>
-  <div id='kneemotionrange_chart'></div>
-  <div id='painlevel_chart'></div>
-{% else %}
-  <p>No Records present currently</p>
+{% if stepcounter_chart and kneemotionrange_chart and painlevel_chart %}
+  {{ chart_list|load_charts:"chart1,chart2,chart3" }}
+  <div id='chart1'></div>
+  <div id='chart2'></div>
+  <div id='chart3'></div>
+
+{% elif (stepcounter_chart and kneemotionrange_chart and not painlevel_chart) or
+        (stepcounter_chart and not kneemotionrange_chart and painlevel_chart) or
+        (not stepcounter_chart and kneemotionrange_chart and painlevel_chart) or %}
+  {{ chart_list|load_charts:"chart1, chart2" }}
+  <div id='chart1'></div>
+  <div id='chart2'></div>
+
+{% elif stepcounter_chart or kneemotionrange_chart or painlevel_chart %}
+  {{ chart_list|load_charts:"chart1" }}
+  <div id='chart1'></div>
+
+
 {% endif %}
+
+
 
 {% endblock %}

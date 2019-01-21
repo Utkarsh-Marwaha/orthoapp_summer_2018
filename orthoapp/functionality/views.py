@@ -141,6 +141,8 @@ from functionality.models import StepCounter, KneeMotionRange, PainLevel
 
 ############################## ANOTHER SECTION USING CHARTIT ###########################################
 from chartit import DataPool, Chart
+
+
 @login_required
 @patient_required
 def chart(request):
@@ -154,6 +156,8 @@ def chart(request):
     kneemotionrange_wanted_items = set()
     painlevel_wanted_items = set()
 
+
+
     # cycle through all the step counter instances
     for item in StepCounter.objects.all():
         print(item.operation.patient.user.username)
@@ -161,6 +165,8 @@ def chart(request):
         if item.operation.patient.user.username == login_username:
             # then append the record to the list
             stepcounter_wanted_items.add(item.pk)
+    print("hahahhahahaa")
+    print(stepcounter_wanted_items == set())
     print(stepcounter_wanted_items)
 
     # cycle through all the KneeMotionRange instances
@@ -170,6 +176,9 @@ def chart(request):
         if item.operation.patient.user.username == login_username:
             # then append the record to the list
             kneemotionrange_wanted_items.add(item.pk)
+
+    print("hehehehheheheh")
+    print(kneemotionrange_wanted_items == set())
     print(kneemotionrange_wanted_items)
 
     # cycle through all the KneeMotionRange instances
@@ -183,97 +192,130 @@ def chart(request):
 
     stepcounter_filtered_data = StepCounter.objects.filter(pk__in = stepcounter_wanted_items)
     kneemotionrange_filtered_data = KneeMotionRange.objects.filter(pk__in = kneemotionrange_wanted_items)
-    print(kneemotionrange_filtered_data)
+    print("LOLOLOLOLOLOL")
+    print(kneemotionrange_filtered_data.exists())
     painlevel_filtered_data = PainLevel.objects.filter(pk__in = painlevel_wanted_items)
 
-    stepcounter_data = \
-        DataPool(
-           series=
-            [{'options': {
-               'source': stepcounter_filtered_data},
-              'terms': [
-                'created',
-                'steps']}
-             ])
 
-    #Step 2: Create the Chart object
-    stepcounter_chart = Chart(
-            datasource = stepcounter_data,
-            series_options =
-              [{'options':{
-                  'type': 'line',
-                  'stacking': False},
-                'terms':{
-                  'created': [
-                    'steps']
-                  }}],
-            chart_options =
-              {'title': {
-                   'text': 'Step Counter Data of the Patient'},
-               'xAxis': {
-                    'title': {
-                       'text': 'Date'}}})
+    #this is to store charts that are not null
+    final_list=[]
+
+    if stepcounter_filtered_data.exists():
+        stepcounter_data = \
+            DataPool(
+               series=
+                [{'options': {
+                   'source': stepcounter_filtered_data},
+                  'terms': [
+                    'created',
+                    'steps']}
+                 ])
+
+        print("YESYESYESYESYESY")
+        print(stepcounter_data)
+        print(type(stepcounter_data))
+        #Step 2: Create the Chart object
+        stepcounter_chart = Chart(
+                datasource = stepcounter_data,
+                series_options =
+                  [{'options':{
+                      'type': 'line',
+                      'stacking': False},
+                    'terms':{
+                      'created': [
+                        'steps']
+                      }}],
+                chart_options =
+                  {'title': {
+                       'text': 'Step Counter Data of the Patient'},
+                   'xAxis': {
+                        'title': {
+                           'text': 'Date'}}})
+        final_list.append(stepcounter_chart)
+    else:
+        stepcounter_chart = None
 
 
 
+    if kneemotionrange_filtered_data.exists():
+        kneemotionrange_data = \
+            DataPool(
+               series=
+                [{'options': {
+                   'source': kneemotionrange_filtered_data},
+                  'terms': [
+                    'created',
+                    'bend', 'stretch']}
+                 ])
 
-    kneemotionrange_data = \
-        DataPool(
-           series=
-            [{'options': {
-               'source': kneemotionrange_filtered_data},
-              'terms': [
-                'created',
-                'bend', 'stretch']}
-             ])
+        #Step 2: Create the Chart object
+        kneemotionrange_chart = Chart(
+                datasource = kneemotionrange_data,
+                series_options =
+                  [{'options':{
+                      'type': 'bar',
+                      'stacking': False},
+                    'terms':{
+                      'created': [
+                        'bend', 'stretch']
+                      }}],
+                chart_options =
+                  {'title': {
+                       'text': 'Knee Motion Range Data of the Patient'},
+                   'xAxis': {
+                        'title': {
+                           'text': 'Date'}}})
+        final_list.append(kneemotionrange_chart)
 
-    #Step 2: Create the Chart object
-    kneemotionrange_chart = Chart(
-            datasource = kneemotionrange_data,
-            series_options =
-              [{'options':{
-                  'type': 'bar',
-                  'stacking': False},
-                'terms':{
-                  'created': [
-                    'bend', 'stretch']
-                  }}],
-            chart_options =
-              {'title': {
-                   'text': 'Knee Motion Range Data of the Patient'},
-               'xAxis': {
-                    'title': {
-                       'text': 'Date'}}})
+    else:
+        print("IM HERERER")
+        kneemotionrange_chart = None
 
-    painlevel_data = \
-        DataPool(
-           series=
-            [{'options': {
-               'source': painlevel_filtered_data},
-              'terms': [
-                'created',
-                'painLevel']}
-             ])
+    if painlevel_filtered_data.exists():
+        painlevel_data = \
+            DataPool(
+               series=
+                [{'options': {
+                   'source': painlevel_filtered_data},
+                  'terms': [
+                    'created',
+                    'painLevel']}
+                 ])
 
-    #Step 2: Create the Chart object
-    painlevel_chart = Chart(
-            datasource = painlevel_data,
-            series_options =
-              [{'options':{
-                  'type': 'line',
-                  'stacking': False},
-                'terms':{
-                  'created': [
-                    'painLevel']
-                  }}],
-            chart_options =
-              {'title': {
-                   'text': 'Pain Level Data of the Patient'},
-               'xAxis': {
-                    'title': {
-                       'text': 'Date'}}})
+        #Step 2: Create the Chart object
+        painlevel_chart = Chart(
+                datasource = painlevel_data,
+                series_options =
+                  [{'options':{
+                      'type': 'line',
+                      'stacking': False},
+                    'terms':{
+                      'created': [
+                        'painLevel']
+                      }}],
+                chart_options =
+                  {'title': {
+                       'text': 'Pain Level Data of the Patient'},
+                   'xAxis': {
+                        'title': {
+                           'text': 'Date'}}})
+        final_list.append(painlevel_chart)
 
+    else:
+        painlevel_chart = None
+
+
+    final_str = ""
+    for i in range(len(final_list)):
+        final_str += "chart" + (str(i+1)) + ","
+    final_str = final_str[:-1]
+    print(final_str)
 
 
     #Step 3: Send the chart object to the template.
-    return render(request, 'functionality/records.html', {'chart_list': [stepcounter_chart, kneemotionrange_chart, painlevel_chart]})
+    return render(request, 'functionality/records.html', {'stepcounter_chart':stepcounter_chart,
+                                                          'kneemotionrange_chart':kneemotionrange_chart,
+                                                          'painlevel_chart' : painlevel_chart,
+                                                          'chart_list' : final_list,
+                                                          'final_str' : final_str,
+                                                         })
