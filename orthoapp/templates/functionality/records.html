@@ -7,7 +7,7 @@
 
 {% block content %}
 
-{% if stepcounter_chart and kneemotionrange_chart and painlevel_chart %}
+<!-- {% if stepcounter_chart and kneemotionrange_chart and painlevel_chart %}
 {{ chart_list|load_charts:"chart1,chart2,chart3" }}
 <div id='chart1'></div>
 <div id='chart2'></div>
@@ -37,33 +37,23 @@
 
 {% else %}
   <p align='center'> There is no data input yet</p>
-{% endif %}
+{% endif %} -->
 
 
 <div id="container"></div>
+<div id="container2"></div>
+<div id="container3"></div>
   <script src="https://code.highcharts.com/highcharts.src.js"></script>
   <script>
-    Highcharts.chart('container', {
-        chart: {
-            type: 'column'
-        },
-        title: {
-            text: 'Historic World Population by Region'
-        },
-        xAxis: {
-            categories: ['Africa', 'America', 'Asia', 'Europe', 'Oceania']
-        },
-        series: [{
-            name: 'Year 1800',
-            data: [107, 31, 635, 203, 2]
-        }, {
-            name: 'Year 1900',
-            data: [133, 156, 947, 408, 6]
-        }, {
-            name: 'Year 2012',
-            data: [1052, 954, 4250, 740, 38]
-        }]
-    });
+    Highcharts.chart('container', {{ chart|safe }});
+  </script>
+
+  <script>
+    Highcharts.chart('container2', {{ chart2|safe }});
+  </script>
+
+  <script>
+    Highcharts.chart('container3', {{ chart3|safe }});
   </script>
 
 {% endblock %}

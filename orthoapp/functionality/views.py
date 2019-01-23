@@ -113,7 +113,7 @@ def painlevel(request):
             for j in operation_list:
                 if str(j) == selected_operation:
                     painlevel_object.operation = j
-
+            print(painlevel_object)
             painlevel_object.save()
 
             submitted = True
@@ -140,14 +140,13 @@ from functionality.models import StepCounter, KneeMotionRange, PainLevel
 
 
 ############################## ANOTHER SECTION USING CHARTIT ###########################################
-from chartit import DataPool, Chart
-
-
+import json
+from django.db.models import Count, Q
+from django.core.serializers.json import DjangoJSONEncoder
 @login_required
 def chart(request):
-
     login_username = ""
-  
+
     if request.user.is_practice:
         return render(request, 'pages/index.html', {})
 
@@ -156,7 +155,7 @@ def chart(request):
             login_username = request.POST["patient_user"]
         else:
              return render(request, 'pages/index.html', {})
-            
+
     else:
         # get the user name of the user who is currently logged in to the website
         login_username = request.user.username
@@ -164,11 +163,6 @@ def chart(request):
     #Step 1: Create a DataPool with the data we want to retrieve.
 
     stepcounter_wanted_items = set()
-    kneemotionrange_wanted_items = set()
-    painlevel_wanted_items = set()
-
-
-
     # cycle through all the step counter instances
     for item in StepCounter.objects.all():
         print(item.operation.patient.user.username)
@@ -179,8 +173,41 @@ def chart(request):
     print("hahahhahahaa")
     print(stepcounter_wanted_items == set())
     print(stepcounter_wanted_items)
+    stepcounter_filtered_data = StepCounter.objects.filter(pk__in = stepcounter_wanted_items) \
+                                .values("created", "steps")
 
-    # cycle through all the KneeMotionRange instances
+    print(stepcounter_filtered_data)
+    created_data = list()
+    steps_data = list()
+    for entry in stepcounter_filtered_data:
+        created_data.append(entry['created'])
+        steps_data.append(entry['steps'])
+    steps_series = {
+        'name': 'steps',
+        'data': steps_data,
+        'color': 'blue'
+    }
+
+    chart = {
+        'chart': {'type': 'line'},
+        'title': {'text': 'Step Counter Data of the Patient'},
+        'xAxis': {'categories': created_data},
+        'series': [steps_series]
+    }
+
+    dump = json.dumps(chart, sort_keys=True, indent=1, cls=DjangoJSONEncoder)
+
+
+
+
+
+
+
+
+    #Step 1: Create a DataPool with the data we want to retrieve.
+
+    kneemotionrange_wanted_items = set()
+    # cycle through all the step counter instances
     for item in KneeMotionRange.objects.all():
         print(item.operation.patient.user.username)
         # if the logged in user is the same as the patient username who created the record
@@ -188,145 +215,83 @@ def chart(request):
             # then append the record to the list
             kneemotionrange_wanted_items.add(item.pk)
 
-    print("hehehehheheheh")
-    print(kneemotionrange_wanted_items == set())
-    print(kneemotionrange_wanted_items)
+    kneemotionrange_filtered_data = KneeMotionRange.objects.filter(pk__in = kneemotionrange_wanted_items) \
+                                .values("created", "bend", "stretch")
 
-    # cycle through all the KneeMotionRange instances
+    created_data = list()
+    bend_data = list()
+    stretch_data = list()
+
+    for entry in kneemotionrange_filtered_data:
+        created_data.append(entry['created'])
+        bend_data.append(entry['bend'])
+        stretch_data.append(entry['stretch'])
+    bend_series = {
+        'name': 'bend',
+        'data': bend_data,
+        'color': 'blue'
+    }
+
+    stretch_series = {
+        'name': 'stretch',
+        'data': stretch_data,
+        'color': 'black'
+    }
+    chart2 = {
+        'chart': {'type': 'column'},
+        'title': {'text': 'Knee Motion Data of the Patient'},
+        'xAxis': {'categories': created_data},
+        'series': [bend_series, stretch_series]
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+    #Step 1: Create a DataPool with the data we want to retrieve.
+
+    painlevel_wanted_items = set()
+    # cycle through all the step counter instances
     for item in PainLevel.objects.all():
         print(item.operation.patient.user.username)
         # if the logged in user is the same as the patient username who created the record
         if item.operation.patient.user.username == login_username:
             # then append the record to the list
             painlevel_wanted_items.add(item.pk)
-    print(painlevel_wanted_items)
 
-    stepcounter_filtered_data = StepCounter.objects.filter(pk__in = stepcounter_wanted_items)
-    kneemotionrange_filtered_data = KneeMotionRange.objects.filter(pk__in = kneemotionrange_wanted_items)
-    print("LOLOLOLOLOLOL")
-    print(kneemotionrange_filtered_data.exists())
-    painlevel_filtered_data = PainLevel.objects.filter(pk__in = painlevel_wanted_items)
+    painlevel_filtered_data = PainLevel.objects.filter(pk__in = painlevel_wanted_items) \
+                                .values("created", "painLevel")
 
+    created_data = list()
+    painlevel_data = list()
 
-    #this is to store charts that are not null
-    final_list=[]
+    for entry in painlevel_filtered_data:
+        created_data.append(entry['created'])
+        painlevel_data.append(entry['painLevel'])
 
-    if stepcounter_filtered_data.exists():
-        stepcounter_data = \
-            DataPool(
-               series=
-                [{'options': {
-                   'source': stepcounter_filtered_data},
-                  'terms': [
-                    'created',
-                    'steps']}
-                 ])
+    painlevel_series = {
+        'name': 'painlevel',
+        'data': painlevel_data,
+        'color': 'blue'
+    }
 
-        print("YESYESYESYESYESY")
-        print(stepcounter_data)
-        print(type(stepcounter_data))
-        #Step 2: Create the Chart object
-        stepcounter_chart = Chart(
-                datasource = stepcounter_data,
-                series_options =
-                  [{'options':{
-                      'type': 'line',
-                      'stacking': False},
-                    'terms':{
-                      'created': [
-                        'steps']
-                      }}],
-                chart_options =
-                  {'title': {
-                       'text': 'Step Counter Data of the Patient'},
-                   'xAxis': {
-                        'title': {
-                           'text': 'Date'}}})
-        final_list.append(stepcounter_chart)
-    else:
-        stepcounter_chart = None
+    chart3 = {
+        'chart': {'type': 'line'},
+        'title': {'text': 'Pain Level Data of the Patient'},
+        'xAxis': {'categories': created_data},
+        'series': [painlevel_series]
+    }
 
 
+    dump = json.dumps(chart, sort_keys=True, indent=1, cls=DjangoJSONEncoder)
+    dump2 = json.dumps(chart2, sort_keys=True, indent=1, cls=DjangoJSONEncoder)
+    dump3 = json.dumps(chart3, sort_keys=True, indent=1, cls=DjangoJSONEncoder)
 
-    if kneemotionrange_filtered_data.exists():
-        kneemotionrange_data = \
-            DataPool(
-               series=
-                [{'options': {
-                   'source': kneemotionrange_filtered_data},
-                  'terms': [
-                    'created',
-                    'bend', 'stretch']}
-                 ])
-
-        #Step 2: Create the Chart object
-        kneemotionrange_chart = Chart(
-                datasource = kneemotionrange_data,
-                series_options =
-                  [{'options':{
-                      'type': 'bar',
-                      'stacking': False},
-                    'terms':{
-                      'created': [
-                        'bend', 'stretch']
-                      }}],
-                chart_options =
-                  {'title': {
-                       'text': 'Knee Motion Range Data of the Patient'},
-                   'xAxis': {
-                        'title': {
-                           'text': 'Date'}}})
-        final_list.append(kneemotionrange_chart)
-
-    else:
-        print("IM HERERER")
-        kneemotionrange_chart = None
-
-    if painlevel_filtered_data.exists():
-        painlevel_data = \
-            DataPool(
-               series=
-                [{'options': {
-                   'source': painlevel_filtered_data},
-                  'terms': [
-                    'created',
-                    'painLevel']}
-                 ])
-
-        #Step 2: Create the Chart object
-        painlevel_chart = Chart(
-                datasource = painlevel_data,
-                series_options =
-                  [{'options':{
-                      'type': 'line',
-                      'stacking': False},
-                    'terms':{
-                      'created': [
-                        'painLevel']
-                      }}],
-                chart_options =
-                  {'title': {
-                       'text': 'Pain Level Data of the Patient'},
-                   'xAxis': {
-                        'title': {
-                           'text': 'Date'}}})
-        final_list.append(painlevel_chart)
-
-    else:
-        painlevel_chart = None
-
-
-    final_str = ""
-    for i in range(len(final_list)):
-        final_str += "chart" + (str(i+1)) + ","
-    final_str = final_str[:-1]
-    print(final_str)
-
-
-    #Step 3: Send the chart object to the template.
-    return render(request, 'functionality/records.html', {'stepcounter_chart':stepcounter_chart,
-                                                          'kneemotionrange_chart':kneemotionrange_chart,
-                                                          'painlevel_chart' : painlevel_chart,
-                                                          'chart_list' : final_list,
-                                                          'final_str' : final_str,
-                                                         })
+    return render(request, 'functionality/records.html', {'chart': dump, 'chart2':dump2, 'chart3':dump3})
