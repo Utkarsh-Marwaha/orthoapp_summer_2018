@@ -65,8 +65,6 @@
                           </div>
                           {% endif %}
 
-
-                          <!-- <input id="ex8" class="slider" data-slider-id='ex1Slider' type="range" data-slider-min="0" data-slider-max="20" data-slider-step="1" data-slider-value="14"/> -->
                           {{ painlevel_form|crispy }}
 
                           <input type="submit" class="btn btn-secondary btn-block" name="" value="Submit">
@@ -84,17 +82,4 @@
       </div>
     </div>
   </section>
-
-  <script>
-
-    // With JQuery
-    $("#ex8").slider({
-      tooltip: 'always'
-    });
-
-    // Without JQuery
-    var slider = new Slider("#ex8", {
-      tooltip: 'always'
-    });
-  </script>
   {% endblock %}

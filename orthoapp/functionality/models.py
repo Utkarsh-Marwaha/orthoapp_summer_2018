@@ -27,8 +27,12 @@ class PainLevel(DataPoint):
     default=0,
     validators=[MaxValueValidator(10), MinValueValidator(0)])
 
-    isExerciseDone = models.BooleanField()
+    isExerciseDone = models.IntegerField(
+    default=0,
+    validators=[MinValueValidator(0)], )
+
     isMedicineTaken = models.BooleanField()
+    
 
 class Appointment(models.Model):
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
