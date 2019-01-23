@@ -1,7 +1,9 @@
 ############################## New section here    ######################################
 from django import forms
 from accounts.models import MyUser, Patient, Surgeon, Operation
-from bootstrap_datepicker_plus import DatePickerInput
+
+class DateInput(forms.DateInput):
+    input_type = 'date'
 
 class UserForm(forms.ModelForm):
 
@@ -17,13 +19,8 @@ class PatientProfileInfoForm(forms.ModelForm):
         model = Patient
         fields = ('dateOfBirth',)
         widgets = {
-            'dateOfBirth': DatePickerInput(
-                options={
-                    "format": "YYYY-MM-DD", # moment date-time format
-                    "showClose": True,
-                    "showClear": True,
-                    "showTodayButton": True,
-                }), 
+            'dateOfBirth': DateInput(),
+
         }
 
 class SurgeonProfileInfoForm(forms.ModelForm):
@@ -39,13 +36,8 @@ class OperationInfoForm(forms.ModelForm):
         model = Operation
         fields = '__all__'
         widgets = {
-            'surgeryDate': DatePickerInput(
-                options={
-                    "format": "YYYY-MM-DD", # moment date-time format
-                    "showClose": True,
-                    "showClear": True,
-                    "showTodayButton": True,
-                }), 
+            'surgeryDate': DateInput(),
+
         }
 
 
@@ -56,11 +48,5 @@ class PatientOperationInfoForm(forms.ModelForm):
         model = Operation
         exclude = ('patient',)
         widgets = {
-            'surgeryDate': DatePickerInput(
-                options={
-                    "format": "YYYY-MM-DD", # moment date-time format
-                    "showClose": True,
-                    "showClear": True,
-                    "showTodayButton": True,
-                }), 
+            'surgeryDate': DateInput(),
         }
