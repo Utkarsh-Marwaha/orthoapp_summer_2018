@@ -7,6 +7,11 @@ class StepCounterForm(forms.ModelForm):
         model  = StepCounter
         fields = ('steps',)
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        self.fields['steps'].label = "How many steps did you take today ?"
+        
 class KneeMotionRangeForm(forms.ModelForm):
 
     class Meta():
