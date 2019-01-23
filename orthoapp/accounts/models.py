@@ -37,24 +37,24 @@ class Practice(models.Model):
         return self.user.username
 
 class Operation(models.Model):
-    KNEE = 'K'
-    HIP  = 'H'
+    KNEE = 'Knee'
+    HIP  = 'Hip'
     OPERATION_TYPE_CHOICES =(
     (KNEE, 'Knee'),
     (HIP, 'Hip'),
     )
 
-    LEFT   = 'L'
-    RIGHT  = 'R'
-    BOTH   = 'B'
+    LEFT   = 'Left'
+    RIGHT  = 'Right'
+    BOTH   = 'Both'
     OPERATION_SIDE_CHOICES =(
     (LEFT, 'Left'),
     (RIGHT, 'Right'),
     (BOTH, 'Both'),
     )
 
-    PRIMARY = 'P'
-    REVISION  = 'R'
+    PRIMARY = 'Pri'
+    REVISION  = 'Rev'
     SURGERY_TYPE_CHOICES =(
     (PRIMARY, 'Primary'),
     (REVISION, 'Revision'),
@@ -62,9 +62,9 @@ class Operation(models.Model):
 
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
     surgeon = models.ForeignKey(Surgeon, on_delete=models.CASCADE)
-    operationType = models.CharField(max_length = 1, choices = OPERATION_TYPE_CHOICES)
-    operationSide = models.CharField(max_length = 1, choices = OPERATION_SIDE_CHOICES)
-    surgeryType   = models.CharField(max_length = 1, choices = SURGERY_TYPE_CHOICES)
+    operationType = models.CharField(max_length = 5, choices = OPERATION_TYPE_CHOICES)
+    operationSide = models.CharField(max_length = 5, choices = OPERATION_SIDE_CHOICES)
+    surgeryType   = models.CharField(max_length = 5, choices = SURGERY_TYPE_CHOICES)
 
     surgeryDate = models.DateField()
 
