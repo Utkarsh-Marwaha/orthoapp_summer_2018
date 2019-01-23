@@ -65,7 +65,7 @@
                 {% elif user.is_surgeon %}
                   class="nav-link" href="{% url 'surgeon' %}"
                 {% endif %}
-
+                >
                     Welcome <strong>{{ user.username }}</strong> (Dashboard)
 
                 </a>
@@ -74,7 +74,6 @@
 
                 <li class="nav-item mr-3">
                   <a href="javascript:{document.getElementById('user_logout').submit()}" class="nav-link">
-
                     <i class="fas fa-sign-out-alt">Logout</i>
                   </a>
                   <form action="{% url 'user_logout' %}" method="POST" id="user_logout">
