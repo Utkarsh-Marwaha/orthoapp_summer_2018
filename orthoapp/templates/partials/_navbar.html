@@ -74,7 +74,7 @@
 
                 <li class="nav-item mr-3">
                   <a href="javascript:{document.getElementById('user_logout').submit()}" class="nav-link">
-                    <i class="fas fa-sign-out-alt">Logout</i>
+                    <i class="fas fa-sign-out-alt"> Logout</i>
                   </a>
                   <form action="{% url 'user_logout' %}" method="POST" id="user_logout">
                     {% csrf_token %}
@@ -86,7 +86,7 @@
               {% else %}
                 <li class="nav-item mr-3">
                   <a class="nav-link" href="{% url 'user_login' %}">
-                    <i class="fas fa-sign-in-alt"></i>Login</a>
+                    <i class="fas fa-sign-in-alt"></i> Login</a>
                 </li>
              {% endif %}
           </ul>

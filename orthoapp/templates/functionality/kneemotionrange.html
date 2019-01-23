@@ -50,9 +50,9 @@
                                                 <form enctype="multipart/form-data" method="POST">
                                                     {% csrf_token %}
                                                     {% if operation_list %}
-                                                    <div class="col-md-6 mb-3">
+                                                    <div class="mb-3">
                                                         <label class="sr-only">Operations </label>
-                                                        <select name="selected_operation" class="form-control">
+                                                        <select name="selected_operation" class="form-control selectpicker show-tick" data-live-search="true">
                                                             <option selected="true" disabled="disabled">Select Operation</option>
                                                             {% for operation in operation_list %}
                                                             <option> {{operation}} </option>
