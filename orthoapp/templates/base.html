@@ -23,13 +23,16 @@
     <script src="{% static 'js/lightbox.min.js' %} "></script>
     <!-- Latest compiled and minified Javascript library -->
     <script src="{% static 'js/main.js' %} "></script>
-
-    <!-- needed for chartit -->
+    <!-- Latest compiled and minified Bootstrap Select CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.2/css/bootstrap-select.min.css">
+    <!-- Latest compiled and minified Bootstrap Select JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.2/js/bootstrap-select.min.js"></script>
+    <!-- Latest compiled highchart js -->
     <script src="https://code.highcharts.com/highcharts.src.js"></script>
 
 
 
-    <title>Ortho App</title>
+    <title>Ortho App {% block title %} {% endblock %}</title>
 </head>
 <body>
 
@@ -38,15 +41,6 @@
 
   <!-- Navbar -->
   {% include 'partials/_navbar.html' %}
-
-  <!-- Make the UI better for the message framework -->
-  {% if messages %}
-  <ul class="messages">
-    {% for message in messages %}
-      <li {% if forloop.last %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-    {% endfor %}
-  </ul>
-  {% endif %}
 
   <!-- Body Content: Different for every page -->
   {% block content %}

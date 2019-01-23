@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from accounts.forms import SurgeonProfileInfoForm, PatientProfileInfoForm, UserForm, OperationInfoForm, PatientOperationInfoForm
+from django.contrib import messages
 
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponseRedirect, HttpResponse
@@ -79,7 +80,7 @@ def register_patient(request):
 
             # Check if they provided a profile picture
             if 'profile_pic' in request.FILES:
-                print('found it')
+                
                 # If yes, then grab it from the POST form reply
                 profile.profile_pic = request.FILES['profile_pic']
 
@@ -231,15 +232,12 @@ def register_operation(request):
 
 def user_login(request):
     if request.method == 'POST':
-        print("WHY YOU COME TO USER LOGIN FUNCTION")
+        
         username = request.POST.get('username') #this get will grab it from the HTML
         password = request.POST.get('password')
 
         user = authenticate(username=username, password=password) #user is a boolean that tells us if it is authenticated or not
         if user:
-            print("HAHAHHAHAHAHA")
-            print(user.is_patient)
-            print("HEHEHEHEHEHEHEHE")
             # if user.is_active and user.is_patient:
             if user.is_active and (user.is_surgeon or user.is_patient or user.is_practice):
                 login(request, user)
@@ -249,9 +247,8 @@ def user_login(request):
             else:
                 return HttpResponse("ACCESS DENIED!")
         else:
-            print("LOGIN FAILED!")
-            print("Username: {} and password {}".format(username, password))
-            return HttpResponse("Invalid login details supplied!")
+            messages.error(request, 'Invalid login details supplied!')
+            return render(request, 'accounts/login.html',{})
     else:
         return render(request, 'accounts/login.html',{})
 
@@ -298,27 +295,29 @@ def practice(request):
 
 
 
-from django.contrib import messages
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
 @login_required
 def change_password(request):
-    if request.method == 'POST':
-        print("HAHHAHAHAHAHAH")
-        form = PasswordChangeForm(request.user, request.POST)
-        if form.is_valid():
-            print("INSIDE IF ")
-            user = form.save()
+
+    if request.method == 'POST':   
+
+        change_password_form = PasswordChangeForm(request.user, request.POST)
+        
+        if change_password_form.is_valid():     
+            user = change_password_form.save()
             update_session_auth_hash(request, user)  # Important!
             messages.success(request, 'Your password was successfully updated!')
             return redirect('change_password')
         else:
             messages.error(request, 'Please correct the error below.')
+
     else:
-        print("NO POST YET")
-        form = PasswordChangeForm(request.user)
+        
+        change_password_form = PasswordChangeForm(request.user)
+   
     return render(request, 'accounts/change_password.html', {
-        'form': form
+        'change_password_form': change_password_form
     })
 
 @login_required
