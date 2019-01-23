@@ -8,6 +8,11 @@ from django.contrib.auth.decorators import login_required # login decorator that
 from accounts.decorators import patient_required, surgeon_required, practice_required
 from accounts.models import Operation
 
+from django.utils.datastructures import MultiValueDictKeyError
+from django.contrib import messages
+
+
+
 # Create your views here.
 @login_required
 @patient_required
@@ -25,11 +30,15 @@ def stepcounter(request):
     if request.method == 'POST':
 
         #this variable contains the selected operation on the patient interface
-        selected_operation = request.POST['selected_operation']
+        try:
+            selected_operation = request.POST['selected_operation']            
+        except MultiValueDictKeyError:
+            messages.error(request, 'Please Select an Operation')
+            return redirect('stepcounter')
 
         stepcounter_form = StepCounterForm(data=request.POST)
 
-        if stepcounter_form.is_valid:
+        if stepcounter_form.is_valid():
             step_counter_object = stepcounter_form.save(commit=False)
 
             # Want to protect it further? do stuff below
@@ -40,16 +49,18 @@ def stepcounter(request):
             step_counter_object.save()
 
             submitted = True
+            messages.success(request, 'Data saved successfully')
+            return redirect('stepcounter')
 
         else:
-            print(stepcounter_form.errors)
+            messages.error(request, 'Invalid Data entered')
+            return redirect('stepcounter')
     else:
         stepcounter_form = StepCounterForm()
 
     return render(request, 'functionality/stepcounter.html',
     {
         'stepcounter_form' : stepcounter_form,
-        'submitted'        : submitted,
         'operation_list'   : operation_list
     })
 @login_required
@@ -66,8 +77,12 @@ def kneemotionrange(request):
             operation_list.append(i)
 
     if request.method == 'POST':
-        # selected_operation = request.POST.get('selected_operation', False)
-        selected_operation = request.POST['selected_operation']
+        try:
+            selected_operation = request.POST['selected_operation']            
+        except MultiValueDictKeyError:
+            messages.error(request, 'Please Select an Operation')
+            return redirect('kneemotionrange')
+
         kneemotionrange_form = KneeMotionRangeForm()
         if kneemotionrange_form.is_valid:
             kneemotionrange_object = kneemotionrange_form.save(commit=False)
@@ -78,11 +93,11 @@ def kneemotionrange(request):
             kneemotionrange_object.stretch = float(request.POST['stretch'])
             kneemotionrange_object.save()
             submitted = True
+            messages.success(request, 'Data saved successfully')
+            return redirect('kneemotionrange')
 
     return render(request, 'functionality/kneemotionrange.html',
     {
-        # 'stepcounter_form' : stepcounter_form,
-        'submitted'        : submitted,
         'operation_list'   : operation_list
     })
 
@@ -102,11 +117,15 @@ def painlevel(request):
     if request.method == 'POST':
 
         #this variable contains the selected operation on the patient interface
-        selected_operation = request.POST['selected_operation']
+        try:
+            selected_operation = request.POST['selected_operation']            
+        except MultiValueDictKeyError:
+            messages.error(request, 'Please Select an Operation')
+            return redirect('painlevel')
 
         painlevel_form = PainLevelForm(data=request.POST)
 
-        if painlevel_form.is_valid:
+        if painlevel_form.is_valid():
             painlevel_object = painlevel_form.save(commit=False)
 
             # Want to protect it further? do stuff below
@@ -117,17 +136,19 @@ def painlevel(request):
             painlevel_object.save()
 
             submitted = True
+            messages.success(request, 'Data saved successfully')
+            return redirect('painlevel')
 
         else:
-            print(painlevel_form.errors)
+            messages.error(request, 'Invalid Data entered')
+            return redirect('painlevel')
     else:
         painlevel_form = PainLevelForm()
 
     return render(request, 'functionality/painlevel.html',
     {
         'painlevel_form' : painlevel_form,
-        'submitted'        : submitted,
-        'operation_list'   : operation_list
+        'operation_list' : operation_list
     })
 
 ######################## new section here #########################

@@ -32,16 +32,13 @@
       </nav>
     </div>
   </section>
-
+  
   <section id="dashboard" class="py-4">
     <div class="container">
       <div class="row">
         <div class="col-md-12">
           <h2>Welcome {{user.username}}</h2>
           <div class="container">
-            {% if submitted %}
-            <h1>Your data has been saved!</h1>
-            {% else %}
             <section id="login" class="py-5">
               <div class="container">
                 <div class="row">
@@ -51,6 +48,8 @@
                         <h4><i class="fas"></i>Pain Level Score</h4>
                       </div>
                       <div class="card-body">
+                        <!-- Alerts -->
+                        {% include 'partials/_alerts.html' %}
                         <form enctype="multipart/form-data" method="POST">
                           {% csrf_token %}
                           {% if operation_list %}
@@ -69,7 +68,7 @@
                             With the understanding that 0 is equal to no pain and 10 is equal to worst possible pain
                           </small>
                           {{ painlevel_form|crispy }}
-
+                          
                           <input type="submit" class="btn btn-secondary btn-block" name="" value="Submit">
                         </form>
                       </div>
@@ -78,8 +77,6 @@
                 </div>
               </div>
             </section>
-
-            {% endif %}
           </div>
         </div>
       </div>

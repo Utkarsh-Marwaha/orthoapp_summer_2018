@@ -37,9 +37,6 @@
                 <div class="col-md-12">
                     <h2>Welcome {{user.username}}</h2>
                     <div class="container">
-                        {% if submitted %}
-                        <h1>Your data has been saved!</h1>
-                        {% else %}
                         <section id="login" class="py-5">
                             <div class="container">
                                 <div class="row">
@@ -49,6 +46,8 @@
                                                 <h4><i class="fas"></i>Knee Motion Range</h4>
                                             </div>
                                             <div class="card-body">
+                                                <!-- Alerts -->
+                                                {% include 'partials/_alerts.html' %}
                                                 <form enctype="multipart/form-data" method="POST">
                                                     {% csrf_token %}
                                                     {% if operation_list %}
@@ -62,7 +61,7 @@
                                                         </select>
                                                     </div>
                                                     {% endif %}
-
+                                                    
                                                     <small id="" class="form-text text-muted">
                                                         Tap anywhere on the image below to cycle through the options.
                                                     </small>
@@ -73,7 +72,7 @@
                                                         <input type="hidden" name=stretch id=stretch value="120" class="form-control">
                                                         <button type="button" class="btn btn-primary btn-block" disabled> Degree<span class="badge" id="stretch_degree_display">120</span></button>
                                                     </div>
-
+                                                    
                                                     <small id="" class="form-text text-muted">
                                                         Tap anywhere on the image below to cycle through the options.
                                                     </small>
@@ -95,7 +94,7 @@
                             </div>
                         </section>
                         
-                        {% endif %}
+                        
                     </div>
                 </div>
             </div>
