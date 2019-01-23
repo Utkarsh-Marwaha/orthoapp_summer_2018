@@ -1,62 +1,66 @@
 {% extends "base.html" %}
+
+{% block title %} | Settings {% endblock %}
+
+
 {% block content %}
 
-      <section id="showcase-inner" class="py-5 text-white">
-        <div class="container">
-          <div class="row text-center">
-            <div class="col-md-12">
-              <h1 class="display-4">User Settings</h1>
-              <p class="lead">Manage Your Account Settings</p>
-            </div>
-          </div>
+<section id="showcase-inner" class="py-5 text-white">
+  <div class="container">
+    <div class="row text-center">
+      <div class="col-md-12">
+        <h1 class="display-4">User Settings</h1>
+        <p class="lead">Manage Your Account Settings</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Breadcrumb -->
+<section id="bc" class="mt-3">
+  <div class="container">
+    <nav aria-label="breadcrumb">
+      
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a href="{% url 'index' %}">
+            <i class="fas fa-home"></i> Home</a>
+          </li>
+          <li class="breadcrumb-item active"> Settings</li>
+          
+        </ol>
+        
+      </nav>
+    </div>
+  </section>
+  
+  <section id="dashboard" class="py-4">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <h2>Welcome {{user.username}}</h2>
+          <p>Here are the settings you can edit</p>
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Option</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>1</td>
+                <td>Edit Password</td>
+                <td>
+                  <a class="btn btn-light" href="{% url 'change_password' %}">Edit</a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
-      </section>
-
-      <!-- Breadcrumb -->
-      <section id="bc" class="mt-3">
-        <div class="container">
-          <nav aria-label="breadcrumb">
-
-            <ol class="breadcrumb">
-              <li class="breadcrumb-item">
-                <a href="{% url 'index' %}">
-                  <i class="fas fa-home"></i> Home</a>
-              </li>
-              <li class="breadcrumb-item active"> Settings</li>
-
-            </ol>
-
-          </nav>
-        </div>
-      </section>
-
-      <section id="dashboard" class="py-4">
-        <div class="container">
-          <div class="row">
-            <div class="col-md-12">
-              <h2>Welcome {{user.username}}</h2>
-              <p>Here are the settings you can edit</p>
-              <table class="table">
-                <thead>
-                  <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Option</th>
-                    <th></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>1</td>
-                    <td>Edit Password</td>
-                    <td>
-                      <a class="btn btn-light" href="{% url 'change_password' %}">Edit</a>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      </section>
-
-{% endblock %}
+      </div>
+    </div>
+  </section>
+  
+  {% endblock %}
