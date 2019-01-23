@@ -62,20 +62,28 @@
                                                         </select>
                                                     </div>
                                                     {% endif %}
+
+                                                    <small id="" class="form-text text-muted">
+                                                        Tap anywhere on the image below to cycle through the options.
+                                                    </small>
                                                     
                                                     <div class="form-group">
                                                         <h3>How far can you stretch your knee?</h3>
                                                         <img src="{% static 'img/functional_img/120d.png' %}" alt="" id="imageOne" onclick = "Stretching()"/>
                                                         <input type="hidden" name=stretch id=stretch value="120" class="form-control">
-                                                        <p id="stretch_degree_display">120</p>
+                                                        <button type="button" class="btn btn-primary btn-block" disabled> Degree<span class="badge" id="stretch_degree_display">0</span></button>
                                                     </div>
+
+                                                    <small id="" class="form-text text-muted">
+                                                        Tap anywhere on the image below to cycle through the options.
+                                                    </small>
                                                     
                                                     <div class="form-group">
                                                         <h3>How far can you bend your knee?</h3>
                                                         <img src="{% static 'img/functional_img/0d.png' %}" alt="" id="imageTwo" onclick = "Bending()"/>
                                                         <input type="hidden" name=bend id=bend value="0">
                                                         
-                                                        <p id="bend_degree_display">0</p>
+                                                        <button type="button" class="btn btn-primary btn-block" disabled> Degree<span class="badge" id="bend_degree_display">0</span></button>
                                                     </div>    
                                                     
                                                     <input type="submit" class="btn btn-secondary btn-block" name="" value="Submit">
