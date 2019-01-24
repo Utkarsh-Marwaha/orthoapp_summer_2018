@@ -7,17 +7,66 @@
 
 {% block content %}
 
-<div id="container">
-  
+<div class="container">
+  <!-- Alerts -->
+  {% include 'partials/_alerts.html' %}
+
+    
+<div>
+    {% if user.is_patient %}
+      <form enctype="multipart/form-data" method="POST">
+        {% csrf_token %}
+        {% if operation_list %}
+        <div class="mb-3">
+          <label class="sr-only">Operations </label>
+          <select name="selected_operation" class="form-control selectpicker show-tick" data-live-search="true">
+            <option selected="true" disabled="disabled">Select Operation</option>
+            {% for operation in operation_list %}
+                <option> {{operation}} </option>
+            {% endfor %}
+          </select>
+        </div>
+        {% endif %}
+        <input type="submit" name="" id="" class="btn btn-light btn-block" value="Filter Operation">
+      </form>
+    {% elif user.is_surgeon %}
+      <form enctype="multipart/form-data" method="POST">
+        {% csrf_token %}
+        {% if operation_list %}
+        <div class="mb-3">
+          <label class="sr-only">Operations </label>
+          <select name="selected_operation" class="form-control selectpicker show-tick" data-live-search="true">
+            <option selected="true" disabled="disabled">Select Operation</option>
+            {% for operation in operation_list %}
+                <option> {{operation}} </option>
+            {% endfor %}
+          </select>
+        </div>
+        {% endif %}
+        <input type="hidden" name="patient_user" id="patient_user" value={{selected_patient_username}} class="form-control">
+        <input type="hidden" name="switch" id="switch" value={{switch}} class="form-control">
+        <input type="submit" name="" id="" class="btn btn-light btn-block" value="Filter Operation">
+      </form>
+    {% endif %}
+
+    
 </div>
 
-<div id="container2">
+    <div id="container">
   
+      </div>
+      
+      <div id="container2">
+        
+      </div>
+      
+      <div id="container3">  
+        
+      </div>
+
 </div>
 
-<div id="container3">  
-  
-</div>
+
 
 
 
@@ -85,7 +134,6 @@
   
   Highcharts.chart('container', {{ chart|safe }});
 </script>
-
 
 <script>
   Highcharts.chart('container2', {{ chart2|safe }});

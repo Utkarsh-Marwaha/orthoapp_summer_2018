@@ -170,27 +170,74 @@ def chart(request):
 
     login_username = ""
 
+    switch=False 
+
+    if request.method == "POST": 
+        if 'switch' in request.POST:
+            switch = request.POST["switch"]
+
+    
+
+
     if request.user.is_practice:
         return render(request, 'pages/index.html', {})
 
-    elif request.user.is_surgeon:
+    elif request.user.is_surgeon and not switch:
         if request.method == 'POST':
             login_username = request.POST["patient_user"]
+            switch = True
+            print("HI SURGEON")
+            print(login_username)
         else:
-             return render(request, 'pages/index.html', {})
+            print("JUST HERE")
+            return render(request, 'pages/index.html', {})
 
     else:
         # get the user name of the user who is currently logged in to the website
-        login_username = request.user.username
+        if not switch:
+            login_username = request.user.username
+        else:
+            
+            if request.method == 'POST' and request.user.is_surgeon:
+                
+                login_username = request.POST["patient_user"]
+                switch = False
+
+    #this list contains all the operation objects
+    all_operation_list = Operation.objects.all()
+    #this list contains all the operation objects filtered by login_username
+    operation_list = list()
+    for i in all_operation_list:
+        if i.patient.user.username == login_username:
+            operation_list.append(i)
+
+    selected_operation = Operation()
+    print("THIS WILL NOT BE PRINTED")
+
+    if (request.method == 'POST') and not switch:
+        print("INSIDE THE SECOND POST REQUEST")
+        #this variable contains the selected operation on the patient interface
+        try:
+            selected_operation = request.POST['selected_operation'] 
+            print("utkarsh")
+            print(selected_operation)           
+        except MultiValueDictKeyError:                 
+            messages.error(request, 'Please Select an Operation')
+            return redirect('chart')
+    else:
+        if len(operation_list) != 0:
+            selected_operation = str(operation_list[0])
+        print("AFTER THE ELSE CHECKING")
 
     #Step 1: Create a DataPool with the data we want to retrieve.
+    # print(selected_operation)
+    print("AFTER THE ELSE !!!!!!!!!!!!!!!")
 
     stepcounter_wanted_items = set()
     # cycle through all the step counter instances
     for item in StepCounter.objects.all():
-        print(item.operation.patient.user.username)
         # if the logged in user is the same as the patient username who created the record
-        if item.operation.patient.user.username == login_username:
+        if item.operation.patient.user.username == login_username and str(item.operation) == selected_operation:
             # then append the record to the list
             stepcounter_wanted_items.add(item.pk)
     stepcounter_filtered_data = StepCounter.objects.filter(pk__in = stepcounter_wanted_items) \
@@ -228,7 +275,7 @@ def chart(request):
     # cycle through all the knee motion range objects
     for item in KneeMotionRange.objects.all():
         # if the logged in user is the same as the patient username who created the record
-        if item.operation.patient.user.username == login_username:
+        if item.operation.patient.user.username == login_username and str(item.operation) == selected_operation:
             # then append the record to the list
             kneemotionrange_wanted_items.add(item.pk)
 
@@ -280,7 +327,7 @@ def chart(request):
     # cycle through all the pain level objects
     for item in PainLevel.objects.all():
         # if the logged in user is the same as the patient username who created the record
-        if item.operation.patient.user.username == login_username:
+        if item.operation.patient.user.username == login_username and str(item.operation) == selected_operation:
             # then append the record to the list
             painlevel_wanted_items.add(item.pk)
 
@@ -317,4 +364,12 @@ def chart(request):
     dump2 = json.dumps(chart2, sort_keys=True, indent=1, cls=DjangoJSONEncoder)
     dump3 = json.dumps(chart3, sort_keys=True, indent=1, cls=DjangoJSONEncoder)
 
-    return render(request, 'functionality/records.html', {'chart': dump, 'chart2':dump2, 'chart3':dump3})
+    if request.user.is_surgeon:
+        switch = True
+        return render(request, 'functionality/records.html', {'chart': dump, 'chart2':dump2, 'chart3':dump3, 
+                                                              'operation_list': operation_list,
+                                                              'selected_patient_username':login_username,
+                                                              'switch':switch})
+    elif request.user.is_patient:
+        return render(request, 'functionality/records.html', {'chart': dump, 'chart2':dump2, 'chart3':dump3, 
+        'operation_list': operation_list})
