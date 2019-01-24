@@ -104,6 +104,9 @@ def register_patient(request):
                 recipient_list=[profile.user.email],
                 fail_silently=False
             )
+            
+            messages.success(request, 'Patient Created')
+            return redirect('signup_patient')
 
         else:
             # One of the forms was invalid if this else gets called.
@@ -121,7 +124,7 @@ def register_patient(request):
                           {'user_form':user_form,
                            'profile_form':profile_form,
                            'operation_form': operation_form,
-                           'registered':registered})
+                           })
 
 
 @login_required
@@ -180,6 +183,9 @@ def register_surgeon(request):
                 fail_silently=False
             )
 
+            messages.success(request, 'Surgeon Created')
+            return redirect('signup_surgeon')
+
         else:
             # One of the forms was invalid if this else gets called.
             print(user_form.errors,profile_form.errors)
@@ -194,7 +200,7 @@ def register_surgeon(request):
     return render(request,'accounts/registration.html',
                           {'user_form':user_form,
                            'profile_form':profile_form,
-                           'registered':registered})
+                           })
 @login_required
 @practice_required
 def register_operation(request):
@@ -215,6 +221,8 @@ def register_operation(request):
 
             # Registration Successful!
             registered = True
+            messages.success(request, 'Operation Created')
+            return redirect('register_operation')
 
         else:
             # One of the forms was invalid if this else gets called.
@@ -228,7 +236,7 @@ def register_operation(request):
     # back to the registration.html file page.
     return render(request,'accounts/operation.html',
                           {'operation_form':operation_form,
-                           'registered':registered})
+                           })
 
 def user_login(request):
     if request.method == 'POST':
