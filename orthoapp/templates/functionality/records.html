@@ -7,53 +7,87 @@
 
 {% block content %}
 
-<!-- {% if stepcounter_chart and kneemotionrange_chart and painlevel_chart %}
-{{ chart_list|load_charts:"chart1,chart2,chart3" }}
-<div id='chart1'></div>
-<div id='chart2'></div>
-<div id='chart3'></div>
-
-{% elif stepcounter_chart and kneemotionrange_chart and not painlevel_chart %}
-  {{ chart_list|load_charts:"chart1, chart2" }}
-  <div id='chart1'></div>
-  <div id='chart2'></div>
-
-{% elif stepcounter_chart and not kneemotionrange_chart and painlevel_chart %}
-  {{ chart_list|load_charts:"chart1, chart2" }}
-
-  <div id='chart1'></div>
-  <div id='chart2'></div>
-
-{% elif  not stepcounter_chart and kneemotionrange_chart and painlevel_chart %}
-  {{ chart_list|load_charts:"chart1, chart2" }}
-
-  <div id='chart1'></div>
-  <div id='chart2'></div>
-
-
-{% elif stepcounter_chart or kneemotionrange_chart or painlevel_chart %}
-  {{ chart_list|load_charts:"chart1" }}
-  <div id='chart1'></div>
-
-{% else %}
-  <p align='center'> There is no data input yet</p>
-{% endif %} -->
-
-
-<div id="container"></div>
-<div id="container2"></div>
-<div id="container3"></div>
-  <script src="https://code.highcharts.com/highcharts.src.js"></script>
+<div id="container">
   <script>
+    
+    Highcharts.setOptions({   
+      colors: ['#7cb5ec', '#f7a35c', '#90ee7e', '#7798BF', '#aaeeee', '#ff0066',
+      '#eeaaee', '#55BF3B', '#DF5353', '#7798BF', '#aaeeee'],
+      chart: {
+        backgroundColor: null,
+        style: {
+          fontFamily: 'Dosis, sans-serif'
+        }
+      },
+      title: {
+        style: {
+          fontSize: '16px',
+          fontWeight: 'bold',
+          textTransform: 'uppercase'
+        }
+      },
+      tooltip: {
+        borderWidth: 0,
+        backgroundColor: 'rgba(219,219,216,0.8)',
+        shadow: false
+      },
+      legend: {
+        itemStyle: {
+          fontWeight: 'bold',
+          fontSize: '13px'
+        }
+      },
+      xAxis: {
+        gridLineWidth: 1,
+        labels: {
+          style: {
+            fontSize: '12px'
+          }
+        }
+      },
+      yAxis: {
+        minorTickInterval: 'auto',
+        title: {
+          style: {
+            textTransform: 'uppercase'
+          }
+        },
+        labels: {
+          style: {
+            fontSize: '12px'
+          }
+        }
+      },
+      plotOptions: {
+        candlestick: {
+          lineColor: '#404048'
+        }
+      },
+      
+      
+      // General
+      background2: '#F0F0EA'
+      
+    });
+    
     Highcharts.chart('container', {{ chart|safe }});
   </script>
+  
+</div>
 
+<div id="container2">  
   <script>
     Highcharts.chart('container2', {{ chart2|safe }});
   </script>
+</div>
 
+<div id="container3">
   <script>
     Highcharts.chart('container3', {{ chart3|safe }});
   </script>
+</div>
+
+
+
 
 {% endblock %}

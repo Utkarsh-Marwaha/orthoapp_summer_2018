@@ -164,8 +164,10 @@ from functionality.models import StepCounter, KneeMotionRange, PainLevel
 import json
 from django.db.models import Count, Q
 from django.core.serializers.json import DjangoJSONEncoder
+
 @login_required
 def chart(request):
+
     login_username = ""
 
     if request.user.is_practice:
@@ -191,46 +193,40 @@ def chart(request):
         if item.operation.patient.user.username == login_username:
             # then append the record to the list
             stepcounter_wanted_items.add(item.pk)
-    print("hahahhahahaa")
-    print(stepcounter_wanted_items == set())
-    print(stepcounter_wanted_items)
     stepcounter_filtered_data = StepCounter.objects.filter(pk__in = stepcounter_wanted_items) \
                                 .values("created", "steps")
 
-    print(stepcounter_filtered_data)
     created_data = list()
     steps_data = list()
+
     for entry in stepcounter_filtered_data:
         created_data.append(entry['created'])
         steps_data.append(entry['steps'])
-    steps_series = {
-        'name': 'steps',
-        'data': steps_data,
-        'color': 'blue'
-    }
 
     chart = {
         'chart': {'type': 'line'},
-        'title': {'text': 'Step Counter Data of the Patient'},
-        'xAxis': {'categories': created_data},
-        'series': [steps_series]
+        'title': {'text': 'Step Counter Data'},
+        'xAxis': {
+        'categories' : [created_data], 'title' :  {'text': 'Date'}
+        },
+        'yAxis': {
+            'title': {
+                'text': 'Step Count',  
+            },
+        },
+        'series': [{
+        'name': 'steps',
+        'data': steps_data,
+    }],
     }
-
-    dump = json.dumps(chart, sort_keys=True, indent=1, cls=DjangoJSONEncoder)
-
-
-
-
-
-
 
 
     #Step 1: Create a DataPool with the data we want to retrieve.
 
     kneemotionrange_wanted_items = set()
-    # cycle through all the step counter instances
+
+    # cycle through all the knee motion range objects
     for item in KneeMotionRange.objects.all():
-        print(item.operation.patient.user.username)
         # if the logged in user is the same as the patient username who created the record
         if item.operation.patient.user.username == login_username:
             # then append the record to the list
@@ -247,41 +243,42 @@ def chart(request):
         created_data.append(entry['created'])
         bend_data.append(entry['bend'])
         stretch_data.append(entry['stretch'])
-    bend_series = {
-        'name': 'bend',
-        'data': bend_data,
-        'color': 'blue'
-    }
-
-    stretch_series = {
-        'name': 'stretch',
-        'data': stretch_data,
-        'color': 'black'
-    }
+    
     chart2 = {
-        'chart': {'type': 'column'},
-        'title': {'text': 'Knee Motion Data of the Patient'},
-        'xAxis': {'categories': created_data},
-        'series': [bend_series, stretch_series]
+        'chart': {
+            'type': 'column'
+         },
+        'title': {'text': 'Knee Motion Data',},
+        'xAxis': {
+            'categories' : [created_data], 
+            'title' :  {
+                'text': 'Date'
+            },
+        }, 
+        'yAxis': {
+            'title': {
+                'text': 'Degrees',  
+            },
+        },
+        'tooltip': {
+        'valueSuffix': ' degrees',
+        },    
+ 
+        'series': [{
+        'name': 'bend',
+        'data': bend_data
+        }, 
+        {
+        'name': 'stretch',
+        'data': stretch_data
+        },]
     }
-
-
-
-
-
-
-
-
-
-
-
 
     #Step 1: Create a DataPool with the data we want to retrieve.
 
     painlevel_wanted_items = set()
-    # cycle through all the step counter instances
+    # cycle through all the pain level objects
     for item in PainLevel.objects.all():
-        print(item.operation.patient.user.username)
         # if the logged in user is the same as the patient username who created the record
         if item.operation.patient.user.username == login_username:
             # then append the record to the list
@@ -297,21 +294,26 @@ def chart(request):
         created_data.append(entry['created'])
         painlevel_data.append(entry['painLevel'])
 
-    painlevel_series = {
-        'name': 'painlevel',
-        'data': painlevel_data,
-        'color': 'blue'
-    }
 
     chart3 = {
         'chart': {'type': 'line'},
-        'title': {'text': 'Pain Level Data of the Patient'},
-        'xAxis': {'categories': created_data},
-        'series': [painlevel_series]
+        'title': {'text': 'Pain Level Data'},
+        'xAxis': {
+        'categories' : [created_data], 'title' :  {'text': 'Date'}
+        },
+        'yAxis': {
+            'title': {
+                'text': 'Pain Scores',  
+            },
+        },
+        'series': [{
+        'name': 'painlevel',
+        'data': painlevel_data,
+    }]
     }
 
 
-    dump = json.dumps(chart, sort_keys=True, indent=1, cls=DjangoJSONEncoder)
+    dump  = json.dumps(chart, sort_keys=True, indent=1, cls=DjangoJSONEncoder)
     dump2 = json.dumps(chart2, sort_keys=True, indent=1, cls=DjangoJSONEncoder)
     dump3 = json.dumps(chart3, sort_keys=True, indent=1, cls=DjangoJSONEncoder)
 
