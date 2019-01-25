@@ -13,11 +13,13 @@ class UserForm(forms.ModelForm):
         model = MyUser
         fields = ('username', 'email', 'first_name', 'last_name')
 
+GENDER_CHOICES = (('0', 'Female'),('1', 'Male'),)
 class PatientProfileInfoForm(forms.ModelForm):
+    gender = forms.ChoiceField(choices=GENDER_CHOICES, widget=forms.RadioSelect())
 
     class Meta():
         model = Patient
-        fields = ('dateOfBirth',)
+        fields = ('gender','dateOfBirth',)
         widgets = {
             'dateOfBirth': DateInput(),
 
