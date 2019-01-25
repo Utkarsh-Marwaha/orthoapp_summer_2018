@@ -31,7 +31,7 @@ def stepcounter(request):
 
         #this variable contains the selected operation on the patient interface
         try:
-            selected_operation = request.POST['selected_operation']            
+            selected_operation = request.POST['selected_operation']
         except MultiValueDictKeyError:
             messages.error(request, 'Please Select an Operation')
             return redirect('stepcounter')
@@ -78,7 +78,7 @@ def kneemotionrange(request):
 
     if request.method == 'POST':
         try:
-            selected_operation = request.POST['selected_operation']            
+            selected_operation = request.POST['selected_operation']
         except MultiValueDictKeyError:
             messages.error(request, 'Please Select an Operation')
             return redirect('kneemotionrange')
@@ -118,7 +118,7 @@ def painlevel(request):
 
         #this variable contains the selected operation on the patient interface
         try:
-            selected_operation = request.POST['selected_operation']            
+            selected_operation = request.POST['selected_operation']
         except MultiValueDictKeyError:
             messages.error(request, 'Please Select an Operation')
             return redirect('painlevel')
@@ -128,17 +128,53 @@ def painlevel(request):
         if painlevel_form.is_valid():
             painlevel_object = painlevel_form.save(commit=False)
 
+
+
+            #this is just a tmp object
+            temp = Operation()
+
             # Want to protect it further? do stuff below
             for j in operation_list:
                 if str(j) == selected_operation:
                     painlevel_object.operation = j
-            print(painlevel_object)
+                    temp = j
+
+            if PainLevel.objects.all().filter(operation=temp).count() == 0:
+                print("no record yet")
+                latest_painlevel_object = None
+            else:
+                latest_painlevel_object = PainLevel.objects.all().filter(operation=temp).latest('created')
+            # print(painlevel_object)
             painlevel_object.save()
 
-            submitted = True
-            messages.success(request, 'Data saved successfully')
-            return redirect('painlevel')
+            ##########check for 2 consecutive 7 ##############################
 
+            latest_painlevel = latest_painlevel_object.painLevel
+            latest_created = latest_painlevel_object.created
+            print(latest_painlevel)
+            print(latest_created)
+
+            current_painlevel = painlevel_object.painLevel
+            current_created = painlevel_object.created
+            print(current_painlevel)
+            print(current_created)
+
+            different = current_created - latest_created
+            print(different.days)
+            print(different.seconds)
+            print(different.microseconds)
+            print(type(different.days))
+            print(type(different.seconds))
+            print(type(different.microseconds))
+
+            if different.days == 0 and different.seconds <= 7*60*60 and current_painlevel >=7 and latest_painlevel >=7:
+                messages.success(request, 'Data saved successfully')
+                messages.info(request, "Perhaps it's a good idea to contact your G.P")
+                return redirect('painlevel')
+            else:
+                submitted = True
+                messages.success(request, 'Data saved successfully')
+                return redirect('painlevel')
         else:
             messages.error(request, 'Invalid Data entered')
             return redirect('painlevel')
@@ -170,13 +206,13 @@ def chart(request):
 
     login_username = ""
 
-    switch=False 
+    switch=False
 
-    if request.method == "POST": 
+    if request.method == "POST":
         if 'switch' in request.POST:
             switch = request.POST["switch"]
 
-    
+
 
 
     if request.user.is_practice:
@@ -197,9 +233,9 @@ def chart(request):
         if not switch:
             login_username = request.user.username
         else:
-            
+
             if request.method == 'POST' and request.user.is_surgeon:
-                
+
                 login_username = request.POST["patient_user"]
                 switch = False
 
@@ -218,10 +254,10 @@ def chart(request):
         print("INSIDE THE SECOND POST REQUEST")
         #this variable contains the selected operation on the patient interface
         try:
-            selected_operation = request.POST['selected_operation'] 
+            selected_operation = request.POST['selected_operation']
             print("utkarsh")
-            print(selected_operation)           
-        except MultiValueDictKeyError:                 
+            print(selected_operation)
+        except MultiValueDictKeyError:
             messages.error(request, 'Please Select an Operation')
             return redirect('chart')
     else:
@@ -258,7 +294,7 @@ def chart(request):
         },
         'yAxis': {
             'title': {
-                'text': 'Step Count',  
+                'text': 'Step Count',
             },
         },
         'series': [{
@@ -290,31 +326,31 @@ def chart(request):
         created_data.append(entry['created'])
         bend_data.append(entry['bend'])
         stretch_data.append(entry['stretch'])
-    
+
     chart2 = {
         'chart': {
             'type': 'column'
          },
         'title': {'text': 'Knee Motion Data',},
         'xAxis': {
-            'categories' : [created_data], 
+            'categories' : [created_data],
             'title' :  {
                 'text': 'Date'
             },
-        }, 
+        },
         'yAxis': {
             'title': {
-                'text': 'Degrees',  
+                'text': 'Degrees',
             },
         },
         'tooltip': {
         'valueSuffix': ' degrees',
-        },    
- 
+        },
+
         'series': [{
         'name': 'bend',
         'data': bend_data
-        }, 
+        },
         {
         'name': 'stretch',
         'data': stretch_data
@@ -350,7 +386,7 @@ def chart(request):
         },
         'yAxis': {
             'title': {
-                'text': 'Pain Scores',  
+                'text': 'Pain Scores',
             },
         },
         'series': [{
@@ -366,10 +402,10 @@ def chart(request):
 
     if request.user.is_surgeon:
         switch = True
-        return render(request, 'functionality/records.html', {'chart': dump, 'chart2':dump2, 'chart3':dump3, 
+        return render(request, 'functionality/records.html', {'chart': dump, 'chart2':dump2, 'chart3':dump3,
                                                               'operation_list': operation_list,
                                                               'selected_patient_username':login_username,
                                                               'switch':switch})
     elif request.user.is_patient:
-        return render(request, 'functionality/records.html', {'chart': dump, 'chart2':dump2, 'chart3':dump3, 
+        return render(request, 'functionality/records.html', {'chart': dump, 'chart2':dump2, 'chart3':dump3,
         'operation_list': operation_list})
