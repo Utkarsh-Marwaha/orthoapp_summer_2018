@@ -128,8 +128,6 @@ def painlevel(request):
         if painlevel_form.is_valid():
             painlevel_object = painlevel_form.save(commit=False)
 
-
-
             #this is just a tmp object
             temp = Operation()
 
@@ -147,34 +145,30 @@ def painlevel(request):
             # print(painlevel_object)
             painlevel_object.save()
 
-            ##########check for 2 consecutive 7 ##############################
+            ##########check for 2 consecutive pain level scores of 7 within the last seven hours##############################
+            if latest_painlevel_object is not None:
+                latest_painlevel = latest_painlevel_object.painLevel
+                latest_created = latest_painlevel_object.created
 
-            latest_painlevel = latest_painlevel_object.painLevel
-            latest_created = latest_painlevel_object.created
-            print(latest_painlevel)
-            print(latest_created)
+                current_painlevel = painlevel_object.painLevel
+                current_created = painlevel_object.created
 
-            current_painlevel = painlevel_object.painLevel
-            current_created = painlevel_object.created
-            print(current_painlevel)
-            print(current_created)
+                pain_level_hours = 7
+                pain_level_threshold = 7
+                different = current_created - latest_created
 
-            different = current_created - latest_created
-            print(different.days)
-            print(different.seconds)
-            print(different.microseconds)
-            print(type(different.days))
-            print(type(different.seconds))
-            print(type(different.microseconds))
-
-            if different.days == 0 and different.seconds <= 7*60*60 and current_painlevel >=7 and latest_painlevel >=7:
-                messages.success(request, 'Data saved successfully')
-                messages.info(request, "Perhaps it's a good idea to contact your G.P")
-                return redirect('painlevel')
+                if different.days == 0 and different.seconds <= pain_level_hours*60*60 and current_painlevel >=pain_level_threshold and latest_painlevel >=pain_level_threshold:
+                    messages.success(request, 'Data saved successfully')
+                    messages.info(request, "Perhaps it's a good idea to contact your G.P")
+                    return redirect('painlevel')
+                else:
+                    submitted = True
+                    messages.success(request, 'Data saved successfully')
+                    return redirect('painlevel')
             else:
-                submitted = True
                 messages.success(request, 'Data saved successfully')
                 return redirect('painlevel')
+
         else:
             messages.error(request, 'Invalid Data entered')
             return redirect('painlevel')
