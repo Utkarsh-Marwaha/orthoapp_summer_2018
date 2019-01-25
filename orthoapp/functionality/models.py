@@ -21,7 +21,7 @@ class KneeMotionRange(DataPoint):
     bend = models.FloatField(default=90)
     stretch = models.FloatField(default=90)
 
-
+BOOL_CHOICES = ((True, 'Yes'), (False, 'No'))
 class PainLevel(DataPoint):
     painLevel = models.IntegerField(
     default=0,
@@ -31,7 +31,7 @@ class PainLevel(DataPoint):
     default=0,
     validators=[MinValueValidator(0)])
 
-    isMedicineTaken = models.BooleanField()
+    isMedicineTaken = models.BooleanField(choices=BOOL_CHOICES, default=False)
 
 
 class Appointment(models.Model):

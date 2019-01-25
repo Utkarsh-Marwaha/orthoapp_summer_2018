@@ -18,10 +18,14 @@ class KneeMotionRangeForm(forms.ModelForm):
         model  = KneeMotionRange
         fields = ('bend', 'stretch')
 
-class PainLevelForm(forms.ModelForm):
 
+class PainLevelForm(forms.ModelForm):
+    
     class Meta():
         model  = PainLevel
+        widgets = {
+            'isMedicineTaken': forms.RadioSelect
+        }
         fields = ('painLevel', 'isExerciseDone', 'isMedicineTaken')
         
     def __init__(self, *args, **kwargs):
