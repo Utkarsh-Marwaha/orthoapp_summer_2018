@@ -4,78 +4,80 @@
 
 
 {% block content %}
-  <section id="showcase-inner" class="py-5 text-white">
-      <div class="container">
-        <div class="row text-center">
-          <div class="col-md-12">
-            <h1 class="display-4">User Dashboard</h1>
-            <p class="lead">Manage your Practice account</p>
+<section id="showcase-inner" class="py-5 text-white">
+  <div class="container">
+    <div class="row text-center">
+      <div class="col-md-12">
+        <h1 class="display-4">User Dashboard</h1>
+        <p class="lead">Manage your Practice account</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Breadcrumb -->
+<section id="bc" class="mt-3">
+  <div class="container">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a href="{% url 'index' %}">
+            <i class="fas fa-home"></i> Home</a>
+          </li>
+          <li class="breadcrumb-item active"> Dashboard</li>
+          <li class=" ml-auto">
+            <a href="{% url 'user_settings' %}">
+              <!-- <i class="fas fa-user-cog"></i> -->
+              <i class="fas fa-cog"></i>
+            </a>
+          </li>
+        </ol>
+      </nav>
+    </div>
+  </section>
+  
+  <section id="dashboard" class="py-4">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="page-header">
+            <h2>Welcome {{user.username}}</h2>    
           </div>
+          <p class="lead">Select below the type of account you want to create</p>
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Option</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>1</td>
+                <td>Add New Surgeon</td>
+                <td>
+                  <a class="btn btn-light" href="{% url 'signup_surgeon' %}">Create</a>
+                </td>
+              </tr>
+              <tr>
+                <td>2</td>
+                <td>Add New Patient</td>
+                <td>
+                  <a class="btn btn-light" href="{% url 'signup_patient' %}">Create</a>
+                </td>
+              </tr>
+              <tr>
+                <td>3</td>
+                <td>Assign Operation</td>
+                <td>
+                  <a class="btn btn-light" href="{% url 'register_operation' %}">Create</a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
-    </section>
-
-    <!-- Breadcrumb -->
-    <section id="bc" class="mt-3">
-      <div class="container">
-        <nav aria-label="breadcrumb">
-          <ol class="breadcrumb">
-            <li class="breadcrumb-item">
-              <a href="{% url 'index' %}">
-                <i class="fas fa-home"></i> Home</a>
-            </li>
-            <li class="breadcrumb-item active"> Dashboard</li>
-            <li class=" ml-auto">
-              <a href="{% url 'user_settings' %}">
-                <!-- <i class="fas fa-user-cog"></i> -->
-                <i class="fas fa-cog"></i>
-              </a>
-            </li>
-          </ol>
-        </nav>
-      </div>
-    </section>
-
-    <section id="dashboard" class="py-4">
-      <div class="container">
-        <div class="row">
-          <div class="col-md-12">
-            <h2>Welcome {{user.username}}</h2>
-            <p>Select below the type of account you want to create</p>
-            <table class="table">
-              <thead>
-                <tr>
-                  <th scope="col">#</th>
-                  <th scope="col">Option</th>
-                  <th></th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>1</td>
-                  <td>Add New Surgeon</td>
-                  <td>
-                    <a class="btn btn-light" href="{% url 'signup_surgeon' %}">Create</a>
-                  </td>
-                </tr>
-                <tr>
-                  <td>2</td>
-                  <td>Add New Patient</td>
-                  <td>
-                    <a class="btn btn-light" href="{% url 'signup_patient' %}">Create</a>
-                  </td>
-                </tr>
-                <tr>
-                  <td>3</td>
-                  <td>Assign Operation</td>
-                  <td>
-                    <a class="btn btn-light" href="{% url 'register_operation' %}">Create</a>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-    </section>
-{% endblock %}
+    </div>
+  </section>
+  {% endblock %}
