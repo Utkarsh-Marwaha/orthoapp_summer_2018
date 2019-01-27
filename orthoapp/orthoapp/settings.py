@@ -31,6 +31,7 @@ ALLOWED_HOSTS = ['127.0.0.1']
 # Application definition
 
 INSTALLED_APPS = [
+    'django.contrib.sites',
     'pages.apps.PagesConfig',
     'information_pages.apps.InformationPagesConfig',
     'developer.apps.DeveloperConfig',
@@ -51,6 +52,8 @@ INSTALLED_APPS = [
     'django_markdown2',
 ]
 
+
+SITE_ID = 1
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 
