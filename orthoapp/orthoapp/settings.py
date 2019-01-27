@@ -151,9 +151,11 @@ MEDIA_URL  = '/media/'
 
 # Messages
 from django.contrib.messages import constants as messages
+
+PAIN_ALERT = 50
 MESSAGE_TAGS = {
     messages.ERROR: 'danger',
-
+    PAIN_ALERT: 'danger',
 }
 
 #added because i have a model extends "AbstractUser"

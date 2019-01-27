@@ -49,7 +49,7 @@ def stepcounter(request):
             step_counter_object.save()
 
             submitted = True
-            messages.success(request, 'Data saved successfully')
+            messages.success(request, 'Data saved ')
             return redirect('stepcounter')
 
         else:
@@ -93,7 +93,7 @@ def kneemotionrange(request):
             kneemotionrange_object.stretch = float(request.POST['stretch'])
             kneemotionrange_object.save()
             submitted = True
-            messages.success(request, 'Data saved successfully')
+            messages.success(request, 'Data saved ')
             return redirect('kneemotionrange')
 
     return render(request, 'functionality/kneemotionrange.html',
@@ -101,6 +101,7 @@ def kneemotionrange(request):
         'operation_list'   : operation_list
     })
 
+PAIN_ALERT = 50
 @login_required
 @patient_required
 def painlevel(request):
@@ -158,15 +159,15 @@ def painlevel(request):
                 different = current_created - latest_created
 
                 if different.days == 0 and different.seconds <= pain_level_hours*60*60 and current_painlevel >=pain_level_threshold and latest_painlevel >=pain_level_threshold:
-                    messages.success(request, 'Data saved successfully')
-                    messages.info(request, "Perhaps it's a good idea to contact your G.P")
+                    messages.success(request, 'Data saved')
+                    messages.add_message(request, PAIN_ALERT,"Please contact your G.P if the pain persists")
                     return redirect('painlevel')
                 else:
                     submitted = True
-                    messages.success(request, 'Data saved successfully')
+                    messages.success(request, 'Data saved ')
                     return redirect('painlevel')
             else:
-                messages.success(request, 'Data saved successfully')
+                messages.success(request, 'Data saved ')
                 return redirect('painlevel')
 
         else:
