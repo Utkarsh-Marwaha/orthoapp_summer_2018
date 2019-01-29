@@ -4,8 +4,8 @@ from developer.models import Developer
 # Create your models here.
 class Information_Page(models.Model):
     PRE_SURGERY = 'PRE'
-    POST_SURGERY  = 'PST'
     IN_HOSPITAL = 'HOSP'
+    POST_SURGERY  = 'PST'
     LONG_TERM_CARE = 'CARE'
 
     SURGERY_STAGE_CHOICES =(
