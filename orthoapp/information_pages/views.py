@@ -18,7 +18,7 @@ def index (request):
     return render (request, 'information_pages/information_pages.html', context)
 
 def information_page(request, information_page_id):
-    
+
     information_page = get_object_or_404(Information_Page, pk=information_page_id)
 
     context = {
@@ -35,7 +35,7 @@ def search(request):
     if 'keywords' in request.GET:
         keywords = request.GET['keywords']
         if keywords:
-            queryset_list = queryset_list.filter(description__icontains=keywords)
+            queryset_list = queryset_list.filter(main_text__icontains=keywords)
 
     # Surgery_Stage
     if 'city' in request.GET:
