@@ -7,6 +7,13 @@ from phonenumber_field.modelfields import PhoneNumberField
 #test comand 2
 # Create your models here.
 
+ORTHOPAEDICS_ACT = 'OA'
+CALVARY  = 'CL'
+HOSPITAL_CHOICES =(
+(ORTHOPAEDICS_ACT, 'Orthopaedics ACT'),
+(CALVARY, 'Calvary'),
+)
+
 class MyUser(AbstractUser):
     is_patient = models.BooleanField('patient status', default=False)
     is_surgeon = models.BooleanField('surgeon status', default=False)
@@ -14,13 +21,13 @@ class MyUser(AbstractUser):
 
 class UserProfileInfo(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True)
-
     profile_pic = models.ImageField(upload_to='profile_pics', blank=True)
     def __str__(self):
         return self.user.username
 
 class Patient(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True)
+    middle_name  = models.CharField(max_length = 264, null=True, blank=True)
     GENDER_CHOICES = (('0', 'Female'),('1', 'Male'),)
     gender = models.CharField(max_length=15,choices=GENDER_CHOICES, null=True, blank=False)
     dateOfBirth = models.DateField()
@@ -28,9 +35,10 @@ class Patient(models.Model):
     def __str__(self):
         return self.user.username
 
+
 class Surgeon(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True)
-    hospital_name = models.CharField(max_length = 264)
+    hospital_name = models.CharField(max_length = 20, choices = HOSPITAL_CHOICES, blank=False)
     patients = models.ManyToManyField(Patient, through='Operation')
     def __str__(self):
         return self.user.username
