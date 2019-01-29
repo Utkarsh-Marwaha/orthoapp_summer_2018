@@ -7,7 +7,12 @@ class DateInput(forms.DateInput):
 
 class UserForm(forms.ModelForm):
 
-    # password = forms.CharField(widget = forms.PasswordInput())
+    # to set mandatory fields
+    def __init__(self, *args, **kwargs):
+        super(UserForm, self).__init__(*args, **kwargs)
+        self.fields['email'].required = True
+        self.fields['first_name'].required = True
+        self.fields['last_name'].required = True
 
     class Meta():
         model = MyUser
