@@ -1,6 +1,8 @@
 ############################## New section here    ######################################
 from django import forms
 from accounts.models import MyUser, Patient, Surgeon, Operation
+from phonenumber_field.formfields import PhoneNumberField
+from phonenumber_field.widgets import PhoneNumberPrefixWidget, PhoneNumberInternationalFallbackWidget
 
 class DateInput(forms.DateInput):
     input_type = 'date'
@@ -21,7 +23,8 @@ class UserForm(forms.ModelForm):
 GENDER_CHOICES = (('0', 'Female'),('1', 'Male'),)
 class PatientProfileInfoForm(forms.ModelForm):
     gender = forms.ChoiceField(choices=GENDER_CHOICES, widget=forms.RadioSelect())
-
+    # uncomment the following line to add phone number and added the "phoneNumber" to the tuple of fields
+    # phoneNumber=PhoneNumberField(widget=PhoneNumberPrefixWidget())
     class Meta():
         model = Patient
         fields = ('gender','dateOfBirth',)

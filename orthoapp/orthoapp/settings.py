@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'bootstrap_datepicker_plus',
     'chartit',
     'django_markdown2',
+    'phonenumber_field',
 ]
 
 
@@ -171,3 +172,7 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'orthoapp.feedback@gmail.com'
 EMAIL_HOST_PASSWORD = 'wehavegotthis'
+
+#needed for phone number
+# https://github.com/stefanfoulis/django-phonenumber-field/issues/154
+PHONENUMBER_DEFAULT_REGION = "AUS"

@@ -2,6 +2,8 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.conf import settings
 
+#google's phone number library
+from phonenumber_field.modelfields import PhoneNumberField
 #test comand 2
 # Create your models here.
 
@@ -22,6 +24,7 @@ class Patient(models.Model):
     GENDER_CHOICES = (('0', 'Female'),('1', 'Male'),)
     gender = models.CharField(max_length=15,choices=GENDER_CHOICES, null=True, blank=False)
     dateOfBirth = models.DateField()
+    phoneNumber = PhoneNumberField(null=True, blank=True, unique=True)
     def __str__(self):
         return self.user.username
 
