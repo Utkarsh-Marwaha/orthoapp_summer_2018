@@ -4,122 +4,127 @@
 {% block title %} | Welcome {% endblock %}
 
 {% block content %}
-  <!-- Showcase -->
-  <section id="showcase">
-        <div class="container text-center">
-          <div class="home-search p-5">
-            <div class="overlay p-5">
-              <h1 class="display-4 mb-4">
-                Welcome to Ortho App
-              </h1>
-              <p class="lead">We bring together the skill and expertise of orthopaedic surgeons, along with the ease of tracking your own recovery through technology. Working together, we are committed to improving your experience pre and post surgery in partnership with Researchers, Surgeons and other allied health providers.</p>
-              <div class="search">
-                <form action="{% url 'search' %}">
-                  <!-- Form Row 1 -->
-                  <div class="form-row">
-                    <div class="col-md-4 mb-3">
-                      <label class="sr-only">Keywords</label>
-                      <input type="text" name="keywords" class="form-control" placeholder="Enter your keywords here">
-                    </div>
-
-                    <div class="col-md-4 mb-3">
-                      <label class="sr-only">Surgery Stage</label>
-                      <select name="city" class="form-control">
-                          <option selected="true" disabled="disabled">Select surgery stage</option>
-
-                          {% for key,value in surgery_stage_choices.items %}
-                            <option value="{{ key }}"> {{ value }} </option>
-                          {% endfor %}
-                      </select>
-                    </div>
-
-                    <div class="col-md-4 mb-3">
-                      <label class="sr-only">Hospital</label>
-                      <select name="state" class="form-control">
-                        <option selected="true" disabled="disabled">Select Hospital</option>
-                        {% for key,value in hospital_name_choices.items %}
-                            <option value="{{ key }}"> {{ value }} </option>
-                        {% endfor %}
-                      </select>
-                    </div>
-
-                  </div>
-                  </div>
-                  <button class="btn btn-secondary btn-block mt-4" type="submit">Search</button>
-                </form>
+<!-- Showcase -->
+<section id="showcase">
+  <div class="container text-center">
+    <div class="home-search p-5">
+      <div class="overlay p-5">
+        <h1 class="display-4 mb-4">
+          Welcome to Ortho App
+        </h1>
+        <p class="lead">We bring together the skill and expertise of orthopaedic surgeons, along with the ease of tracking your own recovery through technology. Working together, we are committed to improving your experience pre and post surgery in partnership with Researchers, Surgeons and other allied health providers.</p>
+        <div class="search">
+          <form action="{% url 'search' %}">
+            <!-- Form Row 1 -->
+            <div class="form-row">
+              <div class="col-md-4 mb-3">
+                <label class="sr-only">Keywords</label>
+                <input type="text" name="keywords" class="form-control" placeholder="Enter your keywords here">
               </div>
+              
+              <div class="col-md-4 mb-3">
+                <label class="sr-only">Surgery Stage</label>
+                <select name="city" class="form-control">
+                  <option selected="true" disabled="disabled">Select surgery stage</option>
+                  
+                  {% for key,value in surgery_stage_choices.items %}
+                  <option value="{{ key }}"> {{ value }} </option>
+                  {% endfor %}
+                </select>
+              </div>
+              
+              <div class="col-md-4 mb-3">
+                <label class="sr-only">Hospital</label>
+                <select name="state" class="form-control">
+                  <option selected="true" disabled="disabled">Select Hospital</option>
+                  {% for key,value in hospital_name_choices.items %}
+                  <option value="{{ key }}"> {{ value }} </option>
+                  {% endfor %}
+                </select>
+              </div>
+              
+            </div>
+          </div>
+          <button class="btn btn-secondary btn-block mt-4" type="submit">Search</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<br>
+
+<!-- Alerts -->
+{% include 'partials/_alerts.html' %}
+
+<!-- Listings -->
+<section id="listings" class="py-5">
+  <div class="container">
+    <h3 class="text-center mb-3">Key Links</h3>
+    <div class="row">
+      
+      {% if info_pages %}
+      {%for info_page in info_pages %}
+      <div class="col-md-6 col-lg-4 mb-4">
+        <div class="card listing-preview">
+          <img class="card-img-top" src="{{ info_page.photo_main.url }}" alt="">
+          <div class="card-img-overlay">
+            <h2>
+              <span class="badge badge-secondary text-white">{{ info_page.surgery_stage }}</span>
+            </h2>
+          </div>
+          <div class="card-body">
+            <div class="listing-heading text-center">
+              <h4 class="text-primary">{{ info_page.title }}</h4>
+              <p>
+                <i class="fas fa-map-marker text-secondary"></i> {{ info_page.description }}</p>
+              </div>
+              <hr>
+              <a href="listing.html" class="btn btn-primary btn-block">More Info</a>
             </div>
           </div>
         </div>
-      </section>
-
-      <!-- Listings -->
-      <section id="listings" class="py-5">
-        <div class="container">
-          <h3 class="text-center mb-3">Key Links</h3>
-          <div class="row">
-
-            {% if info_pages %}
-              {%for info_page in info_pages %}
-                <div class="col-md-6 col-lg-4 mb-4">
-                    <div class="card listing-preview">
-                      <img class="card-img-top" src="{{ info_page.photo_main.url }}" alt="">
-                      <div class="card-img-overlay">
-                        <h2>
-                          <span class="badge badge-secondary text-white">{{ info_page.surgery_stage }}</span>
-                        </h2>
-                      </div>
-                      <div class="card-body">
-                        <div class="listing-heading text-center">
-                          <h4 class="text-primary">{{ info_page.title }}</h4>
-                          <p>
-                            <i class="fas fa-map-marker text-secondary"></i> {{ info_page.description }}</p>
-                        </div>
-                        <hr>
-                        <a href="listing.html" class="btn btn-primary btn-block">More Info</a>
-                      </div>
-                    </div>
-                  </div>
-              {% endfor %}
-            {% else %}
-            <div class="col-md-12">
-              <p>No key links available</p>
-            </div>
-            {% endif %}
-
-          </div>
+        {% endfor %}
+        {% else %}
+        <div class="col-md-12">
+          <p>No key links available</p>
         </div>
-      </section>
-
-      <section id="services" class="py-5 bg-secondary text-white">
-        <div class="container">
-          <div class="row text-center">
-            <div class="col-md-4">
-              <i class="fas fa-comment fa-4x mr-4"></i>
-              <hr>
-              <h3>Track your Progress</h3>
-              <p>Surgeons would now be able to make more informed health care decisions
-                  owing to the data visualization of the patient's
-                  health data.
-              </p>
-            </div>
-            <div class="col-md-4">
-              <i class="fas fa-home fa-4x mr-4"></i>
-              <hr>
-              <h3>Info Hub</h3>
-              <p>Now, get ready to carry all the vital information about the orthopaedic surgery
-                  in your pocket.
-              </p>
-            </div>
-            <div class="col-md-4">
-              <i class="fas fa-suitcase fa-4x mr-4"></i>
-              <hr>
-              <h3>Manage Appointments</h3>
-              <p>Use the built-in calendar feature of the app to keep yourself posted about any
-                  important and upcoming Appointments.
-              </p>
-            </div>
-          </div>
+        {% endif %}
+        
+      </div>
+    </div>
+  </section>
+  
+  <section id="services" class="py-5 bg-secondary text-white">
+    <div class="container">
+      <div class="row text-center">
+        <div class="col-md-4">
+          <i class="fas fa-comment fa-4x mr-4"></i>
+          <hr>
+          <h3>Track your Progress</h3>
+          <p>Surgeons would now be able to make more informed health care decisions
+            owing to the data visualization of the patient's
+            health data.
+          </p>
         </div>
-      </section>
-{% endblock %}
+        <div class="col-md-4">
+          <i class="fas fa-home fa-4x mr-4"></i>
+          <hr>
+          <h3>Info Hub</h3>
+          <p>Now, get ready to carry all the vital information about the orthopaedic surgery
+            in your pocket.
+          </p>
+        </div>
+        <div class="col-md-4">
+          <i class="fas fa-suitcase fa-4x mr-4"></i>
+          <hr>
+          <h3>Manage Appointments</h3>
+          <p>Use the built-in calendar feature of the app to keep yourself posted about any
+            important and upcoming Appointments.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+  {% endblock %}

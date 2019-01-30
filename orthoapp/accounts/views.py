@@ -39,7 +39,8 @@ def special(request):
 def user_logout(request):
     if request.method == 'POST':
         logout(request)
-        return HttpResponseRedirect(reverse('index'))
+        messages.success(request, 'You are now logged out')
+        return redirect('index')
 
 @login_required
 @practice_required
