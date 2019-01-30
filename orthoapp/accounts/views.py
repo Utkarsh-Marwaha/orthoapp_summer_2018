@@ -10,7 +10,9 @@ from accounts.decorators import patient_required, surgeon_required, practice_req
 from accounts.models import MyUser
 from django.core.mail import send_mail
 from accounts.models import Operation
-
+from django.core.mail import EmailMultiAlternatives
+from django.template.loader import get_template
+from django.template import Context
 
 # Create your views here.
 def filter_user(request):
@@ -97,13 +99,13 @@ def register_patient(request):
             # Registration Successful!
             registered = True
 
-            send_mail(
-                'Welcome to orthoapp',
-                'Dear user please find your credentials for logging on orthoapp \n' + profile.user.username + '\n' + password,
-                from_email='orthoapp.feedback@gmail.com',
-                recipient_list=[profile.user.email],
-                fail_silently=False
-            )
+            subject, from_email, to = 'Welcome to orthoapp', 'orthoapp.feedback@gmail.com', profile.user.email
+            
+            t = get_template('email/welcome.html')
+            c = {'username':  profile.user.username, 'password': password}
+            msg = EmailMultiAlternatives(subject, t.render(c), from_email, [to])
+            msg.attach_alternative(t.render(c), "text/html")
+            msg.send()
             
             messages.success(request, 'Patient Created')
             return redirect('signup_patient')
@@ -175,13 +177,13 @@ def register_surgeon(request):
             # Registration Successful!
             registered = True
 
-            send_mail(
-                'Welcome to orthoapp',
-                'Dear user please find your credentials for logging on orthoapp \n' + profile.user.username + '\n' + password,
-                from_email='orthoapp.feedback@gmail.com',
-                recipient_list=[profile.user.email],
-                fail_silently=False
-            )
+            subject, from_email, to = 'Welcome to orthoapp', 'orthoapp.feedback@gmail.com', profile.user.email
+            
+            t = get_template('email/welcome.html')
+            c = {'username':  profile.user.username, 'password': password}
+            msg = EmailMultiAlternatives(subject, t.render(c), from_email, [to])
+            msg.attach_alternative(t.render(c), "text/html")
+            msg.send()
 
             messages.success(request, 'Surgeon Created')
             return redirect('signup_surgeon')
