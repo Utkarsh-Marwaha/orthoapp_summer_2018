@@ -160,7 +160,7 @@ def painlevel(request):
 
                 if different.days == 0 and different.seconds <= pain_level_hours*60*60 and current_painlevel >=pain_level_threshold and latest_painlevel >=pain_level_threshold:
                     messages.success(request, 'Data saved')
-                    messages.add_message(request, PAIN_ALERT,"Please contact your G.P if the pain persists")
+                    messages.add_message(request, PAIN_ALERT,"You might like to contact your G.P about your pain")
                     return redirect('painlevel')
                 else:
                     submitted = True
