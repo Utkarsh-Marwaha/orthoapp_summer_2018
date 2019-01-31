@@ -28,8 +28,8 @@ class UserProfileInfo(models.Model):
 class Patient(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True)
     middle_name  = models.CharField(max_length = 264, null=True, blank=True)
-    GENDER_CHOICES = (('0', 'Female'),('1', 'Male'),)
-    gender = models.CharField(max_length=15,choices=GENDER_CHOICES, null=True, blank=False)
+    GENDER_CHOICES = (('0', 'Female'),('1', 'Male'),('2', 'Other'),('3', 'Rather not say'),)
+    gender = models.CharField(max_length=15,choices=GENDER_CHOICES, default='3', blank=False)
     dateOfBirth = models.DateField()
     phoneNumber = PhoneNumberField(null=True, blank=True, unique=True)
     def __str__(self):

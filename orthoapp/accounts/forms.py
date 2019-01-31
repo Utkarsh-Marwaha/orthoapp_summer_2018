@@ -20,10 +20,9 @@ class UserForm(forms.ModelForm):
         model = MyUser
         fields = ('username', 'email', 'first_name', 'last_name')
 
-GENDER_CHOICES = (('0', 'Female'),('1', 'Male'),)
 class PatientProfileInfoForm(forms.ModelForm):
 
-    gender = forms.ChoiceField(choices=GENDER_CHOICES, widget=forms.RadioSelect())
+    # gender = forms.ChoiceField(choices=GENDER_CHOICES, widget=forms.RadioSelect())
     # uncomment the following line to add phone number and added the "phoneNumber" to the tuple of fields
     # phoneNumber=PhoneNumberField(widget=PhoneNumberPrefixWidget())
 
@@ -32,9 +31,10 @@ class PatientProfileInfoForm(forms.ModelForm):
         fields = ('middle_name','gender','dateOfBirth',)
         widgets = {
             'dateOfBirth': DateInput(),
+            'gender': forms.RadioSelect
+
 
         }
-
 class SurgeonProfileInfoForm(forms.ModelForm):
 
     class Meta():
