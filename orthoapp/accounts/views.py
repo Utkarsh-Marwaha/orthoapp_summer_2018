@@ -16,13 +16,15 @@ from django.template import Context
 
 # Create your views here.
 def filter_user(request):
-    print("YOU HAVE ENTER THE INDEX FILTER")
     if request.user.is_authenticated:
         if request.user.is_surgeon:
+            messages.success(request, 'You are now logged in')
             return redirect('surgeon')
         elif request.user.is_patient:
+            messages.success(request, 'You are now logged in')
             return redirect('patient')
         else:
+            messages.success(request, 'You are now logged in')
             return redirect('practice')
     return render(request, 'pages/index.html', {})
 
