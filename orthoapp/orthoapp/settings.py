@@ -98,7 +98,6 @@ DATABASES = {
         'NAME': 'orthoapp',
         'USER': 'ortho_admin',
         'PASSWORD': os.environ.get('ORTHOAPP_PASSWORD',''),
-        # 'PASSWORD': 'wehavegotthis',
         'HOST': '127.0.0.1',
         'PORT': '5432',
     }
@@ -172,6 +171,7 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'orthoapp.feedback@gmail.com'
 EMAIL_HOST_PASSWORD = 'wehavegotthis'
+# os.environ.get('EMAIL_HOST_PASSWORD','')
 
 #needed for phone number
 # https://github.com/stefanfoulis/django-phonenumber-field/issues/154
