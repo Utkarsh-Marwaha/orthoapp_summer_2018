@@ -1,7 +1,7 @@
 surgery_stage_choices = {
     'PRE' : 'Pre Surgery',
     'HOSP': 'In Hospital',
-    'PST' : 'Post Surgery',
+    'POST' : 'Post Surgery',
     'CARE': 'Long Term Care',
 }
 

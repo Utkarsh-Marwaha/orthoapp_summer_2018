@@ -5,7 +5,7 @@ from developer.models import Developer
 class Information_Page(models.Model):
     PRE_SURGERY = 'PRE'
     IN_HOSPITAL = 'HOSP'
-    POST_SURGERY  = 'PST'
+    POST_SURGERY  = 'POST'
     LONG_TERM_CARE = 'CARE'
 
     SURGERY_STAGE_CHOICES =(
