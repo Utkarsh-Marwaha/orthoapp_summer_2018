@@ -11,7 +11,7 @@ class StepCounterForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
 
         self.fields['steps'].label = "How many steps did you take today ?"
-        
+
 class KneeMotionRangeForm(forms.ModelForm):
 
     class Meta():
@@ -20,18 +20,17 @@ class KneeMotionRangeForm(forms.ModelForm):
 
 
 class PainLevelForm(forms.ModelForm):
-    
+
     class Meta():
         model  = PainLevel
         widgets = {
             'isMedicineTaken': forms.RadioSelect
         }
         fields = ('painLevel', 'isExerciseDone', 'isMedicineTaken')
-        
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
         self.fields['painLevel'].label = "How much pain do you have now ?"
-        self.fields['isExerciseDone'].label = "How many times have you done your exercises ?"
+        self.fields['isExerciseDone'].label = "How many times did you do your exercise yesterday ?"
         self.fields['isMedicineTaken'].label = "Have you taken your prescribed pain medication in the last two hours ?"
-    

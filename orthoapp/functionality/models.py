@@ -29,7 +29,7 @@ class PainLevel(DataPoint):
 
     isExerciseDone = models.IntegerField(
     default=0,
-    validators=[MinValueValidator(0)])
+    validators=[MinValueValidator(0)], blank=True, null=True)
 
     isMedicineTaken = models.BooleanField(choices=BOOL_CHOICES, default=False)
 
