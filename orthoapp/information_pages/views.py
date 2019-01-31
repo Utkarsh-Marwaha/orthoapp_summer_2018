@@ -6,7 +6,7 @@ from .choices import surgery_stage_choices, hospital_name_choices
 # Create your views here.
 def index (request):
 
-    info_pages = Information_Page.objects.all().filter(is_published = True)
+    info_pages = Information_Page.objects.all().filter(is_published = True).order_by('id')
 
     paginator = Paginator(info_pages, 6)
     page = request.GET.get('page')

@@ -9,5 +9,10 @@ class Information_PageAdmin(admin.ModelAdmin):
     search_fields = ('title', 'description', 'surgery_stage')
     list_per_page = 10
 
+    def get_queryset(self, request):
+        queryset = super(Information_PageAdmin, self).get_queryset(request)
+        queryset = queryset.order_by('id')
+        return queryset
+
 # Register your models here.
 admin.site.register(Information_Page, Information_PageAdmin)
