@@ -81,7 +81,7 @@
                 <i class="fas fa-map-marker text-secondary"></i> {{ info_page.description }}</p>
               </div>
               <hr>
-              <a href="listing.html" class="btn btn-primary btn-block">More Info</a>
+              <a href="{% url 'information_page' info_page.id %}" class="btn btn-primary btn-block">More Info</a>
             </div>
           </div>
         </div>
