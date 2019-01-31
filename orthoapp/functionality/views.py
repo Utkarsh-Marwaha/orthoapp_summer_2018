@@ -347,7 +347,7 @@ def chart(request):
         'data': bend_data
         },
         {
-        'name': 'stretch',
+        'name': 'straighten',
         'data': stretch_data
         },]
     }
