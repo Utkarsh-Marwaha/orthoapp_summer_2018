@@ -10,6 +10,11 @@ from accounts.models import Operation
 
 from django.utils.datastructures import MultiValueDictKeyError
 from django.contrib import messages
+import datetime
+epoch = datetime.datetime.utcfromtimestamp(0)
+
+def unix_time_millis(dt):
+    return (dt - epoch).total_seconds() * 1000.0
 
 
 
@@ -365,29 +370,76 @@ def chart(request):
     painlevel_filtered_data = PainLevel.objects.filter(pk__in = painlevel_wanted_items) \
                                 .values("created", "painLevel")
 
+    print("HAHAHAHAHAHAHAHHA CHENGWU")
+    painlevel_filtered_data_ver2 = PainLevel.objects.filter(pk__in = painlevel_wanted_items) \
+                                .values("created") \
+                                .annotate(painlevel_w_med=Q(isMedicineTaken=True),
+                                          painlevel_wo_med=Q(isMedicineTaken=False))
+
+    painlevel_filtered_data_ver2 = PainLevel.objects.filter(pk__in = painlevel_wanted_items) \
+        .values('created', 'painLevel','isMedicineTaken') \
+        .order_by('created')
+
+    print(painlevel_filtered_data_ver2)
+
     created_data = list()
+    created_without_med_data=list()
     painlevel_data = list()
+    painlevel_without_med_data=list()
 
-    for entry in painlevel_filtered_data:
-        created_data.append(entry['created'])
-        painlevel_data.append(entry['painLevel'])
+    with_medicine = list()
+    without_medicine=list()
 
+    for entry in painlevel_filtered_data_ver2:
+        if entry['isMedicineTaken']==True:
+            t=entry['created']
+            t_converted = t.timestamp()*1000
+            tmp = [t_converted, entry['painLevel']]
+            with_medicine.append(tmp)
+        else:
+            t=entry['created']
+            t_converted = t.timestamp()*1000
+            tmp = [t_converted, entry['painLevel']]
+            without_medicine.append(tmp)
+
+    print(with_medicine)
+
+    print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+    print(without_medicine)
 
     chart3 = {
-        'chart': {'type': 'line'},
+        'chart': {'type': 'spline'},
         'title': {'text': 'Pain Level Data'},
-        'xAxis': {
-        'categories' : [created_data], 'title' :  {'text': 'Date'}
+        'xAxis': {'type': 'datetime',
+                  'dateTimeLabelFormats': {
+                  'month': '%e. %b',
+                  'year': '%b'},
+                  # 'labels': { 'format': '{value:%e-%b-%Y}'},
+                  'title' :  {'text': 'Date'}
         },
         'yAxis': {
             'title': {
                 'text': 'Pain Scores',
             },
         },
+
+        'plotOptions': {
+        'spline': {
+            'marker': {
+                'enabled': 'true'
+            }
+        }
+        },
+
         'series': [{
-        'name': 'painlevel',
-        'data': painlevel_data,
-    }]
+        'name': 'with medicine',
+        'data': with_medicine
+        },
+        {
+        'name': 'without medicine',
+        'data': without_medicine
+        }
+        ]
     }
 
 
