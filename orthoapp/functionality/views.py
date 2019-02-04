@@ -277,26 +277,43 @@ def chart(request):
             # then append the record to the list
             stepcounter_wanted_items.add(item.pk)
     stepcounter_filtered_data = StepCounter.objects.filter(pk__in = stepcounter_wanted_items) \
-                                .values("created", "steps")
+                                .values("created", "steps") \
+                                .order_by('created')
 
-    created_data = list()
+
     steps_data = list()
 
     for entry in stepcounter_filtered_data:
-        created_data.append(entry['created'])
-        steps_data.append(entry['steps'])
+        t=entry['created']
+        t_converted = t.timestamp()*1000
+        tmp = [t_converted, entry['steps']]
+        steps_data.append(tmp)
 
     chart = {
         'chart': {'type': 'line'},
         'title': {'text': 'Step Counter Data'},
         'xAxis': {
-        'categories' : [created_data], 'title' :  {'text': 'Date'}
+            'type': 'datetime',
+            'dateTimeLabelFormats': { 'month': '%e. %b',
+                                      'year': '%b'},
+            'title' :  {
+                'text': 'Date'
+            },
         },
         'yAxis': {
             'title': {
                 'text': 'Step Count',
             },
         },
+
+        'plotOptions': {
+        'line': {
+            'marker': {
+                'enabled': 'true'
+            }
+        }
+        },
+
         'series': [{
         'name': 'steps',
         'data': steps_data,
@@ -304,8 +321,9 @@ def chart(request):
     }
 
 
-    #Step 1: Create a DataPool with the data we want to retrieve.
 
+    #the following section creates the corresponding data needed for drawing
+    #knee motion range
     kneemotionrange_wanted_items = set()
 
     # cycle through all the knee motion range objects
@@ -316,16 +334,22 @@ def chart(request):
             kneemotionrange_wanted_items.add(item.pk)
 
     kneemotionrange_filtered_data = KneeMotionRange.objects.filter(pk__in = kneemotionrange_wanted_items) \
-                                .values("created", "bend", "stretch")
+                                .values("created", "bend", "stretch") \
+                                .order_by('created')
 
     created_data = list()
     bend_data = list()
     stretch_data = list()
 
     for entry in kneemotionrange_filtered_data:
-        created_data.append(entry['created'])
-        bend_data.append(entry['bend'])
-        stretch_data.append(entry['stretch'])
+        t=entry['created']
+        t_converted = t.timestamp()*1000
+        tmp = [t_converted, entry['bend']]
+        bend_data.append(tmp)
+
+        tmp2 = [t_converted, entry['stretch']]
+        stretch_data.append(tmp2)
+
 
     chart2 = {
         'chart': {
@@ -333,7 +357,9 @@ def chart(request):
          },
         'title': {'text': 'Knee Motion Data',},
         'xAxis': {
-            'categories' : [created_data],
+            'type': 'datetime',
+            'dateTimeLabelFormats': { 'month': '%e. %b',
+                                      'year': '%b'},
             'title' :  {
                 'text': 'Date'
             },
@@ -357,8 +383,8 @@ def chart(request):
         },]
     }
 
-    #Step 1: Create a DataPool with the data we want to retrieve.
-
+    #the following section creates the corresponding data needed for drawing
+    #painlevel
     painlevel_wanted_items = set()
     # cycle through all the pain level objects
     for item in PainLevel.objects.all():
@@ -367,30 +393,15 @@ def chart(request):
             # then append the record to the list
             painlevel_wanted_items.add(item.pk)
 
+
     painlevel_filtered_data = PainLevel.objects.filter(pk__in = painlevel_wanted_items) \
-                                .values("created", "painLevel")
-
-    print("HAHAHAHAHAHAHAHHA CHENGWU")
-    painlevel_filtered_data_ver2 = PainLevel.objects.filter(pk__in = painlevel_wanted_items) \
-                                .values("created") \
-                                .annotate(painlevel_w_med=Q(isMedicineTaken=True),
-                                          painlevel_wo_med=Q(isMedicineTaken=False))
-
-    painlevel_filtered_data_ver2 = PainLevel.objects.filter(pk__in = painlevel_wanted_items) \
         .values('created', 'painLevel','isMedicineTaken') \
         .order_by('created')
-
-    print(painlevel_filtered_data_ver2)
-
-    created_data = list()
-    created_without_med_data=list()
-    painlevel_data = list()
-    painlevel_without_med_data=list()
 
     with_medicine = list()
     without_medicine=list()
 
-    for entry in painlevel_filtered_data_ver2:
+    for entry in painlevel_filtered_data:
         if entry['isMedicineTaken']==True:
             t=entry['created']
             t_converted = t.timestamp()*1000
@@ -401,11 +412,6 @@ def chart(request):
             t_converted = t.timestamp()*1000
             tmp = [t_converted, entry['painLevel']]
             without_medicine.append(tmp)
-
-    print(with_medicine)
-
-    print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-    print(without_medicine)
 
     chart3 = {
         'chart': {'type': 'spline'},
