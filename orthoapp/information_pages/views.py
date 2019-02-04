@@ -6,7 +6,7 @@ from .choices import surgery_stage_choices, hospital_name_choices
 # Create your views here.
 def index (request):
 
-    info_pages = Information_Page.objects.all().filter(is_published = True).order_by('id')
+    info_pages = Information_Page.objects.all().filter(is_published = True).order_by('title')
 
     paginator = Paginator(info_pages, 6)
     page = request.GET.get('page')
@@ -29,26 +29,26 @@ def information_page(request, information_page_id):
 
 def search(request):
 
-    queryset_list = Information_Page.objects.filter(is_published=True).order_by('id')
+    queryset_list = Information_Page.objects.filter(is_published=True).order_by('title')
 
     # Keywords
     if 'keywords' in request.GET:
         keywords = request.GET['keywords']
         if keywords:
-            queryset_list = queryset_list.filter(main_text__icontains=keywords).order_by('id')
+            queryset_list = queryset_list.filter(main_text__icontains=keywords).order_by('title')
 
     # Surgery_Stage
     if 'city' in request.GET:
         surgery_stage = request.GET['city']
         if surgery_stage:
-            queryset_list = queryset_list.filter(surgery_stage__iexact=surgery_stage).order_by('id')
+            queryset_list = queryset_list.filter(surgery_stage__iexact=surgery_stage).order_by('title')
 
 
     # Hospital
     if 'state' in request.GET:
         hospital_name = request.GET['state']
         if hospital_name:
-            queryset_list = queryset_list.filter(hospital_name__iexact=hospital_name).order_by('id')
+            queryset_list = queryset_list.filter(hospital_name__iexact=hospital_name).order_by('title')
 
     context = {
         'surgery_stage_choices' : surgery_stage_choices,
