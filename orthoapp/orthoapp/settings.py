@@ -176,3 +176,7 @@ EMAIL_HOST_PASSWORD = 'wehavegotthis'
 #needed for phone number
 # https://github.com/stefanfoulis/django-phonenumber-field/issues/154
 PHONENUMBER_DEFAULT_REGION = "AUS"
+
+
+#SSL redirect
+SECURE_SSL_REDIRECT = True
