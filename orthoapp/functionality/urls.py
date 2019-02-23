@@ -1,11 +1,10 @@
 from django.urls import path
-from . import views # helps us import all the views of this app
-
+from . import views
 
 
 urlpatterns = [
-    path('stepcounter/', views.stepcounter, name='stepcounter'),
+    path('stepcounter/',     views.stepcounter,     name='stepcounter'),
     path('kneemotionrange/', views.kneemotionrange, name='kneemotionrange'),
-    path('painlevel/', views.painlevel, name='painlevel'),
-    path('chart/', views.chart, name='chart'),
+    path('painlevel/',       views.painlevel,       name='painlevel'),
+    path('chart/',           views.chart,           name='chart'),
 ]

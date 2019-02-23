@@ -232,7 +232,7 @@ def register_surgeon(request):
         user_form    = UserForm()
         profile_form = SurgeonProfileInfoForm()
 
-    # This is the render and context dictionary to feed back to the registration.html file page.
+    # render the registration.html file and pass on the context dictionary
     return render(request,'accounts/registration.html',
                           {'user_form'    : user_form,
                            'profile_form' : profile_form,
@@ -268,7 +268,7 @@ def register_operation(request):
         # Was not an HTTP post so we just render the forms as empty forms.
         operation_form = OperationInfoForm()
 
-    # This is the render and context dictionary to feed back to the operation.html file page.
+    # render the operation.html file and pass on the context dictionary    
     return render(request,'accounts/operation.html',
                           {'operation_form':operation_form,
                            })
@@ -328,7 +328,7 @@ def surgeon(request):
 
     # cycle through all the operations
     for i in all_operation_list:
-        # if surgeon name matches with login user name
+        # if surgeon username matches with login user name
         if i.surgeon.user.username == login_username:
             # then collect the corresponding operation
             operation_list.append(i)
@@ -348,7 +348,7 @@ def surgeon(request):
         patient_list.append((k, index))
         index=index+1
 
-    # This is the render and context dictionary to feed back to the surgeon.html file page.
+    # render the surgeon.html file and pass on the context dictionary
     return render(request, 'accounts/surgeon.html',
                             {'operation_list': operation_list,
                              'patient_set'   : patient_list,
@@ -394,6 +394,7 @@ def change_password(request):
         # Was not an HTTP post so we just render the form as empty form.        
         change_password_form = PasswordChangeForm(request.user)
    
+    # render the change_password.html file and pass on the context dictionary        
     return render(request, 'accounts/change_password.html', {
         'change_password_form': change_password_form
     })

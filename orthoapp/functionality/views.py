@@ -11,178 +11,257 @@ from accounts.models import Operation
 from django.utils.datastructures import MultiValueDictKeyError
 from django.contrib import messages
 import datetime
-epoch = datetime.datetime.utcfromtimestamp(0)
-
-def unix_time_millis(dt):
-    return (dt - epoch).total_seconds() * 1000.0
 
 
 
-# Create your views here.
+"""This function is used to render the stepcounter page using which the patient can enter their stepcounts (health data)"""
 @login_required
 @patient_required
 def stepcounter(request):
-    submitted = False
+    
+    # Grab the username of the user who initiated the request
     login_username = request.user.username
-    #this list contains all the operation objects
+
+    # Fetch a list of all Operation instances
     all_operation_list = Operation.objects.all()
-    #this list contains all the operation objects filtered by login_username
+    
+    #this list shall contain all the operation instances belonging to the current user    
     operation_list = list()
+
+    # cycle through all the operations
     for i in all_operation_list:
+        # if patient username matches with login user name
         if i.patient.user.username == login_username:
+            # then collect the corresponding operation
             operation_list.append(i)
 
     if request.method == 'POST':
 
-        #this variable contains the selected operation on the patient interface
         try:
+            # Grab the operation selected by the patient
             selected_operation = request.POST['selected_operation']
         except MultiValueDictKeyError:
+            # Display error message if the patient didn't select any operation
             messages.error(request, 'Please Select an Operation')
             return redirect('stepcounter')
 
+        # Grab the form which contains information about the step count entered by the patient
         stepcounter_form = StepCounterForm(data=request.POST)
 
+        # Check if the form was correctly filled up by the patient
         if stepcounter_form.is_valid():
             step_counter_object = stepcounter_form.save(commit=False)
 
-            # Want to protect it further? do stuff below
+            # cycle through all the operations associated with the current patient   
             for j in operation_list:
+                # if the selected operation is found
                 if str(j) == selected_operation:
+                    # assign the step counter record to that operation
                     step_counter_object.operation = j
 
+            # save the step counter instance
             step_counter_object.save()
 
-            submitted = True
+            # Display success message after the data has been successfully saved in the database at the backend
             messages.success(request, 'Data saved ')
             return redirect('stepcounter')
 
         else:
+            # Display an error message if the patient did not fill up the form correctly
             messages.error(request, 'Invalid Data entered')
             return redirect('stepcounter')
     else:
+        # Was not an HTTP post so we just render the form as empty form.                
         stepcounter_form = StepCounterForm()
 
-    return render(request, 'functionality/stepcounter.html',
-    {
+    # render the stepcounter.html file and pass on the context dictionary    
+    return render(request, 'functionality/stepcounter.html',{
         'stepcounter_form' : stepcounter_form,
         'operation_list'   : operation_list
     })
+
+
+"""This function is used to render the kneemotionrange page using which the patient can enter their kneemotion range (health data)"""
 @login_required
 @patient_required
 def kneemotionrange(request):
-    submitted = False
+    
+    # Grab the username of the user who initiated the request
     login_username = request.user.username
-    #this list contains all the operation objects
+
+    # Fetch a list of all Operation instances    
     all_operation_list = Operation.objects.all()
-    #this list contains all the operation objects filtered by login_username
+
+    # This list shall contain all the operation instances belonging to the current user        
     operation_list = list()
+
+    # cycle through all the operations
     for i in all_operation_list:
+        # if patient username matches with login user name
         if i.patient.user.username == login_username:
+            # then collect the corresponding operation
             operation_list.append(i)
 
     if request.method == 'POST':
+
         try:
+            # Grab the operation selected by the patient
             selected_operation = request.POST['selected_operation']
         except MultiValueDictKeyError:
+            # Display error message if the patient didn't select any operation
             messages.error(request, 'Please Select an Operation')
             return redirect('kneemotionrange')
 
-        kneemotionrange_form = KneeMotionRangeForm()
-        if kneemotionrange_form.is_valid:
+        # Grab the form which contains information about the knee motion range entered by the patient        
+        kneemotionrange_form = KneeMotionRangeForm(data=request.POST)
+        
+        # Check if the form was correctly filled up by the patient        
+        if kneemotionrange_form.is_valid():
             kneemotionrange_object = kneemotionrange_form.save(commit=False)
+
+            # cycle through all the operations associated with the current patient
             for j in operation_list:
+                # if the selected operation is found
                 if str(j) == selected_operation:
+                    # assign the knee motion range record to that operation
                     kneemotionrange_object.operation = j
-            kneemotionrange_object.bend = float(request.POST['bend'])
-            kneemotionrange_object.stretch = float(request.POST['stretch'])
+
+            kneemotionrange_object.bend     = float(request.POST['bend'])
+            kneemotionrange_object.stretch  = float(request.POST['stretch'])
+
+            # save the knee motion range instance
             kneemotionrange_object.save()
-            submitted = True
+            
+            # Display success message after the data has been successfully saved in the database at the backend
             messages.success(request, 'Data saved ')
             return redirect('kneemotionrange')
 
-    return render(request, 'functionality/kneemotionrange.html',
-    {
+        else:
+            # Display an error message if the patient did not fill up the form correctly
+            messages.error(request, 'Invalid Data entered')
+            return redirect('kneemotionrange')
+    else:
+        # Was not an HTTP post so we just render the form as empty form.                
+        kneemotionrange_form = KneeMotionRangeForm()
+
+    # render the kneemotionrange.html file and pass on the context dictionary    
+    return render(request, 'functionality/kneemotionrange.html',{
         'operation_list'   : operation_list
     })
 
+# This is just an integer value assigned to the custom message in django
 PAIN_ALERT = 50
+"""This function is used to render the painlevel page using which the patient can enter their pain level range (health data)"""
 @login_required
 @patient_required
 def painlevel(request):
-    submitted = False
+    
+    # Grab the username of the user who initiated the request
     login_username = request.user.username
-    #this list contains all the operation objects
+
+    # Fetch a list of all Operation instances    
     all_operation_list = Operation.objects.all()
-    #this list contains all the operation objects filtered by login_username
+
+    # This list shall contain all the operation instances belonging to the current user        
     operation_list = list()
+
+    # cycle through all the operations
     for i in all_operation_list:
+        # if patient username matches with login user name
         if i.patient.user.username == login_username:
+            # then collect the corresponding operation
             operation_list.append(i)
 
     if request.method == 'POST':
 
-        #this variable contains the selected operation on the patient interface
         try:
+            # Grab the operation selected by the patient
             selected_operation = request.POST['selected_operation']
         except MultiValueDictKeyError:
+            # Display error message if the patient didn't select any operation
             messages.error(request, 'Please Select an Operation')
             return redirect('painlevel')
 
+        # Grab the form which contains information about the pain level entered by the patient        
         painlevel_form = PainLevelForm(data=request.POST)
 
+        # Check if the form was correctly filled up by the patient        
         if painlevel_form.is_valid():
             painlevel_object = painlevel_form.save(commit=False)
 
-            #this is just a tmp object
+            # Create a temporary instance of Operation class
             temp = Operation()
 
-            # Want to protect it further? do stuff below
+            # cycle through all the operations associated with the current patient            
             for j in operation_list:
+                # if the selected operation is found
                 if str(j) == selected_operation:
+                # then assign the corresponding operation
                     painlevel_object.operation = j
                     temp = j
 
+            # If the patient has just entered the first pain level record ever then there is no previous reference
             if PainLevel.objects.all().filter(operation=temp).count() == 0:
-                print("no record yet")
                 latest_painlevel_object = None
+            # if not then
             else:
+                # Grab the latest record entered by the patient 
                 latest_painlevel_object = PainLevel.objects.all().filter(operation=temp).latest('created')
-            # print(painlevel_object)
+            
+            # save the pain level range instance             
             painlevel_object.save()
 
-            ##########check for 2 consecutive pain level scores of 7 within the last seven hours##############################
+            ########## Check for 2 consecutive pain level scores of 7 or above within the last seven (7) hours
             if latest_painlevel_object is not None:
+                
+                # This reflects the pain score of the latest entry in the database
                 latest_painlevel = latest_painlevel_object.painLevel
-                latest_created = latest_painlevel_object.created
+                # This reflects the time stamp of the latest entry in the database                
+                latest_created   = latest_painlevel_object.created
 
+                # This reflects the pain score of the current entry submitted by the user
                 current_painlevel = painlevel_object.painLevel
-                current_created = painlevel_object.created
+                # This reflects the time stamp of the current entry submitted by the user
+                current_created   = painlevel_object.created
 
-                pain_level_hours = 7
+                # This is how far back we're testing the entries for
+                pain_level_hours     = 7
+
+                # This is how much the pain threshold should for the PAIN ALERT to be considered
                 pain_level_threshold = 7
-                different = current_created - latest_created
 
-                if different.days == 0 and different.seconds <= pain_level_hours*60*60 and current_painlevel >=pain_level_threshold and latest_painlevel >=pain_level_threshold:
+                # The time difference between current entry and latest entry 
+                difference = current_created - latest_created
+                
+                # The last two pain level scores have to be equal to or above 7 and submitted within 7 hours of each other
+                if difference.days == 0 and difference.seconds <= pain_level_hours*60*60 and current_painlevel >=pain_level_threshold and latest_painlevel >=pain_level_threshold:
+                    
+                    # Save the data and display success message
                     messages.success(request, 'Data saved')
+
+                    # Raise the PAIN LEVEL ALERT
                     messages.add_message(request, PAIN_ALERT,"You might like to contact your G.P about your pain")
+                    
                     return redirect('painlevel')
                 else:
-                    submitted = True
+                    # Display success message once the data is saved correctly to the database in the backend
                     messages.success(request, 'Data saved ')
                     return redirect('painlevel')
             else:
+                # Display success message once the data is saved correctly to the database in the backend
                 messages.success(request, 'Data saved ')
                 return redirect('painlevel')
 
         else:
+            # Display error message if the patient has not filled up the form correctly
             messages.error(request, 'Invalid Data entered')
             return redirect('painlevel')
     else:
+        # Was not an HTTP post so we just render the form as empty form.                
         painlevel_form = PainLevelForm()
 
-    return render(request, 'functionality/painlevel.html',
-    {
+    # render the painlevel.html file and pass on the context dictionary    
+    return render(request, 'functionality/painlevel.html',{
         'painlevel_form' : painlevel_form,
         'operation_list' : operation_list
     })
@@ -196,16 +275,21 @@ from functionality.models import StepCounter, KneeMotionRange, PainLevel
 
 
 
-############################## ANOTHER SECTION USING CHARTIT ###########################################
+############################## ANOTHER SECTION USING HIGHCHART ###########################################
 import json
 from django.db.models import Count, Q
 from django.core.serializers.json import DjangoJSONEncoder
 
+""" This function fetches the health data associated to a patient from the backend and displays it 
+    in the form of charts (as instructed) """
 @login_required
 def chart(request):
 
+    # This variable will hold the username of the patient/surgeon who is trying to access the charts
     login_username = ""
 
+    """ This variable will help to distinguish between POST requests coming from selecting the View records button
+    on the surgeon dashboard and the filter operation button on the charts page"""
     switch=False
 
     if request.method == "POST":
@@ -214,7 +298,7 @@ def chart(request):
 
 
 
-
+    # The charts are not be viewed by the practice and so we just redirect them back to home page
     if request.user.is_practice:
         return render(request, 'pages/index.html', {})
 
