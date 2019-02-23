@@ -161,7 +161,9 @@ MESSAGE_TAGS = {
     PAIN_ALERT: 'danger',
 }
 
-#added because i have a model extends "AbstractUser"
+""" Since our custom user class called MyUser (within the accounts app) inherits
+    from Abstract User instead of the default django User therefore we have the
+    following configuration in the settings """ 
 AUTH_USER_MODEL = "accounts.MyUser"
 
 # EMAIL configuration settings
