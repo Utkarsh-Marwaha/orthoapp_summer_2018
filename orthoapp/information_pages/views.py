@@ -3,11 +3,13 @@ from .models import Information_Page
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from .choices import surgery_stage_choices, hospital_name_choices
 
-# Create your views here.
+
 def index (request):
 
+    # Fetch all the information pages from the backend which are published and order them by their title
     info_pages = Information_Page.objects.all().filter(is_published = True).order_by('title')
 
+    # add pagination (6 per page)
     paginator = Paginator(info_pages, 6)
     page = request.GET.get('page')
     paged_info_pages = paginator.get_page(page)
@@ -27,6 +29,7 @@ def information_page(request, information_page_id):
 
     return render (request, 'information_pages/information_page.html', context)
 
+"""This function allows us to search the information pages based on keywords in the main text, hospital name or the surgery stage"""
 def search(request):
 
     queryset_list = Information_Page.objects.filter(is_published=True).order_by('title')
