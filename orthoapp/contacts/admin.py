@@ -25,5 +25,5 @@ class ContactAdmin(admin.ModelAdmin):
     """
     list_per_page      = 10 
 
-# register the Surgeon model so that it is visible on the admin panel in the backend
+# register the Contact model so that it is visible on the admin panel in the backend
 admin.site.register(Contact, ContactAdmin)
