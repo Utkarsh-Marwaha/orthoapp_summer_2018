@@ -5,29 +5,29 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
-from django.contrib.auth.decorators import login_required 
+from django.contrib.auth.decorators import login_required
 from accounts.decorators import patient_required, surgeon_required, practice_required
-from accounts.models import MyUser
+from accounts.models import MyUser, Patient
 from django.core.mail import send_mail
 from accounts.models import Operation
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import get_template
 from django.template import Context
 
-""" 
+"""
 This function helps us to filter and differenciate the type of users after
-their credentials have been succesfully authenticated    
+their credentials have been succesfully authenticated
 """
 def filter_user(request):
 
     # check if the user has been authenticated
     if request.user.is_authenticated:
-        
+
         # redirect to the surgeon dashboard if the user is a surgeon
         if request.user.is_surgeon:
             messages.success(request, 'You are now logged in')
             return redirect('surgeon')
-    
+
         # redirect to the patient dashboard if the user is a patient
         elif request.user.is_patient:
             messages.success(request, 'You are now logged in')
@@ -47,8 +47,8 @@ def user_logout(request):
 
     # if the logout request has been made by the user
     if request.method == 'POST':
-        
-        # logout the user 
+
+        # logout the user
         logout(request)
 
         # display success message on the home page
@@ -61,7 +61,7 @@ def user_logout(request):
 def register_patient(request):
 
     if request.method == 'POST':
-        
+
         # Grab hold of information from all the forms needed to register a new patient
         user_form       = UserForm(data=request.POST)
         profile_form    = PatientProfileInfoForm(data=request.POST)
@@ -99,7 +99,7 @@ def register_patient(request):
 
             # Check if they provided a profile picture
             if 'profile_pic' in request.FILES:
-                
+
                 # If yes, then grab it from the POST form reply
                 profile.profile_pic = request.FILES['profile_pic']
 
@@ -119,20 +119,20 @@ def register_patient(request):
 
             # set the email subject, sender's address and reciever's address
             subject, from_email, to = 'Welcome to orthoapp', 'orthoapp.feedback@gmail.com', profile.user.email
-            
+
             # fetch the email template
             t = get_template('email/welcome.html')
-            
+
             # create the context to be passed over to the email template
             c = {'username':  profile.user.username, 'password': password}
-            
+
             # create the message to be sent
             msg = EmailMultiAlternatives(subject, t.render(c), from_email, [to])
             msg.attach_alternative(t.render(c), "text/html")
-            
+
             # send the email to the patient
             msg.send()
-            
+
             messages.success(request, 'Patient Created')
             return redirect('signup_patient')
 
@@ -157,7 +157,7 @@ def register_patient(request):
 @login_required
 @practice_required
 def register_surgeon(request):
-    
+
     if request.method == 'POST':
 
         # Grab hold of information from all the forms needed to register a new surgeon
@@ -179,7 +179,7 @@ def register_surgeon(request):
 
             # create a random password for the surgeon
             password = MyUser.objects.make_random_password()
-            # Associate the random password to the surgeon's account (Hash it simulataneously)            
+            # Associate the random password to the surgeon's account (Hash it simulataneously)
             user.set_password(password)
 
             # Save the user instance to the Database in the backend
@@ -196,7 +196,7 @@ def register_surgeon(request):
 
             # Check if they provided a profile picture
             if 'profile_pic' in request.FILES:
-                
+
                 # If yes, then grab it from the POST form reply
                 profile.profile_pic = request.FILES['profile_pic']
 
@@ -206,17 +206,17 @@ def register_surgeon(request):
 
             # set the email subject, sender's address and reciever's address
             subject, from_email, to = 'Welcome to orthoapp', 'orthoapp.feedback@gmail.com', profile.user.email
-            
+
             # fetch the email template
             t = get_template('email/welcome.html')
-            
+
             # create the context to be passed over to the email template
             c = {'username':  profile.user.username, 'password': password}
-            
+
             # create the message to be sent
             msg = EmailMultiAlternatives(subject, t.render(c), from_email, [to])
             msg.attach_alternative(t.render(c), "text/html")
-            
+
             # send the email to the surgeon
             msg.send()
 
@@ -228,7 +228,7 @@ def register_surgeon(request):
             print(user_form.errors,profile_form.errors)
 
     else:
-        # Was not an HTTP post so we just render the forms as empty forms.        
+        # Was not an HTTP post so we just render the forms as empty forms.
         user_form    = UserForm()
         profile_form = SurgeonProfileInfoForm()
 
@@ -248,13 +248,13 @@ def register_operation(request):
         # Grab hold of information from the form needed to create a new operation
         operation_form = OperationInfoForm(data=request.POST)
 
-        # Check if the form has been filled up correctly by the practice user        
+        # Check if the form has been filled up correctly by the practice user
         if operation_form.is_valid():
 
-            # Save the surgical procedure's details in the Database at the backend            
+            # Save the surgical procedure's details in the Database at the backend
             operation = operation_form.save(commit=False)
 
-            # Save the operation instance to the Database in the backend            
+            # Save the operation instance to the Database in the backend
             operation.save()
 
             messages.success(request, 'Operation Created')
@@ -268,7 +268,7 @@ def register_operation(request):
         # Was not an HTTP post so we just render the forms as empty forms.
         operation_form = OperationInfoForm()
 
-    # render the operation.html file and pass on the context dictionary    
+    # render the operation.html file and pass on the context dictionary
     return render(request,'accounts/operation.html',
                           {'operation_form':operation_form,
                            })
@@ -276,24 +276,24 @@ def register_operation(request):
 """ This function assists a user with a valid account to login to the system """
 def user_login(request):
     if request.method == 'POST':
-        
+
         # Grab hold of the username and password needed to login a valid user to the system
         username = request.POST.get('username')
         password = request.POST.get('password')
 
         # use the user credentials to authenticate the login-request
-        # Note: user is a boolean variable that indicates whether or not the user was successfully authenticated 
+        # Note: user is a boolean variable that indicates whether or not the user was successfully authenticated
         user = authenticate(username=username, password=password)
 
         # If the user credentials are valid
         if user:
 
             if user.is_active and (user.is_surgeon or user.is_patient or user.is_practice):
-                
+
                 # built-in django method used to login the user
                 login(request, user)
-                
-                # redirected to filter_user function so that we can differenciate and identify the correct account type 
+
+                # redirected to filter_user function so that we can differenciate and identify the correct account type
                 return redirect('filter_user')
 
             else:
@@ -369,20 +369,20 @@ from django.contrib.auth.forms import PasswordChangeForm
 @login_required
 def change_password(request):
 
-    if request.method == 'POST':   
+    if request.method == 'POST':
 
         # Grab the information needed to edit/update the password
         change_password_form = PasswordChangeForm(request.user, request.POST)
-        
+
         # Check if all the information has been correctly filled up by the user
         if change_password_form.is_valid():
 
-            # Save the changes in the database at the backend     
+            # Save the changes in the database at the backend
             user = change_password_form.save()
 
             # update the current session's authentication key
             update_session_auth_hash(request, user)  # Important!
-            
+
             # display success message
             messages.success(request, 'Your password was successfully updated!')
             return redirect('change_password')
@@ -391,10 +391,10 @@ def change_password(request):
             messages.error(request, 'Please correct the error below.')
 
     else:
-        # Was not an HTTP post so we just render the form as empty form.        
+        # Was not an HTTP post so we just render the form as empty form.
         change_password_form = PasswordChangeForm(request.user)
-   
-    # render the change_password.html file and pass on the context dictionary        
+
+    # render the change_password.html file and pass on the context dictionary
     return render(request, 'accounts/change_password.html', {
         'change_password_form': change_password_form
     })
@@ -403,3 +403,32 @@ def change_password(request):
 @login_required
 def user_settings(request):
     return render(request, 'accounts/user_settings.html')
+
+
+""" This function allows the user to view their personal details on a single page """
+@login_required
+@patient_required
+def patient_profile(request):
+    i = Patient.objects.get(user=request.user)
+    patient_dict = dict()
+    patient_dict["First Name"] = i.user.first_name
+    patient_dict["Last Name"] = i.user.last_name
+    patient_dict["Middle Name"] = i.middle_name
+    patient_dict["Email"] = i.user.email
+
+    if i.gender == 0:
+        patient_dict["Gender"] = "Female"
+
+    elif i.gender == 1:
+        patient_dict["Gender"] = "Male"
+
+    elif i.gender == 3:
+        patient_dict["Gender"] = "Other"
+
+    else:
+        patient_dict["Gender"] = "Rather not Say"
+
+    patient_dict["Date of Birth"] = i.dateOfBirth
+    patient_dict["Phone Number"] = i.phoneNumber
+
+    return render(request, 'accounts/patient_profile.html', {"patient_dict" : patient_dict})

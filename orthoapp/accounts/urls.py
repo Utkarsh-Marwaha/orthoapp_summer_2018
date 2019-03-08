@@ -8,9 +8,10 @@ urlpatterns = [
     path('user_logout/',                views.user_logout,     name='user_logout'),
 
     # These urls are for user dashboards
-    path('user_login/patient',          views.patient,         name='patient'),
-    path('user_login/surgeon',          views.surgeon,         name='surgeon'),
-    path('user_login/practice',         views.practice,        name='practice'),
+    path('user_login/patient',                  views.patient,         name='patient'),
+    path('user_login/patient/profile',          views.patient_profile, name='patient_profile'),
+    path('user_login/surgeon',                  views.surgeon,         name='surgeon'),
+    path('user_login/practice',                 views.practice,        name='practice'),
 
     #This url is present so that we can use the filter_user function from the views.py of the accounts app
     path('user_login/filter_user',      views.filter_user,     name='filter_user'),
@@ -18,24 +19,24 @@ urlpatterns = [
     path('user_login/user_settings',    views.user_settings,   name='user_settings'),
 
 
-    # password reset 
-    path('password-reset/', 
-    auth_views.PasswordResetView.as_view(template_name='accounts/password_reset.html'), 
+    # password reset
+    path('password-reset/',
+    auth_views.PasswordResetView.as_view(template_name='accounts/password_reset.html'),
     name='password_reset'),
 
     # password reset done
-    path('password-reset/done/', 
-    auth_views.PasswordResetDoneView.as_view(template_name='accounts/password_reset_done.html'), 
+    path('password-reset/done/',
+    auth_views.PasswordResetDoneView.as_view(template_name='accounts/password_reset_done.html'),
     name='password_reset_done'),
 
-    # password reset confirmation 
-    path('password-reset-confirm/<uidb64>/<token>/', 
-    auth_views.PasswordResetConfirmView.as_view(template_name='accounts/password_reset_confirm.html'), 
+    # password reset confirmation
+    path('password-reset-confirm/<uidb64>/<token>/',
+    auth_views.PasswordResetConfirmView.as_view(template_name='accounts/password_reset_confirm.html'),
     name='password_reset_confirm'),
 
     # password reset complete
-    path('password-reset/complete/', 
-    auth_views.PasswordResetCompleteView.as_view(template_name='accounts/password_reset_complete.html'), 
+    path('password-reset/complete/',
+    auth_views.PasswordResetCompleteView.as_view(template_name='accounts/password_reset_complete.html'),
     name='password_reset_complete'),
 
     # These urls are for user registrations
