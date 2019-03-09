@@ -8,8 +8,8 @@
   <div class="container">
     <div class="row text-center">
       <div class="col-md-12">
-        <h1 class="display-4">User Dashboard</h1>
-        <p class="lead">Manage your Patient Account</p>
+        <h1 class="display-4">Patient Profile</h1>
+        <p class="lead">View all your details</p>
       </div>
     </div>
   </div>
@@ -19,7 +19,7 @@
 <section id="bc" class="mt-3">
   <div class="container">
     <nav aria-label="breadcrumb">
-
+      
       <ol class="breadcrumb">
         <li class="breadcrumb-item">
           <a href="{% url 'index' %}">
@@ -32,19 +32,19 @@
               <i class="fas fa-cog"></i>
             </a>
           </li>
-
+          
         </ol>
-
+        
       </nav>
     </div>
   </section>
-
+  
   <br>
-
+  
   <!-- Alerts -->
   {% include 'partials/_alerts.html' %}
-
-
+  
+  
   <section id="dashboard" class="py-4">
     <div class="container">
       <div class="row">
@@ -52,8 +52,8 @@
           <div class="page-header">
             <h2>Welcome {{user.username}}</h2>
           </div>
-
-
+          
+          
           <table class="table">
             <thead>
               <tr>
@@ -64,22 +64,22 @@
             </thead>
             <tbody>
               {% for key, value in patient_dict.items %}
-                <tr>
-                  <td>
-                    <p>{{key}}</p>
-                  </td>
-                  <td>
-                    <p>{{value}}</p>
-                  </td>
-                </tr>
+              <tr>
+                <td>
+                  <p>{{key}}</p>
+                </td>
+                <td>
+                  <p>{{value}}</p>
+                </td>
+              </tr>
               {% endfor %}
             </tbody>
           </table>
-
-
+          
+          
         </div>
       </div>
     </div>
   </section>
-
+  
   {% endblock %}
