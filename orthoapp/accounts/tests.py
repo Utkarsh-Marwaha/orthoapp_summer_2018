@@ -138,3 +138,8 @@ class ProfilePageTestCase(PatientTestCase):
         self.client.login(**self.patient_1_creds)
         r = self.client.get('/accounts/user_login/patient/', SERVER_NAME=self.server_name)
         self.assertContains(r, "<a href=\"{}{}\">".format(self.server_name, reverse('patient_profile')))
+
+    def test_there_is_a_link_to_operation_on_profile_page(self):
+        self.client.login(**self.patient_1_creds)
+        r = self.client.get('/accounts/user_login/patient/profile', SERVER_NAME=self.server_name)
+        self.assertContains(r, "<a href=\"{}{}\">".format(self.server_name, reverse('patient_operations')))
