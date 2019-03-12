@@ -403,32 +403,3 @@ def change_password(request):
 @login_required
 def user_settings(request):
     return render(request, 'accounts/user_settings.html')
-
-
-""" This function allows the user to view their personal details on a single page """
-@login_required
-@patient_required
-def patient_profile(request):
-    i = Patient.objects.get(user=request.user)
-    patient_dict = dict()
-    patient_dict["First Name"] = i.user.first_name
-    patient_dict["Last Name"] = i.user.last_name
-    patient_dict["Middle Name"] = i.middle_name
-    patient_dict["Email"] = i.user.email
-
-    if i.gender == 0:
-        patient_dict["Gender"] = "Female"
-
-    elif i.gender == 1:
-        patient_dict["Gender"] = "Male"
-
-    elif i.gender == 3:
-        patient_dict["Gender"] = "Other"
-
-    else:
-        patient_dict["Gender"] = "Rather not Say"
-
-    patient_dict["Date of Birth"] = i.dateOfBirth
-    patient_dict["Phone Number"] = i.phoneNumber
-
-    return render(request, 'accounts/patient_profile.html', {"patient_dict" : patient_dict})

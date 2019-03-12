@@ -9,7 +9,6 @@ urlpatterns = [
 
     # These urls are for user dashboards
     path('user_login/patient',                  views.patient,         name='patient'),
-    path('user_login/patient/profile',          views.patient_profile, name='patient_profile'),
     path('user_login/surgeon',                  views.surgeon,         name='surgeon'),
     path('user_login/practice',                 views.practice,        name='practice'),
 
